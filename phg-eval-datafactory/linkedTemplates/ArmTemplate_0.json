@@ -1,0 +1,1019 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "phg-eval-datafactory"
+		},
+		"AzureSqlDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
+		},
+		"Control_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Control'"
+		},
+		"DataLake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'DataLake'"
+		},
+		"phg_eval_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
+		},
+		"SqlServer_OnPrem_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer_OnPrem'",
+			"defaultValue": "Integrated Security=True;Data Source=@{linkedService().ServerName};Initial Catalog=@{linkedService().DatabaseName}"
+		},
+		"SqlServer_OnPrem_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer_OnPrem'"
+		},
+		"DataLake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
+		},
+		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
+		"SqlServer_OnPrem_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "GROUPICT\\stuart.mcnicholas"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"Server": {
+						"type": "string"
+					},
+					"Database": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Control')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('Control_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataLake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('DataLake_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('DataLake_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/phg_eval_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https:\\\\phg-eval-cs.crm11.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AIR-DEV')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"description": "Azure Integration Runtime - Development ",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "UK South",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AIR-PROD')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"description": "Azure Integration Runtime - Production",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "UK South",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AIR-TTL')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 60,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BBP-Pro2SQL-01')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "Pro2 Integration run time",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"Filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataLake"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().Filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited_Reference')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"Filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataLake"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().Filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": [
+					{
+						"name": "code",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "modified",
+						"type": "String"
+					},
+					{
+						"name": "created",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Dataverse_Eval')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "phg_eval_dataverse",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Dataverse"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Excel_ReferenceEntityCodeMap')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "ReferenceEntityCodeMap",
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "ReferenceEntityCodeMap.xlsx",
+						"folderPath": "OH_D365_DataSync/Config",
+						"fileSystem": "data-sync"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "SourceSystem",
+						"type": "String"
+					},
+					{
+						"name": "SourceSchema",
+						"type": "String"
+					},
+					{
+						"name": "SourceTable",
+						"type": "String"
+					},
+					{
+						"name": "SourceCode",
+						"type": "String"
+					},
+					{
+						"name": "Entity",
+						"type": "String"
+					},
+					{
+						"name": "EntityQualifiedName",
+						"type": "String"
+					},
+					{
+						"name": "EntityCode",
+						"type": "String"
+					},
+					{
+						"name": "EntityValue",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Control')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Control",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SQL Server"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Control_Tbl')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Control",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "SQL Server"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer_OnPrem')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServer_OnPrem_connectionString')]",
+					"userName": "[parameters('SqlServer_OnPrem_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer_OnPrem_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "BBP-Pro2SQL-01",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/BBP-Pro2SQL-01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_D365Lookups')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "D365Entities",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_EntityParameters]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "D365Entity",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "D365Entities",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('D365Entities').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "D365 to Datalake",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CommonDataServiceForAppsSource",
+											"query": {
+												"value": "@item().FetchXML",
+												"type": "Expression"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Dataverse_Eval",
+											"type": "DatasetReference",
+											"parameters": {
+												"EntityName": "a"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_Datalake_Delimited",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_D365",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-17T13:36:53Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_OnPrem')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_OnPrem",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": {
+							"value": "@dataset().ServerName",
+							"type": "Expression"
+						},
+						"DatabaseName": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "BBP-PRO2SQL-01\\PRO2SQLTEST"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "Pro2_IH"
+					},
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					}
+				},
+				"folder": {
+					"name": "SQL Server"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_OnPrem_Tbl')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_OnPrem",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": {
+							"value": "@dataset().ServerName",
+							"type": "Expression"
+						},
+						"DatabaseName": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "BBP-PRO2SQL-01\\PRO2SQLTEST"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "Pro2_IH"
+					},
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"TableName": {
+						"type": "string",
+						"defaultValue": "co_parish"
+					}
+				},
+				"folder": {
+					"name": "SQL Server"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Reference"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited_Reference",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited_Reference",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumns"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     EntityQualifiedName as string,",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          code as string,",
+						"          name as string,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     inferDriftedColumnTypes: true,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"Staging derive(EntityQualifiedName = $EntityQualifiedName,",
+						"          Entity_IntegrationKey = code) ~> DerivedColumns",
+						"DerivedColumns select(mapColumn(",
+						"          EntityQualifiedName,",
+						"          Entity_IntegrationKey,",
+						"          Entity_Code = code,",
+						"          Entity_Name = name",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          code as string,",
+						"          name as string,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited_Reference')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Property')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Excel_ReferenceEntityCodeMap",
+								"type": "DatasetReference"
+							},
+							"name": "ReferenceEntityCodeMap1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Excel_ReferenceEntityCodeMap",
+								"type": "DatasetReference"
+							},
+							"name": "ReferenceEntityCodeMap2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "buildtype"
+						},
+						{
+							"name": "FLTpropertybuildtype"
+						},
+						{
+							"name": "FLTmanagementarea"
+						},
+						{
+							"name": "managementarea"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_addressline1 as string,",
+						"          phg_addressline2 as string,",
+						"          phg_addressline3 as string,",
+						"          phg_addressline4 as string,",
+						"          phg_addressline5 as string,",
+						"          phg_postcode as string,",
+						"          phg_name as string,",
+						"          phg_uprn as string,",
+						"          phg_propertystatus as string,",
+						"          phg_substatus as string,",
+						"          phg_propertytype as string,",
+						"          phg_sharedownership as string,",
+						"          phg_numberoffloors as integer,",
+						"          phg_propertyfloorlevel as integer,",
+						"          phg_numberofbedrooms as integer,",
+						"          phg_numberofbathrooms as integer,",
+						"          phg_numberofreceptionrooms as integer,",
+						"          phg_maximumnumberofoccupants as integer,",
+						"          phg_lift as string,",
+						"          phg_anyadaptions as string,",
+						"          phg_blockreference as string,",
+						"          phg_tenancyid as string,",
+						"          phg_formerarrearsofficer as string,",
+						"          phg_estatesofficer as string,",
+						"          phg_arrearsofficer as string,",
+						"          phg_rentofficer as string,",
+						"          phg_successfultenancyadvisor as string,",
+						"          phg_repairsofficer as string,",
+						"          phg_surveyor as string,",
+						"          phg_plotnumber as integer,",
+						"          phg_builddate as date,",
+						"          phg_propertydeveloperid as string,",
+						"          phg_managementareaid as string,",
+						"          phg_buildtypeid as string,",
+						"          phg_floorplanurl as string,",
+						"          phg_parkingspace as string,",
+						"          phg_dateoffinaldisposal as date,",
+						"          phg_renttype as string,",
+						"          phg_cookersupply as string,",
+						"          phg_garage as string,",
+						"          phg_garden as string,",
+						"          phg_currentdisposal as string,",
+						"          phg_parishid as string,",
+						"          phg_areaid as string,",
+						"          phg_subareaid as string,",
+						"          phg_wardcode as string,",
+						"          phg_estatecode as string,",
+						"          phg_subareacode as string,",
+						"          phg_repaircontractorid as string,",
+						"          phg_gasservicerid as string,",
+						"          phg_gascapped as string,",
+						"          phg_fuelservicedate as string,",
+						"          phg_ownedbycustomer as double,",
+						"          phg_ownedbyphg as double,",
+						"          phg_gasmeterserialnumber as string,",
+						"          phg_electricmeterserialnumber as string,",
+						"          phg_waterauthorityid as string,",
+						"          pro2modified as timestamp,",
+						"          pro2created as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          SourceSystem as string,",
+						"          SourceSchema as string,",
+						"          SourceTable as string,",
+						"          SourceCode as string,",
+						"          Entity as string,",
+						"          EntityQualifiedName as string,",
+						"          EntityCode as string,",
+						"          EntityValue as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ReferenceEntityCodeMap1",
+						"source(output(",
+						"          SourceSystem as string,",
+						"          SourceSchema as string,",
+						"          SourceTable as string,",
+						"          SourceCode as string,",
+						"          Entity as string,",
+						"          EntityQualifiedName as string,",
+						"          EntityCode as string,",
+						"          EntityValue as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ReferenceEntityCodeMap2",
+						"managementarea select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name,",
+						"          phg_buildtypeid,",
+						"          phg_managementareaid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"Staging, FLTpropertybuildtype lookup(phg_buildtypeid == SourceCode,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> buildtype",
+						"ReferenceEntityCodeMap1 filter(equals(EntityQualifiedName,\"phg_propertybuildtype\")) ~> FLTpropertybuildtype",
+						"ReferenceEntityCodeMap2 filter(equals(EntityQualifiedName,\"phg_managementarea\")) ~> FLTmanagementarea",
+						"buildtype, FLTmanagementarea lookup(phg_managementareaid == ReferenceEntityCodeMap2@SourceCode,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> managementarea",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Excel_ReferenceEntityCodeMap')]"
+			]
+		}
+	]
+}

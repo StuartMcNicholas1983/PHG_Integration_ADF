@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "phg-eval-datafactory"
+		},
+		"AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
+		"Control_connectionString": {
+			"value": ""
+		},
+		"DataLake_accountKey": {
+			"value": ""
+		},
+		"SqlServer_OnPrem_connectionString": {
+			"value": "Integrated Security=True;Data Source=@{linkedService().ServerName};Initial Catalog=@{linkedService().DatabaseName}"
+		},
+		"SqlServer_OnPrem_password": {
+			"value": ""
+		},
+		"phg_eval_dataverse_servicePrincipalCredential": {
+			"value": ""
+		},
+		"DataLake_properties_typeProperties_url": {
+			"value": "https://phgevalstoragedatalake.dfs.core.windows.net/"
+		},
+		"SqlServer_OnPrem_properties_typeProperties_userName": {
+			"value": "GROUPICT\\stuart.mcnicholas"
+		},
+		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
+			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		}
+	}
+}
