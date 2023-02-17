@@ -1,0 +1,59 @@
+{
+	"name": "DS_Excel_ReferenceEntityCodeMap",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataLake"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "ReferenceEntityCodeMap",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "ReferenceEntityCodeMap.xlsx",
+				"folderPath": "OH_D365_DataSync/Config",
+				"fileSystem": "data-sync"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "SourceSystem",
+				"type": "String"
+			},
+			{
+				"name": "SourceSchema",
+				"type": "String"
+			},
+			{
+				"name": "SourceTable",
+				"type": "String"
+			},
+			{
+				"name": "SourceCode",
+				"type": "String"
+			},
+			{
+				"name": "Entity",
+				"type": "String"
+			},
+			{
+				"name": "EntityQualifiedName",
+				"type": "String"
+			},
+			{
+				"name": "EntityCode",
+				"type": "String"
+			},
+			{
+				"name": "EntityValue",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

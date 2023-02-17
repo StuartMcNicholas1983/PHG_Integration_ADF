@@ -1,0 +1,78 @@
+{
+	"name": "DF_StagingToTransformed",
+	"properties": {
+		"folder": {
+			"name": "OH_D365_DataSync/Reference"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_Delimited_Reference",
+						"type": "DatasetReference"
+					},
+					"name": "Staging"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_Delimited_Reference",
+						"type": "DatasetReference"
+					},
+					"name": "Transformed"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumns"
+				},
+				{
+					"name": "SelectColumnsForSink"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     EntityQualifiedName as string,",
+				"     DatalakeFilename as string",
+				"}",
+				"source(output(",
+				"          code as string,",
+				"          name as string,",
+				"          modified as string,",
+				"          created as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false) ~> Staging",
+				"Staging derive(EntityQualifiedName = $EntityQualifiedName,",
+				"          Entity_IntegrationKey = code) ~> DerivedColumns",
+				"DerivedColumns select(mapColumn(",
+				"          EntityQualifiedName,",
+				"          Entity_IntegrationKey,",
+				"          Entity_Code = code,",
+				"          Entity_Name = name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+				"SelectColumnsForSink sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          code as string,",
+				"          name as string,",
+				"          modified as string,",
+				"          created as string",
+				"     ),",
+				"     partitionFileNames:[($DatalakeFilename)],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Transformed"
+			]
+		}
+	}
+}

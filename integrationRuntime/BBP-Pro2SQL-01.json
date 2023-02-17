@@ -1,0 +1,7 @@
+{
+	"name": "BBP-Pro2SQL-01",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Pro2 Integration run time"
+	}
+}

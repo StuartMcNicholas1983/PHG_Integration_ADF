@@ -1,0 +1,20 @@
+{
+	"name": "phg-eval-datafactory",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "false"
+		}
+	},
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned,UserAssigned",
+		"principalId": "bd82700c-ab0f-4f7c-9de5-91d624430c84",
+		"tenantId": "668364d4-3d43-4051-adbc-5bbb517a46fc",
+		"userAssignedIdentities": {
+			"/subscriptions/83e38fc3-11f8-44f0-87d5-048acb1450dc/resourcegroups/PHG-Intergration/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ManagedIdentity_1": {
+				"clientId": "9108c4d4-f7a1-4c82-9b51-ee19b7790964",
+				"principalId": "84e93520-fa44-4e97-9cb1-f74c7d438d72"
+			}
+		}
+	}
+}
