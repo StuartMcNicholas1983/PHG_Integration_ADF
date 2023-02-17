@@ -93,7 +93,7 @@
 								{
 									"activity": "D365 Lookups",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
