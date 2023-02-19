@@ -275,7 +275,7 @@
 										{
 											"activity": "Transformed",
 											"dependencyConditions": [
-												"Failed"
+												"Succeeded"
 											]
 										}
 									],
@@ -357,7 +357,7 @@
 															{
 																"activity": "Stg_to_Trfd - Property",
 																"dependencyConditions": [
-																	"Succeeded"
+																	"Failed"
 																]
 															}
 														],
@@ -474,24 +474,10 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_buildtypeid",
-																			"type": "String",
-																			"physicalType": "String"
+																			"name": "phg_uprn"
 																		},
 																		"sink": {
-																			"name": "phg_buildtypeid",
-																			"type": "Guid"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_managementareaid",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_managementareaid",
-																			"type": "Guid"
+																			"name": "phg_uprn"
 																		}
 																	}
 																],
