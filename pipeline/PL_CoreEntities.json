@@ -435,8 +435,8 @@
 															{
 																"source": {
 																	"name": "phg_builddate",
-																	"type": "String",
-																	"physicalType": "String"
+																	"type": "DateTime",
+																	"physicalType": "DateTime"
 																},
 																"sink": {
 																	"name": "phg_builddate",
@@ -446,8 +446,8 @@
 															{
 																"source": {
 																	"name": "phg_dateoffinaldisposal",
-																	"type": "String",
-																	"physicalType": "String"
+																	"type": "DateTime",
+																	"physicalType": "DateTime"
 																},
 																"sink": {
 																	"name": "phg_dateoffinaldisposal",
@@ -672,6 +672,17 @@
 																"sink": {
 																	"name": "phg_wardcode",
 																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_fuelservicedate",
+																	"type": "DateTime",
+																	"physicalType": "DateTime"
+																},
+																"sink": {
+																	"name": "phg_fuelservicedate",
+																	"type": "DateTime"
 																}
 															}
 														],
