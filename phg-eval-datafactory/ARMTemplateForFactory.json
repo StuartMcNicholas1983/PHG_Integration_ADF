@@ -1878,6 +1878,7 @@
 						"          phg_postcode as string,",
 						"          phg_name as string,",
 						"          phg_uprn as string,",
+						"          phg_propertystatus as string,",
 						"          phg_propertytype as string,",
 						"          phg_numberoffloors as integer,",
 						"          phg_propertyfloorlevel as integer,",
@@ -1914,6 +1915,7 @@
 						"          phg_postcode,",
 						"          phg_name,",
 						"          phg_uprn,",
+						"          phg_propertystatus,",
 						"          phg_propertytype,",
 						"          phg_numberoffloors,",
 						"          phg_propertyfloorlevel,",
@@ -2642,6 +2644,17 @@
 																		"sink": {
 																			"name": "phg_fuelservicedate",
 																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertystatus",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_propertystatusname",
+																			"type": "String"
 																		}
 																	}
 																],

@@ -1372,6 +1372,17 @@
 																			"name": "phg_fuelservicedate",
 																			"type": "DateTime"
 																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertystatus",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_propertystatusname",
+																			"type": "String"
+																		}
 																	}
 																],
 																"typeConversion": true,
