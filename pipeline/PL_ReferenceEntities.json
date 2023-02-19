@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[spGet_Entities]",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_Entities]",
 						"storedProcedureParameters": {
 							"entityType": {
 								"type": "String",
