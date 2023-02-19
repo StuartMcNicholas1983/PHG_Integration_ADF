@@ -258,7 +258,7 @@
 								{
 									"activity": "Transformed",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
