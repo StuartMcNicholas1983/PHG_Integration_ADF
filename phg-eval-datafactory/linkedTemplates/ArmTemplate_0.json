@@ -918,6 +918,7 @@
 						"          phg_wardcode,",
 						"          phg_estatecode,",
 						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
 						"          phg_ownedbycustomer,",
 						"          phg_ownedbyphg,",
 						"          phg_gasmeterserialnumber,",
