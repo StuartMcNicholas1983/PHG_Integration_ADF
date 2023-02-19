@@ -837,20 +837,6 @@
 								"type": "DatasetReference"
 							},
 							"name": "Staging"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Excel_ReferenceEntityCodeMap",
-								"type": "DatasetReference"
-							},
-							"name": "ReferenceEntityCodeMap1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Excel_ReferenceEntityCodeMap",
-								"type": "DatasetReference"
-							},
-							"name": "ReferenceEntityCodeMap2"
 						}
 					],
 					"sinks": [
@@ -865,18 +851,6 @@
 					"transformations": [
 						{
 							"name": "SelectColumnsForSink"
-						},
-						{
-							"name": "buildtype"
-						},
-						{
-							"name": "FLTpropertybuildtype"
-						},
-						{
-							"name": "FLTmanagementarea"
-						},
-						{
-							"name": "managementarea"
 						}
 					],
 					"scriptLines": [
@@ -892,89 +866,15 @@
 						"          phg_addressline5 as string,",
 						"          phg_postcode as string,",
 						"          phg_name as string,",
-						"          phg_uprn as string,",
-						"          phg_propertystatus as string,",
-						"          phg_substatus as string,",
-						"          phg_propertytype as string,",
-						"          phg_sharedownership as string,",
-						"          phg_numberoffloors as integer,",
-						"          phg_propertyfloorlevel as integer,",
-						"          phg_numberofbedrooms as integer,",
-						"          phg_numberofbathrooms as integer,",
-						"          phg_numberofreceptionrooms as integer,",
-						"          phg_maximumnumberofoccupants as integer,",
-						"          phg_lift as string,",
-						"          phg_anyadaptions as string,",
-						"          phg_blockreference as string,",
-						"          phg_tenancyid as string,",
-						"          phg_formerarrearsofficer as string,",
-						"          phg_estatesofficer as string,",
-						"          phg_arrearsofficer as string,",
-						"          phg_rentofficer as string,",
-						"          phg_successfultenancyadvisor as string,",
-						"          phg_repairsofficer as string,",
-						"          phg_surveyor as string,",
-						"          phg_plotnumber as integer,",
-						"          phg_builddate as date,",
-						"          phg_propertydeveloperid as string,",
 						"          phg_managementareaid as string,",
 						"          phg_buildtypeid as string,",
-						"          phg_floorplanurl as string,",
-						"          phg_parkingspace as string,",
-						"          phg_dateoffinaldisposal as date,",
-						"          phg_renttype as string,",
-						"          phg_cookersupply as string,",
-						"          phg_garage as string,",
-						"          phg_garden as string,",
-						"          phg_currentdisposal as string,",
-						"          phg_parishid as string,",
-						"          phg_areaid as string,",
-						"          phg_subareaid as string,",
-						"          phg_wardcode as string,",
-						"          phg_estatecode as string,",
-						"          phg_subareacode as string,",
-						"          phg_repaircontractorid as string,",
-						"          phg_gasservicerid as string,",
-						"          phg_gascapped as string,",
-						"          phg_fuelservicedate as string,",
-						"          phg_ownedbycustomer as double,",
-						"          phg_ownedbyphg as double,",
-						"          phg_gasmeterserialnumber as string,",
-						"          phg_electricmeterserialnumber as string,",
-						"          phg_waterauthorityid as string,",
-						"          pro2modified as timestamp,",
-						"          pro2created as timestamp",
+						"          modified as timestamp,",
+						"          created as timestamp",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> Staging",
-						"source(output(",
-						"          SourceSystem as string,",
-						"          SourceSchema as string,",
-						"          SourceTable as string,",
-						"          SourceCode as string,",
-						"          Entity as string,",
-						"          EntityQualifiedName as string,",
-						"          EntityCode as string,",
-						"          EntityValue as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ReferenceEntityCodeMap1",
-						"source(output(",
-						"          SourceSystem as string,",
-						"          SourceSchema as string,",
-						"          SourceTable as string,",
-						"          SourceCode as string,",
-						"          Entity as string,",
-						"          EntityQualifiedName as string,",
-						"          EntityCode as string,",
-						"          EntityValue as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ReferenceEntityCodeMap2",
-						"managementarea select(mapColumn(",
+						"Staging select(mapColumn(",
 						"          phg_integrationkey,",
 						"          phg_addressline1,",
 						"          phg_addressline2,",
@@ -982,22 +882,10 @@
 						"          phg_addressline4,",
 						"          phg_addressline5,",
 						"          phg_postcode,",
-						"          phg_name,",
-						"          phg_buildtypeid,",
-						"          phg_managementareaid",
+						"          phg_name",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
-						"Staging, FLTpropertybuildtype lookup(phg_buildtypeid == SourceCode,",
-						"     multiple: false,",
-						"     pickup: 'any',",
-						"     broadcast: 'auto')~> buildtype",
-						"ReferenceEntityCodeMap1 filter(equals(EntityQualifiedName,\"phg_propertybuildtype\")) ~> FLTpropertybuildtype",
-						"ReferenceEntityCodeMap2 filter(equals(EntityQualifiedName,\"phg_managementarea\")) ~> FLTmanagementarea",
-						"buildtype, FLTmanagementarea lookup(phg_managementareaid == ReferenceEntityCodeMap2@SourceCode,",
-						"     multiple: false,",
-						"     pickup: 'any',",
-						"     broadcast: 'auto')~> managementarea",
 						"SelectColumnsForSink sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:[($DatalakeFilename)],",
@@ -1011,8 +899,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Excel_ReferenceEntityCodeMap')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
 			]
 		}
 	]

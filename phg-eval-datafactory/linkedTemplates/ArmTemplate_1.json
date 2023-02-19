@@ -33,7 +33,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_Entities]",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
 								"storedProcedureParameters": {
 									"entityType": {
 										"type": "String",
@@ -275,7 +275,7 @@
 										{
 											"activity": "Transformed",
 											"dependencyConditions": [
-												"Succeeded"
+												"Failed"
 											]
 										}
 									],
@@ -326,8 +326,6 @@
 																			"type": "Expression"
 																		}
 																	},
-																	"ReferenceEntityCodeMap1": {},
-																	"ReferenceEntityCodeMap2": {},
 																	"Transformed": {
 																		"Container": {
 																			"value": "@item().DatalakeContainer",
@@ -688,7 +686,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_Entities]",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
 								"storedProcedureParameters": {
 									"entityType": {
 										"type": "String",
@@ -1358,7 +1356,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_SourceSystems]",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SourceSystems]",
 								"storedProcedureParameters": {
 									"pipeline": {
 										"type": "String",
