@@ -581,6 +581,875 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Core_Entities",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Core"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									},
+									"srcsystem": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.SourceSystemName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Entity",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Core_Entities",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Core_Entities').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Staging",
+									"type": "Delete",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.00:10:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "DS_Datalake_Delimited_Reference",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_Staging",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
+								},
+								{
+									"name": "Source to Staging",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.00:10:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@item().SrcStoredProcedure",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"dtLastPipelineRun": {
+													"type": "DateTime",
+													"value": {
+														"value": "@convertToUtc('01/01/2023 00:00:00', 'GMT Standard Time')",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_Datalake_Delimited",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_Staging",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Transformed",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "Source to Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.00:10:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "DS_Datalake_Delimited_Reference",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_Transformed",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
+								},
+								{
+									"name": "Switch Entity",
+									"type": "Switch",
+									"dependsOn": [
+										{
+											"activity": "Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Property",
+												"activities": [
+													{
+														"name": "Stg_to_Trfd - Property",
+														"type": "ExecuteDataFlow",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.00:10:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"dataflow": {
+																"referenceName": "DF_StagingToTransformed_Property",
+																"type": "DataFlowReference",
+																"parameters": {
+																	"DatalakeFilename": {
+																		"value": "'@{item().DatalakeFilename}'",
+																		"type": "Expression"
+																	}
+																},
+																"datasetParameters": {
+																	"Staging": {
+																		"Container": {
+																			"value": "@item().DatalakeContainer",
+																			"type": "Expression"
+																		},
+																		"Directory": {
+																			"value": "@item().DatalakeDirectory_Staging",
+																			"type": "Expression"
+																		},
+																		"Filename": {
+																			"value": "@item().DatalakeFilename",
+																			"type": "Expression"
+																		}
+																	},
+																	"propertystatus": {},
+																	"managementarea": {},
+																	"propertybuildtype": {},
+																	"parish": {},
+																	"Transformed": {
+																		"Container": {
+																			"value": "@item().DatalakeContainer",
+																			"type": "Expression"
+																		},
+																		"Directory": {
+																			"value": "@item().DatalakeDirectory_Transformed",
+																			"type": "Expression"
+																		},
+																		"Filename": {
+																			"value": "@item().DatalakeFilename",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															},
+															"staging": {},
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
+															},
+															"traceLevel": "Fine"
+														}
+													},
+													{
+														"name": "Transformed to Destination",
+														"type": "Copy",
+														"dependsOn": [
+															{
+																"activity": "Stg_to_Trfd - Property",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.00:10:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "DelimitedTextSource",
+																"storeSettings": {
+																	"type": "AzureBlobFSReadSettings",
+																	"recursive": true,
+																	"enablePartitionDiscovery": false
+																},
+																"formatSettings": {
+																	"type": "DelimitedTextReadSettings"
+																}
+															},
+															"sink": {
+																"type": "CommonDataServiceForAppsSink",
+																"writeBatchSize": 10,
+																"writeBehavior": "upsert",
+																"ignoreNullValues": false,
+																"alternateKeyName": {
+																	"value": "@item().UpsertKeyColumn",
+																	"type": "Expression"
+																}
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "phg_addressline1",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_addressline1",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_addressline2",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_addressline2",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_addressline3",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_addressline3",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_addressline4",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_addresstowncity",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_blockreference",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_blockreference",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_builddate",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_builddate",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_dateoffinaldisposal",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_dateoffinaldisposal",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_electricmeterserialnumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_electricmeterserialnumber",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_estatecode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_estatecode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_floorplanurl",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_floorplanurl",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_gasmeterserialnumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_gasmeterserialnumber",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_integrationkey",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_integrationkey",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_maximumnumberofoccupants",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_maximumnumberofoccupants",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_name",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_name",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofbathrooms",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_numberofbathrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofbedrooms",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_numberofbedrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberoffloors",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_numberoffloors",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofreceptionrooms",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_numberofreceptionrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ownedbycustomer",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_ownedbycustomer",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ownedbyphg",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_ownedbyphg",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_plotnumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_plotnumber",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_postcode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_postcode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertyfloorlevel",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_propertyfloorlevel",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertytype",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_propertytype",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_subareacode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_subareacode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_uprn",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_uprn",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_wardcode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_wardcode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_fuelservicedate",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_fuelservicedate",
+																			"type": "DateTime"
+																		}
+																	}
+																],
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Datalake_Delimited",
+																"type": "DatasetReference",
+																"parameters": {
+																	"Container": {
+																		"value": "@item().DatalakeContainer",
+																		"type": "Expression"
+																	},
+																	"Directory": {
+																		"value": "@item().DatalakeDirectory_Transformed",
+																		"type": "Expression"
+																	},
+																	"Filename": {
+																		"value": "@item().DatalakeFilename",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_Dataverse_Eval",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													}
+												]
+											},
+											{
+												"value": "Tenancy",
+												"activities": [
+													{
+														"name": "Wait3",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													},
+													{
+														"name": "Wait4",
+														"type": "Wait",
+														"dependsOn": [
+															{
+																"activity": "Wait3",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											},
+											{
+												"value": "Contact",
+												"activities": [
+													{
+														"name": "Wait5",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													},
+													{
+														"name": "Wait6",
+														"type": "Wait",
+														"dependsOn": [
+															{
+																"activity": "Wait5",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											},
+											{
+												"value": "HousingAccount",
+												"activities": [
+													{
+														"name": "Wait7",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													},
+													{
+														"name": "Wait8",
+														"type": "Wait",
+														"dependsOn": [
+															{
+																"activity": "Wait7",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait9",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string"
+					},
+					"SourceSystemName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-17T13:03:59Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
+				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1251,875 +2120,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Core_Entities",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.00:10:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
-								"storedProcedureParameters": {
-									"entityType": {
-										"type": "String",
-										"value": "Core"
-									},
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									},
-									"srcsystem": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.SourceSystemName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Entity",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Core_Entities",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Core_Entities').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Staging",
-									"type": "Delete",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.00:10:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().DatalakeContainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().DatalakeDirectory_Staging",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().DatalakeFilename",
-													"type": "Expression"
-												}
-											}
-										},
-										"enableLogging": false,
-										"storeSettings": {
-											"type": "AzureBlobFSReadSettings",
-											"recursive": true,
-											"enablePartitionDiscovery": false
-										}
-									}
-								},
-								{
-									"name": "Source to Staging",
-									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.00:10:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"sqlReaderStoredProcedureName": {
-												"value": "@item().SrcStoredProcedure",
-												"type": "Expression"
-											},
-											"storedProcedureParameters": {
-												"dtLastPipelineRun": {
-													"type": "DateTime",
-													"value": {
-														"value": "@convertToUtc('01/01/2023 00:00:00', 'GMT Standard Time')",
-														"type": "Expression"
-													}
-												}
-											},
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_SQL_OnPrem",
-											"type": "DatasetReference",
-											"parameters": {
-												"ServerName": {
-													"value": "@item().SrcServer",
-													"type": "Expression"
-												},
-												"DatabaseName": {
-													"value": "@item().SrcDatabase",
-													"type": "Expression"
-												},
-												"SchemaName": {
-													"value": "@item().SrcSchema",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_Datalake_Delimited",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().DatalakeContainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().DatalakeDirectory_Staging",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().DatalakeFilename",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								},
-								{
-									"name": "Transformed",
-									"type": "Delete",
-									"dependsOn": [
-										{
-											"activity": "Source to Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.00:10:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().DatalakeContainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().DatalakeDirectory_Transformed",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().DatalakeFilename",
-													"type": "Expression"
-												}
-											}
-										},
-										"enableLogging": false,
-										"storeSettings": {
-											"type": "AzureBlobFSReadSettings",
-											"recursive": true,
-											"enablePartitionDiscovery": false
-										}
-									}
-								},
-								{
-									"name": "Switch Entity",
-									"type": "Switch",
-									"dependsOn": [
-										{
-											"activity": "Transformed",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"on": {
-											"value": "@item().Entity",
-											"type": "Expression"
-										},
-										"cases": [
-											{
-												"value": "Property",
-												"activities": [
-													{
-														"name": "Stg_to_Trfd - Property",
-														"type": "ExecuteDataFlow",
-														"dependsOn": [],
-														"policy": {
-															"timeout": "0.00:10:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"dataflow": {
-																"referenceName": "DF_StagingToTransformed_Property",
-																"type": "DataFlowReference",
-																"parameters": {
-																	"DatalakeFilename": {
-																		"value": "'@{item().DatalakeFilename}'",
-																		"type": "Expression"
-																	}
-																},
-																"datasetParameters": {
-																	"Staging": {
-																		"Container": {
-																			"value": "@item().DatalakeContainer",
-																			"type": "Expression"
-																		},
-																		"Directory": {
-																			"value": "@item().DatalakeDirectory_Staging",
-																			"type": "Expression"
-																		},
-																		"Filename": {
-																			"value": "@item().DatalakeFilename",
-																			"type": "Expression"
-																		}
-																	},
-																	"phg_propertystatus": {},
-																	"phg_managementarea": {},
-																	"phg_propertybuildtype": {},
-																	"phg_parish": {},
-																	"Transformed": {
-																		"Container": {
-																			"value": "@item().DatalakeContainer",
-																			"type": "Expression"
-																		},
-																		"Directory": {
-																			"value": "@item().DatalakeDirectory_Transformed",
-																			"type": "Expression"
-																		},
-																		"Filename": {
-																			"value": "@item().DatalakeFilename",
-																			"type": "Expression"
-																		}
-																	}
-																}
-															},
-															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
-															},
-															"traceLevel": "Fine"
-														}
-													},
-													{
-														"name": "Transformed to Destination",
-														"type": "Copy",
-														"dependsOn": [
-															{
-																"activity": "Stg_to_Trfd - Property",
-																"dependencyConditions": [
-																	"Failed"
-																]
-															}
-														],
-														"policy": {
-															"timeout": "0.00:10:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"source": {
-																"type": "DelimitedTextSource",
-																"storeSettings": {
-																	"type": "AzureBlobFSReadSettings",
-																	"recursive": true,
-																	"enablePartitionDiscovery": false
-																},
-																"formatSettings": {
-																	"type": "DelimitedTextReadSettings"
-																}
-															},
-															"sink": {
-																"type": "CommonDataServiceForAppsSink",
-																"writeBatchSize": 10,
-																"writeBehavior": "upsert",
-																"ignoreNullValues": false,
-																"alternateKeyName": {
-																	"value": "@item().UpsertKeyColumn",
-																	"type": "Expression"
-																}
-															},
-															"enableStaging": false,
-															"translator": {
-																"type": "TabularTranslator",
-																"mappings": [
-																	{
-																		"source": {
-																			"name": "phg_addressline1",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_addressline1",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_addressline2",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_addressline2",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_addressline3",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_addressline3",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_addressline4",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_addresstowncity",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_blockreference",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_blockreference",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_builddate",
-																			"type": "DateTime",
-																			"physicalType": "DateTime"
-																		},
-																		"sink": {
-																			"name": "phg_builddate",
-																			"type": "DateTime"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_dateoffinaldisposal",
-																			"type": "DateTime",
-																			"physicalType": "DateTime"
-																		},
-																		"sink": {
-																			"name": "phg_dateoffinaldisposal",
-																			"type": "DateTime"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_electricmeterserialnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_electricmeterserialnumber",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_estatecode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_estatecode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_floorplanurl",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_floorplanurl",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_gasmeterserialnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_gasmeterserialnumber",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_integrationkey",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_integrationkey",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_maximumnumberofoccupants",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_maximumnumberofoccupants",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_name",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_name",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofbathrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofbathrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofbedrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofbedrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberoffloors",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberoffloors",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofreceptionrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofreceptionrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_ownedbycustomer",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_ownedbycustomer",
-																			"type": "Decimal"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_ownedbyphg",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_ownedbyphg",
-																			"type": "Decimal"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_plotnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_plotnumber",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_postcode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_postcode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_propertyfloorlevel",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_propertyfloorlevel",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_propertytype",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_propertytype",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_subareacode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_subareacode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_uprn",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_uprn",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_wardcode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_wardcode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_fuelservicedate",
-																			"type": "DateTime",
-																			"physicalType": "DateTime"
-																		},
-																		"sink": {
-																			"name": "phg_fuelservicedate",
-																			"type": "DateTime"
-																		}
-																	}
-																],
-																"typeConversion": true,
-																"typeConversionSettings": {
-																	"allowDataTruncation": true,
-																	"treatBooleanAsNumber": false
-																}
-															}
-														},
-														"inputs": [
-															{
-																"referenceName": "DS_Datalake_Delimited",
-																"type": "DatasetReference",
-																"parameters": {
-																	"Container": {
-																		"value": "@item().DatalakeContainer",
-																		"type": "Expression"
-																	},
-																	"Directory": {
-																		"value": "@item().DatalakeDirectory_Transformed",
-																		"type": "Expression"
-																	},
-																	"Filename": {
-																		"value": "@item().DatalakeFilename",
-																		"type": "Expression"
-																	}
-																}
-															}
-														],
-														"outputs": [
-															{
-																"referenceName": "DS_Dataverse_Eval",
-																"type": "DatasetReference",
-																"parameters": {
-																	"EntityName": {
-																		"value": "@item().DestEntity",
-																		"type": "Expression"
-																	}
-																}
-															}
-														]
-													}
-												]
-											},
-											{
-												"value": "Tenancy",
-												"activities": [
-													{
-														"name": "Wait3",
-														"type": "Wait",
-														"dependsOn": [],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													},
-													{
-														"name": "Wait4",
-														"type": "Wait",
-														"dependsOn": [
-															{
-																"activity": "Wait3",
-																"dependencyConditions": [
-																	"Succeeded"
-																]
-															}
-														],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													}
-												]
-											},
-											{
-												"value": "Contact",
-												"activities": [
-													{
-														"name": "Wait5",
-														"type": "Wait",
-														"dependsOn": [],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													},
-													{
-														"name": "Wait6",
-														"type": "Wait",
-														"dependsOn": [
-															{
-																"activity": "Wait5",
-																"dependencyConditions": [
-																	"Succeeded"
-																]
-															}
-														],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													}
-												]
-											},
-											{
-												"value": "HousingAccount",
-												"activities": [
-													{
-														"name": "Wait7",
-														"type": "Wait",
-														"dependsOn": [],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													},
-													{
-														"name": "Wait8",
-														"type": "Wait",
-														"dependsOn": [
-															{
-																"activity": "Wait7",
-																"dependencyConditions": [
-																	"Succeeded"
-																]
-															}
-														],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													}
-												]
-											}
-										],
-										"defaultActivities": [
-											{
-												"name": "Wait9",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 1
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"PipelineName": {
-						"type": "string"
-					},
-					"SourceSystemName": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "OH_D365_DataSync"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-17T13:03:59Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]"
 			]
 		},
 		{
