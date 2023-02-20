@@ -728,6 +728,83 @@
 																	"name": "phg_wardcode",
 																	"type": "String"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_sharedownership",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_sharedownership",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_lift",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_lift",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_anyadaptations",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_anyadaptations",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_parkingspace",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_parkingspace",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_cookersupply",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_cookersupply",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_garden",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_garden",
+																	"type": "Boolean"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_gascapped",
+																	"type": "Boolean",
+																	"physicalType": "Boolean"
+																},
+																"sink": {
+																	"name": "phg_gascapped",
+																	"type": "Boolean"
+																}
 															}
 														],
 														"typeConversion": true,
