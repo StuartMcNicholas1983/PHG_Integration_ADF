@@ -753,12 +753,12 @@
 															},
 															{
 																"source": {
-																	"name": "phg_anyadaptations",
+																	"name": "phg_anyadaptions",
 																	"type": "Boolean",
 																	"physicalType": "Boolean"
 																},
 																"sink": {
-																	"name": "phg_anyadaptations",
+																	"name": "phg_anyadaptions",
 																	"type": "Boolean"
 																}
 															},
