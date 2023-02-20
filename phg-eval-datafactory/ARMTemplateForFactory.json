@@ -2274,7 +2274,7 @@
 						"          phg_numberofreceptionrooms,",
 						"          phg_maximumnumberofoccupants,",
 						"          phg_lift,",
-						"          phg_anyadaptations = phg_anyadaptions,",
+						"          phg_anyadaptions,",
 						"          phg_blockreference,",
 						"          phg_plotnumber,",
 						"          phg_builddate,",
@@ -2317,7 +2317,7 @@
 						"          phg_numberofreceptionrooms,",
 						"          phg_maximumnumberofoccupants,",
 						"          phg_lift,",
-						"          phg_anyadaptions = phg_anyadaptations,",
+						"          phg_anyadaptions,",
 						"          phg_blockreference,",
 						"          phg_plotnumber,",
 						"          phg_builddate,",
@@ -3278,12 +3278,12 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_anyadaptations",
+																			"name": "phg_anyadaptions",
 																			"type": "Boolean",
 																			"physicalType": "Boolean"
 																		},
 																		"sink": {
-																			"name": "phg_anyadaptations",
+																			"name": "phg_anyadaptions",
 																			"type": "Boolean"
 																		}
 																	},
