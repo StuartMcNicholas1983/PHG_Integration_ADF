@@ -684,6 +684,50 @@
 																	"name": "phg_fuelservicedate",
 																	"type": "DateTime"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_propertystatusid",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_propertystatusid",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_managementareaid",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_managementareaid",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_parishid",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_parishid",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_propertybuildtypeid",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_buildtypeid",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
