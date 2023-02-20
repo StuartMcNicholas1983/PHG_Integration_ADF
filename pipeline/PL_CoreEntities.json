@@ -339,7 +339,7 @@
 													{
 														"activity": "Stg_to_Trfd - Property",
 														"dependencyConditions": [
-															"Succeeded"
+															"Failed"
 														]
 													}
 												],
