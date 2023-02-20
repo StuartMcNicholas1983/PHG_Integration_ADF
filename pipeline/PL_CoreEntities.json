@@ -643,16 +643,6 @@
 															},
 															{
 																"source": {
-																	"name": "phg_name",
-																	"type": "String"
-																},
-																"sink": {
-																	"name": "phg_name",
-																	"type": "String"
-																}
-															},
-															{
-																"source": {
 																	"name": "phg_plotnumber",
 																	"type": "Int32",
 																	"physicalType": "Int32"
