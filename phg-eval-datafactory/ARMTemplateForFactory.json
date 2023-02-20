@@ -2860,287 +2860,287 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_dateoffinaldisposal",
-																			"type": "DateTime",
-																			"physicalType": "DateTime"
-																		},
-																		"sink": {
-																			"name": "phg_dateoffinaldisposal",
-																			"type": "DateTime"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_electricmeterserialnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_electricmeterserialnumber",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_estatecode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_estatecode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_floorplanurl",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_floorplanurl",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_gasmeterserialnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_gasmeterserialnumber",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_integrationkey",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_integrationkey",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_maximumnumberofoccupants",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_maximumnumberofoccupants",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_name",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_name",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofbathrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofbathrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofbedrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofbedrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberoffloors",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberoffloors",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_numberofreceptionrooms",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_numberofreceptionrooms",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_ownedbycustomer",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_ownedbycustomer",
-																			"type": "Decimal"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_ownedbyphg",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_ownedbyphg",
-																			"type": "Decimal"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_plotnumber",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_plotnumber",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_postcode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_postcode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_propertyfloorlevel",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_propertyfloorlevel",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_propertytype",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_propertytype",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_subareacode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_subareacode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_uprn",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_uprn",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_wardcode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_wardcode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_fuelservicedate",
-																			"type": "DateTime",
-																			"physicalType": "DateTime"
-																		},
-																		"sink": {
-																			"name": "phg_fuelservicedate",
-																			"type": "DateTime"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_propertystatusid",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_propertystatusid",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_managementareaid",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_managementareaid",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "phg_parishid",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "phg_parishid",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
 																			"name": "phg_propertybuildtypeid",
-																			"type": "String",
-																			"physicalType": "String"
+																			"type": "Guid",
+																			"physicalType": "Guid"
 																		},
 																		"sink": {
 																			"name": "phg_buildtypeid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_dateoffinaldisposal",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_dateoffinaldisposal",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_electricmeterserialnumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_electricmeterserialnumber",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_estatecode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_estatecode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_floorplanurl",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_floorplanurl",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_fuelservicedate",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_fuelservicedate",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_gasmeterserialnumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_gasmeterserialnumber",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_integrationkey",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_integrationkey",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_managementareaid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_managementareaid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_maximumnumberofoccupants",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_maximumnumberofoccupants",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_name",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_name",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofbathrooms",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_numberofbathrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofbedrooms",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_numberofbedrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberoffloors",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_numberoffloors",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_numberofreceptionrooms",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_numberofreceptionrooms",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ownedbycustomer",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_ownedbycustomer",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ownedbyphg",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_ownedbyphg",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_parishid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_parishid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_plotnumber",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_plotnumber",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_postcode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_postcode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertyfloorlevel",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_propertyfloorlevel",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertystatusid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_propertystatus",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertytype",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_propertytype",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_subareacode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_subareacode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_uprn",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_uprn",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_wardcode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_wardcode",
 																			"type": "String"
 																		}
 																	}
