@@ -1356,7 +1356,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "DataLake"
+					"name": "DataLake/Config"
 				},
 				"annotations": [],
 				"type": "Excel",
@@ -1832,130 +1832,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Property')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Core"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
-								"type": "DatasetReference"
-							},
-							"name": "Staging"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
-								"type": "DatasetReference"
-							},
-							"name": "Transformed"
-						}
-					],
-					"transformations": [
-						{
-							"name": "SelectColumnsForSink"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     DatalakeFilename as string",
-						"}",
-						"source(output(",
-						"          phg_integrationkey as string,",
-						"          phg_addressline1 as string,",
-						"          phg_addressline2 as string,",
-						"          phg_addressline3 as string,",
-						"          phg_addressline4 as string,",
-						"          phg_addressline5 as string,",
-						"          phg_postcode as string,",
-						"          phg_name as string,",
-						"          phg_uprn as string,",
-						"          phg_propertystatus as string,",
-						"          phg_propertytype as string,",
-						"          phg_numberoffloors as integer,",
-						"          phg_propertyfloorlevel as integer,",
-						"          phg_numberofbedrooms as integer,",
-						"          phg_numberofbathrooms as integer,",
-						"          phg_numberofreceptionrooms as integer,",
-						"          phg_maximumnumberofoccupants as integer,",
-						"          phg_blockreference as string,",
-						"          phg_plotnumber as integer,",
-						"          phg_builddate as date,",
-						"          phg_floorplanurl as string,",
-						"          phg_dateoffinaldisposal as date,",
-						"          phg_wardcode as string,",
-						"          phg_estatecode as string,",
-						"          phg_subareacode as string,",
-						"          phg_fuelservicedate as date,",
-						"          phg_ownedbycustomer as double,",
-						"          phg_ownedbyphg as double,",
-						"          phg_gasmeterserialnumber as string,",
-						"          phg_electricmeterserialnumber as string,",
-						"          modified as timestamp,",
-						"          created as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Staging",
-						"Staging select(mapColumn(",
-						"          phg_integrationkey,",
-						"          phg_addressline1,",
-						"          phg_addressline2,",
-						"          phg_addressline3,",
-						"          phg_addressline4,",
-						"          phg_addressline5,",
-						"          phg_postcode,",
-						"          phg_name,",
-						"          phg_uprn,",
-						"          phg_propertystatus,",
-						"          phg_propertytype,",
-						"          phg_numberoffloors,",
-						"          phg_propertyfloorlevel,",
-						"          phg_numberofbedrooms,",
-						"          phg_numberofbathrooms,",
-						"          phg_numberofreceptionrooms,",
-						"          phg_maximumnumberofoccupants,",
-						"          phg_blockreference,",
-						"          phg_plotnumber,",
-						"          phg_builddate,",
-						"          phg_floorplanurl,",
-						"          phg_dateoffinaldisposal,",
-						"          phg_wardcode,",
-						"          phg_estatecode,",
-						"          phg_subareacode,",
-						"          phg_fuelservicedate,",
-						"          phg_ownedbycustomer,",
-						"          phg_ownedbyphg,",
-						"          phg_gasmeterserialnumber,",
-						"          phg_electricmeterserialnumber",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
-						"SelectColumnsForSink sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:[($DatalakeFilename)],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> Transformed"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2269,6 +2145,10 @@
 																			"type": "Expression"
 																		}
 																	},
+																	"phg_propertystatus": {},
+																	"phg_managementarea": {},
+																	"phg_propertybuildtype": {},
+																	"phg_parish": {},
 																	"Transformed": {
 																		"Container": {
 																			"value": "@item().DatalakeContainer",
@@ -2300,7 +2180,7 @@
 															{
 																"activity": "Stg_to_Trfd - Property",
 																"dependencyConditions": [
-																	"Succeeded"
+																	"Failed"
 																]
 															}
 														],
@@ -2823,6 +2703,580 @@
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_propertystatus')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_propertystatus.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_propertystatusid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_managementarea')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_managementarea.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_managementareaid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_propertybuildtype')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_propertybuildtype.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_propertybuildtypeid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_parish')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_parish.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_parishid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Property')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_propertystatus",
+								"type": "DatasetReference"
+							},
+							"name": "propertystatus"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_managementarea",
+								"type": "DatasetReference"
+							},
+							"name": "managementarea"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_propertybuildtype",
+								"type": "DatasetReference"
+							},
+							"name": "propertybuildtype"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_parish",
+								"type": "DatasetReference"
+							},
+							"name": "parish"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "JoinPropertyStatus"
+						},
+						{
+							"name": "JoinManagementArea"
+						},
+						{
+							"name": "JoinPropertyBuildType"
+						},
+						{
+							"name": "JoinParish"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "select3"
+						},
+						{
+							"name": "select4"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_addressline1 as string,",
+						"          phg_addressline2 as string,",
+						"          phg_addressline3 as string,",
+						"          phg_addressline4 as string,",
+						"          phg_addressline5 as string,",
+						"          phg_postcode as string,",
+						"          phg_name as string,",
+						"          phg_uprn as string,",
+						"          phg_propertytype as string,",
+						"          phg_numberoffloors as integer,",
+						"          phg_propertyfloorlevel as integer,",
+						"          phg_numberofbedrooms as integer,",
+						"          phg_numberofbathrooms as integer,",
+						"          phg_numberofreceptionrooms as integer,",
+						"          phg_maximumnumberofoccupants as integer,",
+						"          phg_blockreference as string,",
+						"          phg_plotnumber as integer,",
+						"          phg_builddate as date,",
+						"          phg_floorplanurl as string,",
+						"          phg_dateoffinaldisposal as date,",
+						"          phg_wardcode as string,",
+						"          phg_estatecode as string,",
+						"          phg_subareacode as string,",
+						"          phg_fuelservicedate as date,",
+						"          phg_ownedbycustomer as double,",
+						"          phg_ownedbyphg as double,",
+						"          phg_gasmeterserialnumber as string,",
+						"          phg_electricmeterserialnumber as string,",
+						"          phg_propertystatusid as string,",
+						"          phg_managementareaid as string,",
+						"          phg_buildtypeid as string,",
+						"          phg_parishid as string,",
+						"          modified as timestamp,",
+						"          created as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_propertystatusid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> propertystatus",
+						"source(output(",
+						"          phg_managementareaid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> managementarea",
+						"source(output(",
+						"          phg_propertybuildtypeid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> propertybuildtype",
+						"source(output(",
+						"          phg_parishid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> parish",
+						"select4 select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name,",
+						"          phg_uprn,",
+						"          phg_propertytype,",
+						"          phg_numberoffloors,",
+						"          phg_propertyfloorlevel,",
+						"          phg_numberofbedrooms,",
+						"          phg_numberofbathrooms,",
+						"          phg_numberofreceptionrooms,",
+						"          phg_maximumnumberofoccupants,",
+						"          phg_blockreference,",
+						"          phg_plotnumber,",
+						"          phg_builddate,",
+						"          phg_floorplanurl,",
+						"          phg_dateoffinaldisposal,",
+						"          phg_wardcode,",
+						"          phg_estatecode,",
+						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
+						"          phg_ownedbycustomer,",
+						"          phg_ownedbyphg,",
+						"          phg_gasmeterserialnumber,",
+						"          phg_electricmeterserialnumber,",
+						"          phg_propertystatusid,",
+						"          phg_managementareaid,",
+						"          phg_parishid,",
+						"          phg_propertybuildtypeid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"Staging, propertystatus join(Staging@phg_propertystatusid == propertystatus@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinPropertyStatus",
+						"select1, managementarea join(select1@phg_managementareaid == managementarea@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinManagementArea",
+						"select2, propertybuildtype join(phg_buildtypeid == propertybuildtype@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinPropertyBuildType",
+						"select3, parish join(select3@phg_parishid == parish@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinParish",
+						"JoinPropertyStatus select(mapColumn(",
+						"          phg_integrationkey = Staging@phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name = Staging@phg_name,",
+						"          phg_uprn,",
+						"          phg_propertytype,",
+						"          phg_numberoffloors,",
+						"          phg_propertyfloorlevel,",
+						"          phg_numberofbedrooms,",
+						"          phg_numberofbathrooms,",
+						"          phg_numberofreceptionrooms,",
+						"          phg_maximumnumberofoccupants,",
+						"          phg_blockreference,",
+						"          phg_plotnumber,",
+						"          phg_builddate,",
+						"          phg_floorplanurl,",
+						"          phg_dateoffinaldisposal,",
+						"          phg_wardcode,",
+						"          phg_estatecode,",
+						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
+						"          phg_ownedbycustomer,",
+						"          phg_ownedbyphg,",
+						"          phg_gasmeterserialnumber,",
+						"          phg_electricmeterserialnumber,",
+						"          phg_managementareaid,",
+						"          phg_buildtypeid,",
+						"          phg_parishid,",
+						"          modified,",
+						"          created,",
+						"          phg_propertystatusid = propertystatus@phg_propertystatusid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"JoinManagementArea select(mapColumn(",
+						"          phg_integrationkey = select1@phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name = select1@phg_name,",
+						"          phg_uprn,",
+						"          phg_propertytype,",
+						"          phg_numberoffloors,",
+						"          phg_propertyfloorlevel,",
+						"          phg_numberofbedrooms,",
+						"          phg_numberofbathrooms,",
+						"          phg_numberofreceptionrooms,",
+						"          phg_maximumnumberofoccupants,",
+						"          phg_blockreference,",
+						"          phg_plotnumber,",
+						"          phg_builddate,",
+						"          phg_floorplanurl,",
+						"          phg_dateoffinaldisposal,",
+						"          phg_wardcode,",
+						"          phg_estatecode,",
+						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
+						"          phg_ownedbycustomer,",
+						"          phg_ownedbyphg,",
+						"          phg_gasmeterserialnumber,",
+						"          phg_electricmeterserialnumber,",
+						"          phg_propertystatusid,",
+						"          phg_buildtypeid,",
+						"          phg_parishid,",
+						"          modified,",
+						"          created,",
+						"          phg_managementareaid = managementarea@phg_managementareaid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"JoinPropertyBuildType select(mapColumn(",
+						"          phg_integrationkey = select2@phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name = select2@phg_name,",
+						"          phg_uprn,",
+						"          phg_propertytype,",
+						"          phg_numberoffloors,",
+						"          phg_propertyfloorlevel,",
+						"          phg_numberofbedrooms,",
+						"          phg_numberofbathrooms,",
+						"          phg_numberofreceptionrooms,",
+						"          phg_maximumnumberofoccupants,",
+						"          phg_blockreference,",
+						"          phg_plotnumber,",
+						"          phg_builddate,",
+						"          phg_floorplanurl,",
+						"          phg_dateoffinaldisposal,",
+						"          phg_wardcode,",
+						"          phg_estatecode,",
+						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
+						"          phg_ownedbycustomer,",
+						"          phg_ownedbyphg,",
+						"          phg_gasmeterserialnumber,",
+						"          phg_electricmeterserialnumber,",
+						"          phg_propertystatusid,",
+						"          phg_parishid,",
+						"          modified,",
+						"          created,",
+						"          phg_managementareaid,",
+						"          phg_propertybuildtypeid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select3",
+						"JoinParish select(mapColumn(",
+						"          phg_integrationkey = select3@phg_integrationkey,",
+						"          phg_addressline1,",
+						"          phg_addressline2,",
+						"          phg_addressline3,",
+						"          phg_addressline4,",
+						"          phg_addressline5,",
+						"          phg_postcode,",
+						"          phg_name = select3@phg_name,",
+						"          phg_uprn,",
+						"          phg_propertytype,",
+						"          phg_numberoffloors,",
+						"          phg_propertyfloorlevel,",
+						"          phg_numberofbedrooms,",
+						"          phg_numberofbathrooms,",
+						"          phg_numberofreceptionrooms,",
+						"          phg_maximumnumberofoccupants,",
+						"          phg_blockreference,",
+						"          phg_plotnumber,",
+						"          phg_builddate,",
+						"          phg_floorplanurl,",
+						"          phg_dateoffinaldisposal,",
+						"          phg_wardcode,",
+						"          phg_estatecode,",
+						"          phg_subareacode,",
+						"          phg_fuelservicedate,",
+						"          phg_ownedbycustomer,",
+						"          phg_ownedbyphg,",
+						"          phg_gasmeterserialnumber,",
+						"          phg_electricmeterserialnumber,",
+						"          phg_propertystatusid,",
+						"          modified,",
+						"          created,",
+						"          phg_managementareaid,",
+						"          phg_propertybuildtypeid,",
+						"          phg_parishid = parish@phg_parishid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select4",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_propertystatus')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_managementarea')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_propertybuildtype')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_parish')]"
 			]
 		}
 	]
