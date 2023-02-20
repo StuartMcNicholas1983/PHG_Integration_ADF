@@ -13,6 +13,34 @@
 						"type": "DatasetReference"
 					},
 					"name": "Staging"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_propertystatus",
+						"type": "DatasetReference"
+					},
+					"name": "propertystatus"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_managementarea",
+						"type": "DatasetReference"
+					},
+					"name": "managementarea"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_propertybuildtype",
+						"type": "DatasetReference"
+					},
+					"name": "propertybuildtype"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_parish",
+						"type": "DatasetReference"
+					},
+					"name": "parish"
 				}
 			],
 			"sinks": [
@@ -27,6 +55,18 @@
 			"transformations": [
 				{
 					"name": "SelectColumnsForSink"
+				},
+				{
+					"name": "JoinPropertyStatus"
+				},
+				{
+					"name": "JoinManagementArea"
+				},
+				{
+					"name": "JoinPropertyBuildType"
+				},
+				{
+					"name": "JoinParish"
 				}
 			],
 			"scriptLines": [
@@ -43,7 +83,6 @@
 				"          phg_postcode as string,",
 				"          phg_name as string,",
 				"          phg_uprn as string,",
-				"          phg_propertystatus as string,",
 				"          phg_propertytype as string,",
 				"          phg_numberoffloors as integer,",
 				"          phg_propertyfloorlevel as integer,",
@@ -64,21 +103,57 @@
 				"          phg_ownedbyphg as double,",
 				"          phg_gasmeterserialnumber as string,",
 				"          phg_electricmeterserialnumber as string,",
+				"          phg_propertystatusid as string,",
+				"          phg_managementareaid as string,",
+				"          phg_buildtypeid as string,",
+				"          phg_parishid as string,",
 				"          modified as timestamp,",
 				"          created as timestamp",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Staging",
-				"Staging select(mapColumn(",
-				"          phg_integrationkey,",
+				"source(output(",
+				"          phg_propertystatusid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> propertystatus",
+				"source(output(",
+				"          phg_managementareaid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> managementarea",
+				"source(output(",
+				"          phg_propertybuildtypeid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> propertybuildtype",
+				"source(output(",
+				"          phg_parishid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> parish",
+				"JoinParish select(mapColumn(",
+				"          phg_integrationkey = Staging@phg_integrationkey,",
 				"          phg_addressline1,",
 				"          phg_addressline2,",
 				"          phg_addressline3,",
 				"          phg_addressline4,",
 				"          phg_addressline5,",
 				"          phg_postcode,",
-				"          phg_name,",
+				"          phg_name = Staging@phg_name,",
 				"          phg_uprn,",
 				"          phg_propertystatus,",
 				"          phg_propertytype,",
@@ -100,10 +175,34 @@
 				"          phg_ownedbycustomer,",
 				"          phg_ownedbyphg,",
 				"          phg_gasmeterserialnumber,",
-				"          phg_electricmeterserialnumber",
+				"          phg_electricmeterserialnumber,",
+				"          phg_propertystatusid = propertystatus@phg_propertystatusid,",
+				"          phg_managementareaid = managementarea@phg_managementareaid,",
+				"          phg_parishid = parish@phg_parishid,",
+				"          phg_propertybuildtypeid = {propertybuildtype@phg_propertybuildtypeid}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+				"Staging, propertystatus join(Staging@phg_propertystatusid == propertystatus@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinPropertyStatus",
+				"JoinPropertyStatus, managementarea join(Staging@phg_managementareaid == managementarea@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinManagementArea",
+				"JoinManagementArea, propertybuildtype join(phg_buildtypeid == propertybuildtype@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinPropertyBuildType",
+				"JoinPropertyBuildType, parish join(Staging@phg_parishid == parish@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinParish",
 				"SelectColumnsForSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[($DatalakeFilename)],",
