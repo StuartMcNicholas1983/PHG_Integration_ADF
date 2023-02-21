@@ -2516,6 +2516,554 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_ethnicgroup",
+								"type": "DatasetReference"
+							},
+							"name": "ethnicgroup"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_religion",
+								"type": "DatasetReference"
+							},
+							"name": "religion"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_nationality",
+								"type": "DatasetReference"
+							},
+							"name": "nationality"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_sexuality",
+								"type": "DatasetReference"
+							},
+							"name": "sexuality"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "SelectEthnicGroup"
+						},
+						{
+							"name": "SelectReligion"
+						},
+						{
+							"name": "SelectNationality"
+						},
+						{
+							"name": "SelectSexuality"
+						},
+						{
+							"name": "JoinEthnicGroup"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinReligion"
+						},
+						{
+							"name": "SelectB"
+						},
+						{
+							"name": "JoinNationality"
+						},
+						{
+							"name": "SelectC"
+						},
+						{
+							"name": "JoinSexuality"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          fullname as string,",
+						"          firstname as string,",
+						"          middlename as string,",
+						"          lastname as string,",
+						"          phg_dateofbirth as date,",
+						"          phg_age as integer,",
+						"          phg_dateofdeath as date,",
+						"          phg_previousname as string,",
+						"          phg_ninumber as string,",
+						"          phg_systemorigin as string,",
+						"          emailaddress1 as string,",
+						"          telephone2 as string,",
+						"          mobilephone as string,",
+						"          phg_registeredonportal as boolean,",
+						"          phg_lastloggedin as date,",
+						"          phg_ethnicgroup as string,",
+						"          phg_relgion as string,",
+						"          phg_nationaility as string,",
+						"          phg_sexuality as string,",
+						"          donotemail as boolean,",
+						"          donotbulkemail as boolean,",
+						"          donotphone as boolean,",
+						"          donotpostalmail as boolean,",
+						"          modified as timestamp,",
+						"          created as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_ethnicgroupid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ethnicgroup",
+						"source(output(",
+						"          phg_religionid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> religion",
+						"source(output(",
+						"          phg_nationalityid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> nationality",
+						"source(output(",
+						"          phg_sexualityid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> sexuality",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          fullname,",
+						"          firstname,",
+						"          middlename,",
+						"          lastname,",
+						"          phg_dateofbirth,",
+						"          phg_age,",
+						"          phg_dateofdeath,",
+						"          phg_previousname,",
+						"          phg_ninumber,",
+						"          phg_systemorigin,",
+						"          emailaddress1,",
+						"          telephone2,",
+						"          mobilephone,",
+						"          phg_registeredonportal,",
+						"          phg_lastloggedin,",
+						"          phg_ethnicgroup,",
+						"          phg_relgion,",
+						"          phg_nationaility,",
+						"          phg_sexuality,",
+						"          donotemail,",
+						"          donotbulkemail,",
+						"          donotphone,",
+						"          donotpostalmail",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"ethnicgroup select(mapColumn(",
+						"          phg_ethnicgroupid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectEthnicGroup",
+						"religion select(mapColumn(",
+						"          phg_religionid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectReligion",
+						"nationality select(mapColumn(",
+						"          phg_nationalityid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectNationality",
+						"sexuality select(mapColumn(",
+						"          phg_sexualityid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectSexuality",
+						"SelectStaging, SelectEthnicGroup join(phg_ethnicgroup == SelectEthnicGroup@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinEthnicGroup",
+						"JoinEthnicGroup select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          fullname,",
+						"          firstname,",
+						"          middlename,",
+						"          lastname,",
+						"          phg_dateofbirth,",
+						"          phg_age,",
+						"          phg_dateofdeath,",
+						"          phg_previousname,",
+						"          phg_ninumber,",
+						"          phg_systemorigin,",
+						"          emailaddress1,",
+						"          telephone2,",
+						"          mobilephone,",
+						"          phg_registeredonportal,",
+						"          phg_lastloggedin,",
+						"          phg_ethnicgroup = phg_ethnicgroupid,",
+						"          phg_relgion,",
+						"          phg_nationaility,",
+						"          phg_sexuality,",
+						"          donotemail,",
+						"          donotbulkemail,",
+						"          donotphone,",
+						"          donotpostalmail",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectReligion join(phg_relgion == SelectReligion@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinReligion",
+						"JoinReligion select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          fullname,",
+						"          firstname,",
+						"          middlename,",
+						"          lastname,",
+						"          phg_dateofbirth,",
+						"          phg_age,",
+						"          phg_dateofdeath,",
+						"          phg_previousname,",
+						"          phg_ninumber,",
+						"          phg_systemorigin,",
+						"          emailaddress1,",
+						"          telephone2,",
+						"          mobilephone,",
+						"          phg_registeredonportal,",
+						"          phg_lastloggedin,",
+						"          phg_ethnicgroup,",
+						"          phg_relgion = phg_religionid,",
+						"          phg_nationaility,",
+						"          phg_sexuality,",
+						"          donotemail,",
+						"          donotbulkemail,",
+						"          donotphone,",
+						"          donotpostalmail",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectB",
+						"SelectB, SelectNationality join(phg_nationaility == SelectNationality@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinNationality",
+						"JoinNationality select(mapColumn(",
+						"          phg_integrationkey = SelectB@phg_integrationkey,",
+						"          fullname,",
+						"          firstname,",
+						"          middlename,",
+						"          lastname,",
+						"          phg_dateofbirth,",
+						"          phg_age,",
+						"          phg_dateofdeath,",
+						"          phg_previousname,",
+						"          phg_ninumber,",
+						"          phg_systemorigin,",
+						"          emailaddress1,",
+						"          telephone2,",
+						"          mobilephone,",
+						"          phg_registeredonportal,",
+						"          phg_lastloggedin,",
+						"          phg_ethnicgroup,",
+						"          phg_relgion,",
+						"          phg_nationaility = phg_nationalityid,",
+						"          phg_sexuality,",
+						"          donotemail,",
+						"          donotbulkemail,",
+						"          donotphone,",
+						"          donotpostalmail",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectC",
+						"SelectC, SelectSexuality join(phg_sexuality == SelectSexuality@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinSexuality",
+						"JoinSexuality select(mapColumn(",
+						"          phg_integrationkey = SelectC@phg_integrationkey,",
+						"          fullname,",
+						"          firstname,",
+						"          middlename,",
+						"          lastname,",
+						"          phg_dateofbirth,",
+						"          phg_age,",
+						"          phg_dateofdeath,",
+						"          phg_previousname,",
+						"          phg_ninumber,",
+						"          phg_systemorigin,",
+						"          emailaddress1,",
+						"          telephone2,",
+						"          mobilephone,",
+						"          phg_registeredonportal,",
+						"          phg_lastloggedin,",
+						"          phg_ethnicgroup,",
+						"          phg_relgion,",
+						"          phg_nationaility,",
+						"          phg_sexuality = phg_sexualityid,",
+						"          donotemail,",
+						"          donotbulkemail,",
+						"          donotphone,",
+						"          donotpostalmail",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_ethnicgroup')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_religion')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_nationality')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_sexuality')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_religion')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_religion.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_religionid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_nationality')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_nationality.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_nationalityid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_sexuality')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_sexuality.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_sexualityid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_ethnicgroup')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_ethnicgroup.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_ethnicgroupid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2857,7 +3405,7 @@
 														}
 													},
 													{
-														"name": "Transformed to Destination",
+														"name": "Trfd_to_Dest - Property",
 														"type": "Copy",
 														"dependsOn": [
 															{
@@ -3461,8 +4009,7 @@
 																			"type": "Expression"
 																		}
 																	}
-																},
-																"linkedServiceParameters": {}
+																}
 															},
 															"staging": {},
 															"integrationRuntime": {
@@ -3471,6 +4018,345 @@
 															},
 															"traceLevel": "Fine"
 														}
+													},
+													{
+														"name": "Trfd_to_Dest - Contact",
+														"type": "Copy",
+														"dependsOn": [
+															{
+																"activity": "Stg_to_Trfd - Contact",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "DelimitedTextSource",
+																"storeSettings": {
+																	"type": "AzureBlobFSReadSettings",
+																	"recursive": true,
+																	"enablePartitionDiscovery": false
+																},
+																"formatSettings": {
+																	"type": "DelimitedTextReadSettings"
+																}
+															},
+															"sink": {
+																"type": "CommonDataServiceForAppsSink",
+																"writeBatchSize": 10,
+																"writeBehavior": "upsert",
+																"ignoreNullValues": false,
+																"alternateKeyName": {
+																	"value": "@item().UpsertKeyColumn",
+																	"type": "Expression"
+																}
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "donotbulkemail",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "donotbulkemail",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "donotemail",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "donotemail",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "donotphone",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "donotphone",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "donotpostalmail",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "donotpostalmail",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "emailaddress1",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "emailaddress1",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "firstname",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "firstname",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "fullname",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "fullname",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "lastname",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "lastname",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "middlename",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "middlename",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "mobilephone",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "mobilephone",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_age",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_age",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_dateofbirth",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_dateofbirth",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_dateofdeath",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_dateofdeath",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ethnicgroup",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_ethnicgroup",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_integrationkey",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_integrationkey",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_lastloggedin",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_lastloggedin",
+																			"type": "DateTime"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_nationaility",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_nationaility",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_ninumber",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_ninumber",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_previousname",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_previousname",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_registeredonportal",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "phg_registeredonportal",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_relgion",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_relgion",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_sexuality",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_sexuality",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "telephone2",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "telephone2",
+																			"type": "String"
+																		}
+																	}
+																],
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Datalake_Delimited",
+																"type": "DatasetReference",
+																"parameters": {
+																	"Container": {
+																		"value": "@item().DatalakeContainer",
+																		"type": "Expression"
+																	},
+																	"Directory": {
+																		"value": "@item().DatalakeDirectory_Transformed",
+																		"type": "Expression"
+																	},
+																	"Filename": {
+																		"value": "@item().DatalakeFilename",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_Dataverse_Eval",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
 													}
 												]
 											},
@@ -3549,554 +4435,6 @@
 				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Contact')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Core"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
-								"type": "DatasetReference"
-							},
-							"name": "Staging"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_ethnicgroup",
-								"type": "DatasetReference"
-							},
-							"name": "ethnicgroup"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_religion",
-								"type": "DatasetReference"
-							},
-							"name": "religion"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_nationality",
-								"type": "DatasetReference"
-							},
-							"name": "nationality"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_sexuality",
-								"type": "DatasetReference"
-							},
-							"name": "sexuality"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
-								"type": "DatasetReference"
-							},
-							"name": "Transformed"
-						}
-					],
-					"transformations": [
-						{
-							"name": "SelectStaging"
-						},
-						{
-							"name": "SelectEthnicGroup"
-						},
-						{
-							"name": "SelectReligion"
-						},
-						{
-							"name": "SelectNationality"
-						},
-						{
-							"name": "SelectSexuality"
-						},
-						{
-							"name": "JoinEthnicGroup"
-						},
-						{
-							"name": "SelectA"
-						},
-						{
-							"name": "JoinReligion"
-						},
-						{
-							"name": "SelectB"
-						},
-						{
-							"name": "JoinNationality"
-						},
-						{
-							"name": "SelectC"
-						},
-						{
-							"name": "JoinSexuality"
-						},
-						{
-							"name": "SelectColumnsForSink"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     DatalakeFilename as string",
-						"}",
-						"source(output(",
-						"          phg_integrationkey as string,",
-						"          fullname as string,",
-						"          firstname as string,",
-						"          middlename as string,",
-						"          lastname as string,",
-						"          phg_dateofbirth as date,",
-						"          phg_age as integer,",
-						"          phg_dateofdeath as date,",
-						"          phg_previousname as string,",
-						"          phg_ninumber as string,",
-						"          phg_systemorigin as string,",
-						"          emailaddress1 as string,",
-						"          telephone2 as string,",
-						"          mobilephone as string,",
-						"          phg_registeredonportal as boolean,",
-						"          phg_lastloggedin as date,",
-						"          phg_ethnicgroup as string,",
-						"          phg_relgion as string,",
-						"          phg_nationaility as string,",
-						"          phg_sexuality as string,",
-						"          donotemail as boolean,",
-						"          donotbulkemail as boolean,",
-						"          donotphone as boolean,",
-						"          donotpostalmail as boolean,",
-						"          modified as timestamp,",
-						"          created as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Staging",
-						"source(output(",
-						"          phg_ethnicgroupid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ethnicgroup",
-						"source(output(",
-						"          phg_religionid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> religion",
-						"source(output(",
-						"          phg_nationalityid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> nationality",
-						"source(output(",
-						"          phg_sexualityid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> sexuality",
-						"Staging select(mapColumn(",
-						"          phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          phg_systemorigin,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
-						"ethnicgroup select(mapColumn(",
-						"          phg_ethnicgroupid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectEthnicGroup",
-						"religion select(mapColumn(",
-						"          phg_religionid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectReligion",
-						"nationality select(mapColumn(",
-						"          phg_nationalityid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectNationality",
-						"sexuality select(mapColumn(",
-						"          phg_sexualityid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectSexuality",
-						"SelectStaging, SelectEthnicGroup join(phg_ethnicgroup == SelectEthnicGroup@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinEthnicGroup",
-						"JoinEthnicGroup select(mapColumn(",
-						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          phg_systemorigin,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup = phg_ethnicgroupid,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectA",
-						"SelectA, SelectReligion join(phg_relgion == SelectReligion@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinReligion",
-						"JoinReligion select(mapColumn(",
-						"          phg_integrationkey = SelectA@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          phg_systemorigin,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion = phg_religionid,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectB",
-						"SelectB, SelectNationality join(phg_nationaility == SelectNationality@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinNationality",
-						"JoinNationality select(mapColumn(",
-						"          phg_integrationkey = SelectB@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          phg_systemorigin,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility = phg_nationalityid,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectC",
-						"SelectC, SelectSexuality join(phg_sexuality == SelectSexuality@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinSexuality",
-						"JoinSexuality select(mapColumn(",
-						"          phg_integrationkey = SelectC@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          phg_systemorigin,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality = phg_sexualityid,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
-						"SelectColumnsForSink sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:[($DatalakeFilename)],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> Transformed"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_ethnicgroup')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_religion')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_nationality')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_sexuality')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_phg_religion')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataLake/D365"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "phg_religion.csv",
-						"folderPath": "OH_D365_DataSync/D365",
-						"fileSystem": "data-sync"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "phg_religionid",
-						"type": "String"
-					},
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_phg_nationality')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataLake/D365"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "phg_nationality.csv",
-						"folderPath": "OH_D365_DataSync/D365",
-						"fileSystem": "data-sync"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "phg_nationalityid",
-						"type": "String"
-					},
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_phg_sexuality')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataLake/D365"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "phg_sexuality.csv",
-						"folderPath": "OH_D365_DataSync/D365",
-						"fileSystem": "data-sync"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "phg_sexualityid",
-						"type": "String"
-					},
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_phg_ethnicgroup')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataLake/D365"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "phg_ethnicgroup.csv",
-						"folderPath": "OH_D365_DataSync/D365",
-						"fileSystem": "data-sync"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "phg_ethnicgroupid",
-						"type": "String"
-					},
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
 			]
 		}
 	]
