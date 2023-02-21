@@ -2634,6 +2634,12 @@
 											"dependencyConditions": [
 												"Succeeded"
 											]
+										},
+										{
+											"activity": "Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
 										}
 									],
 									"policy": {
@@ -2728,14 +2734,7 @@
 								{
 									"name": "Transformed",
 									"type": "Delete",
-									"dependsOn": [
-										{
-											"activity": "Source to Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
+									"dependsOn": [],
 									"policy": {
 										"timeout": "0.00:10:00",
 										"retry": 0,
@@ -2776,7 +2775,7 @@
 									"type": "Switch",
 									"dependsOn": [
 										{
-											"activity": "Transformed",
+											"activity": "Source to Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
