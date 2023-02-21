@@ -43,7 +43,15 @@
 					"name": "sexuality"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_Delimited",
+						"type": "DatasetReference"
+					},
+					"name": "Transformed"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SelectStaging"
@@ -82,7 +90,7 @@
 					"name": "JoinSexuality"
 				},
 				{
-					"name": "SelectD"
+					"name": "SelectColumnsForSink"
 				}
 			],
 			"scriptLines": [
@@ -335,7 +343,16 @@
 				"          donotpostalmail",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> SelectD"
+				"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+				"SelectColumnsForSink sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[($DatalakeFilename)],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Transformed"
 			]
 		}
 	}
