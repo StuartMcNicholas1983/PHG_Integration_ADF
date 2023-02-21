@@ -19,41 +19,81 @@
 						"referenceName": "DS_phg_ethnicgroup",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "ethnicgroup"
 				},
 				{
 					"dataset": {
 						"referenceName": "DS_phg_religion",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "religion"
 				},
 				{
 					"dataset": {
 						"referenceName": "DS_phg_nationality",
 						"type": "DatasetReference"
 					},
-					"name": "source3"
+					"name": "nationality"
 				},
 				{
 					"dataset": {
 						"referenceName": "DS_phg_sexuality",
 						"type": "DatasetReference"
 					},
-					"name": "source4"
+					"name": "sexuality"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
 					"name": "SelectStaging"
+				},
+				{
+					"name": "SelectEthnicGroup"
+				},
+				{
+					"name": "SelectReligion"
+				},
+				{
+					"name": "SelectNationality"
+				},
+				{
+					"name": "SelectSexuality"
 				}
 			],
 			"scriptLines": [
 				"parameters{",
 				"     DatalakeFilename as string",
 				"}",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          phg_integrationkey as string,",
+				"          fullname as string,",
+				"          firstname as string,",
+				"          middlename as string,",
+				"          lastname as string,",
+				"          phg_dateofbirth as date,",
+				"          phg_age as integer,",
+				"          phg_dateofdeath as date,",
+				"          phg_previousname as string,",
+				"          phg_ninumber as string,",
+				"          phg_systemorigin as string,",
+				"          emailaddress1 as string,",
+				"          telephone2 as string,",
+				"          mobilephone as string,",
+				"          phg_registeredonportal as boolean,",
+				"          phg_lastloggedin as date,",
+				"          phg_ethnicgroup as string,",
+				"          phg_relgion as string,",
+				"          phg_nationaility as string,",
+				"          phg_sexuality as string,",
+				"          donotemail as boolean,",
+				"          donotbulkemail as boolean,",
+				"          donotphone as boolean,",
+				"          donotpostalmail as boolean,",
+				"          modified as timestamp,",
+				"          created as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Staging",
 				"source(output(",
@@ -63,7 +103,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"     ignoreNoFilesFound: false) ~> ethnicgroup",
 				"source(output(",
 				"          phg_religionid as string,",
 				"          phg_integrationkey as string,",
@@ -71,7 +111,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source2",
+				"     ignoreNoFilesFound: false) ~> religion",
 				"source(output(",
 				"          phg_nationalityid as string,",
 				"          phg_integrationkey as string,",
@@ -79,7 +119,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source3",
+				"     ignoreNoFilesFound: false) ~> nationality",
 				"source(output(",
 				"          phg_sexualityid as string,",
 				"          phg_integrationkey as string,",
@@ -87,9 +127,59 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source4",
-				"Staging select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> SelectStaging"
+				"     ignoreNoFilesFound: false) ~> sexuality",
+				"Staging select(mapColumn(",
+				"          phg_integrationkey,",
+				"          fullname,",
+				"          firstname,",
+				"          middlename,",
+				"          lastname,",
+				"          phg_dateofbirth,",
+				"          phg_age,",
+				"          phg_dateofdeath,",
+				"          phg_previousname,",
+				"          phg_ninumber,",
+				"          phg_systemorigin,",
+				"          emailaddress1,",
+				"          telephone2,",
+				"          mobilephone,",
+				"          phg_registeredonportal,",
+				"          phg_lastloggedin,",
+				"          phg_ethnicgroup,",
+				"          phg_relgion,",
+				"          phg_nationaility,",
+				"          phg_sexuality,",
+				"          donotemail,",
+				"          donotbulkemail,",
+				"          donotphone,",
+				"          donotpostalmail",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+				"ethnicgroup select(mapColumn(",
+				"          phg_ethnicgroupid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectEthnicGroup",
+				"religion select(mapColumn(",
+				"          phg_religionid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectReligion",
+				"nationality select(mapColumn(",
+				"          phg_nationalityid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectNationality",
+				"sexuality select(mapColumn(",
+				"          phg_sexualityid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectSexuality"
 			]
 		}
 	}
