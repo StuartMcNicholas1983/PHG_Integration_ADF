@@ -74,7 +74,7 @@
 					"name": "ISOCurrencyCode"
 				},
 				{
-					"name": "join1"
+					"name": "JoinTransactionCurrency"
 				}
 			],
 			"scriptLines": [
@@ -196,7 +196,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinTenancyType",
-				"join1 select(mapColumn(",
+				"JoinTransactionCurrency select(mapColumn(",
 				"          phg_integrationkey = SelectA@phg_integrationkey,",
 				"          phg_name,",
 				"          phg_urn,",
@@ -249,7 +249,7 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
+				"     broadcast: 'auto')~> JoinTransactionCurrency",
 				"SelectColumnsForSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[($DatalakeFilename)],",
