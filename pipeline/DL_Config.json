@@ -371,7 +371,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "CommonDataServiceForAppsSource"
+						"type": "CommonDataServiceForAppsSource",
+						"query": "<fetch>\n\t<entity name=\"stringmap\">\t\t\n\t\t\n\t\t<attribute name=\"attributename\"/>\t\t\n\t\t<attribute name=\"attributevalue\"/>\n\t\t<attribute name=\"objecttypecode\"/>\n\t\t<attribute name=\"value\"/>\n\n\t</entity>\n</fetch>\n"
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
@@ -410,51 +411,11 @@
 							},
 							{
 								"source": {
-									"name": "displayorder",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "displayorder",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "langid",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "langid",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"name": "objecttypecode",
 									"type": "String"
 								},
 								"sink": {
 									"name": "objecttypecode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "organizationid",
-									"type": "Guid"
-								},
-								"sink": {
-									"name": "organizationid",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "stringmapid",
-									"type": "Guid"
-								},
-								"sink": {
-									"name": "stringmapid",
 									"type": "String"
 								}
 							},
@@ -470,11 +431,11 @@
 							},
 							{
 								"source": {
-									"name": "versionnumber",
-									"type": "Int64"
+									"name": "stringmapid",
+									"type": "Guid"
 								},
 								"sink": {
-									"name": "versionnumber",
+									"name": "stringmapid",
 									"type": "String"
 								}
 							}
