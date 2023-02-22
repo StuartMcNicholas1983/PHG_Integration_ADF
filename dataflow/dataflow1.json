@@ -1,0 +1,27 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"folder": {
+			"name": "OH_D365_DataSync/Core"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_Delimited",
+						"type": "DatasetReference"
+					},
+					"name": "Staging"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Staging"
+			]
+		}
+	}
+}
