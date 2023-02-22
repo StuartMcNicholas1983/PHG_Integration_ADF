@@ -400,7 +400,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference",
 								"parameters": {
 									"Container": "data-sync",
@@ -424,7 +424,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "CommonDataServiceForAppsSource"
+								"type": "CommonDataServiceForAppsSource",
+								"query": "<fetch>\n\t<entity name=\"stringmap\">\t\t\n\t\t\n\t\t<attribute name=\"attributename\"/>\t\t\n\t\t<attribute name=\"attributevalue\"/>\n\t\t<attribute name=\"objecttypecode\"/>\n\t\t<attribute name=\"value\"/>\n\n\t\t<filter type=\"and\">\n\t\t\t<condition attribute=\"attributename\" operator=\"like\" value=\"phg_%\"/>\n\t\t</filter>\n\t\t\n\t</entity>\n</fetch>\n"
 							},
 							"sink": {
 								"type": "DelimitedTextSink",
@@ -463,51 +464,11 @@
 									},
 									{
 										"source": {
-											"name": "displayorder",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "displayorder",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "langid",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "langid",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
 											"name": "objecttypecode",
 											"type": "String"
 										},
 										"sink": {
 											"name": "objecttypecode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "organizationid",
-											"type": "Guid"
-										},
-										"sink": {
-											"name": "organizationid",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "stringmapid",
-											"type": "Guid"
-										},
-										"sink": {
-											"name": "stringmapid",
 											"type": "String"
 										}
 									},
@@ -523,11 +484,11 @@
 									},
 									{
 										"source": {
-											"name": "versionnumber",
-											"type": "Int64"
+											"name": "stringmapid",
+											"type": "Guid"
 										},
 										"sink": {
-											"name": "versionnumber",
+											"name": "stringmapid",
 											"type": "String"
 										}
 									}
@@ -545,7 +506,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_CommaDelimited",
 								"type": "DatasetReference",
 								"parameters": {
 									"Container": "data-sync",
@@ -589,7 +550,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_CommaDelimited')]"
 			]
 		},
 		{
@@ -892,7 +854,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -1004,7 +966,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "DS_Datalake_Delimited",
+											"referenceName": "DS_Datalake_PipeDelimited",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -1037,7 +999,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -1632,7 +1594,7 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "DS_Datalake_Delimited",
+																"referenceName": "DS_Datalake_PipeDelimited",
 																"type": "DatasetReference",
 																"parameters": {
 																	"Container": {
@@ -1885,7 +1847,7 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "DS_Datalake_Delimited",
+																"referenceName": "DS_Datalake_PipeDelimited",
 																"type": "DatasetReference",
 																"parameters": {
 																	"Container": {
@@ -2294,7 +2256,7 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "DS_Datalake_Delimited",
+																"referenceName": "DS_Datalake_PipeDelimited",
 																"type": "DatasetReference",
 																"parameters": {
 																	"Container": {
@@ -2458,9 +2420,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited_Reference')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited_Reference')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
@@ -2563,7 +2525,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "DS_Datalake_Delimited",
+											"referenceName": "DS_Datalake_PipeDelimited",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -2599,7 +2561,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]"
 			]
 		},
 		{
@@ -2876,7 +2838,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -2988,7 +2950,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -3095,7 +3057,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -3140,7 +3102,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_Delimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -3461,7 +3423,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited_Reference')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited_Reference')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed')]",
@@ -3471,171 +3433,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "CommonDataServiceForAppsSource"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "attributename",
-											"type": "String"
-										},
-										"sink": {
-											"name": "attributename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "attributevalue",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "attributevalue",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "displayorder",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "displayorder",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "langid",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "langid",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "objecttypecode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "objecttypecode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "organizationid",
-											"type": "Guid"
-										},
-										"sink": {
-											"name": "organizationid",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "stringmapid",
-											"type": "Guid"
-										},
-										"sink": {
-											"name": "stringmapid",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "value",
-											"type": "String"
-										},
-										"sink": {
-											"name": "value",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "versionnumber",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "versionnumber",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DataverseEntity1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Datalake_Delimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync\\Config",
-									"Filename": "stringmap.csv"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Tmp Development"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DataverseEntity1')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3687,7 +3485,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited_Reference')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited_Reference')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -4462,26 +4260,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DataverseEntity1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "phg_eval_dataverse",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "CommonDataServiceForAppsEntity",
-				"schema": [],
-				"typeProperties": {
-					"entityName": "transactioncurrency"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4671,7 +4449,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited_Reference",
+								"referenceName": "DS_Datalake_PipeDelimited_Reference",
 								"type": "DatasetReference"
 							},
 							"name": "Staging"
@@ -4680,7 +4458,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited_Reference",
+								"referenceName": "DS_Datalake_PipeDelimited_Reference",
 								"type": "DatasetReference"
 							},
 							"name": "Transformed"
@@ -4738,7 +4516,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited_Reference')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited_Reference')]"
 			]
 		},
 		{
@@ -4754,7 +4532,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Staging"
@@ -4791,7 +4569,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Transformed"
@@ -5096,7 +4874,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_ethnicgroup')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_religion')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_nationality')]",
@@ -5116,7 +4894,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Staging"
@@ -5153,7 +4931,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Transformed"
@@ -5600,7 +5378,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_propertystatus')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_managementarea')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_propertybuildtype')]",
@@ -5620,7 +5398,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Staging"
@@ -5643,7 +5421,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DS_Datalake_Delimited",
+								"referenceName": "DS_Datalake_PipeDelimited",
 								"type": "DatasetReference"
 							},
 							"name": "Transformed"
@@ -5782,9 +5560,61 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancycategory')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancytype')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_CommaDelimited')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"Filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataLake"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().Filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
 			]
 		}
 	]

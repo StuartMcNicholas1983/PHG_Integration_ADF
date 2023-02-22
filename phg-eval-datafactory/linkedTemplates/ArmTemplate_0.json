@@ -182,7 +182,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -234,7 +234,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_Delimited_Reference')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited_Reference')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
