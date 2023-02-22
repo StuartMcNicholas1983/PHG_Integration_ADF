@@ -1533,10 +1533,32 @@
 										]
 									},
 									{
-										"value": "Transaction"
+										"value": "Transaction",
+										"activities": [
+											{
+												"name": "Wait11",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
 									},
 									{
-										"value": "HouseholdMember"
+										"value": "HouseholdMember",
+										"activities": [
+											{
+												"name": "Wait12",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
 									}
 								]
 							}
