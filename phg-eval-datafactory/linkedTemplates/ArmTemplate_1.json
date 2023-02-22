@@ -26,6 +26,49 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_propertystatus')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_propertystatus.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_propertystatusid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_phg_religion')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -198,6 +241,208 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_stringmap')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "stringmap.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "attributename",
+						"type": "String"
+					},
+					{
+						"name": "attributevalue",
+						"type": "String"
+					},
+					{
+						"name": "objecttypecode",
+						"type": "String"
+					},
+					{
+						"name": "value",
+						"type": "String"
+					},
+					{
+						"name": "stringmapid",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_transactioncurrency')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "transactioncurrency.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "createdby",
+						"type": "String"
+					},
+					{
+						"name": "createdbyname",
+						"type": "String"
+					},
+					{
+						"name": "createdbyyominame",
+						"type": "String"
+					},
+					{
+						"name": "createdon",
+						"type": "String"
+					},
+					{
+						"name": "createdonbehalfby",
+						"type": "String"
+					},
+					{
+						"name": "createdonbehalfbyname",
+						"type": "String"
+					},
+					{
+						"name": "createdonbehalfbyyominame",
+						"type": "String"
+					},
+					{
+						"name": "currencyname",
+						"type": "String"
+					},
+					{
+						"name": "currencyprecision",
+						"type": "String"
+					},
+					{
+						"name": "currencysymbol",
+						"type": "String"
+					},
+					{
+						"name": "entityimage_timestamp",
+						"type": "String"
+					},
+					{
+						"name": "entityimage_url",
+						"type": "String"
+					},
+					{
+						"name": "entityimageid",
+						"type": "String"
+					},
+					{
+						"name": "exchangerate",
+						"type": "String"
+					},
+					{
+						"name": "importsequencenumber",
+						"type": "String"
+					},
+					{
+						"name": "isocurrencycode",
+						"type": "String"
+					},
+					{
+						"name": "modifiedby",
+						"type": "String"
+					},
+					{
+						"name": "modifiedbyname",
+						"type": "String"
+					},
+					{
+						"name": "modifiedbyyominame",
+						"type": "String"
+					},
+					{
+						"name": "modifiedon",
+						"type": "String"
+					},
+					{
+						"name": "modifiedonbehalfby",
+						"type": "String"
+					},
+					{
+						"name": "modifiedonbehalfbyname",
+						"type": "String"
+					},
+					{
+						"name": "modifiedonbehalfbyyominame",
+						"type": "String"
+					},
+					{
+						"name": "organizationid",
+						"type": "String"
+					},
+					{
+						"name": "overriddencreatedon",
+						"type": "String"
+					},
+					{
+						"name": "statecode",
+						"type": "String"
+					},
+					{
+						"name": "statuscode",
+						"type": "String"
+					},
+					{
+						"name": "transactioncurrencyid",
+						"type": "String"
+					},
+					{
+						"name": "uniquedscid",
+						"type": "String"
+					},
+					{
+						"name": "versionnumber",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer_OnPrem')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -224,56 +469,6 @@
 					"referenceName": "BBP-Pro2SQL-01",
 					"type": "IntegrationRuntimeReference"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_CommaDelimited')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string"
-					},
-					"Filename": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "DataLake"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().Filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -632,7 +827,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Config",
+									"Directory": "OH_D365_DataSync/D365",
 									"Filename": "transactioncurrency.csv"
 								}
 							}
@@ -738,7 +933,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Config",
+									"Directory": "OH_D365_DataSync/D365",
 									"Filename": "stringmap.csv"
 								}
 							}
@@ -776,9 +971,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_CommaDelimited')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_D365Lookups')]",
@@ -1949,7 +2142,9 @@
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_phg_propertystatus')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Tenancy')]",
@@ -1982,6 +2177,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "tenancytype"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_transactioncurrency",
+								"type": "DatasetReference"
+							},
+							"name": "transactioncurrency"
 						}
 					],
 					"sinks": [
@@ -2014,6 +2216,15 @@
 						},
 						{
 							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "SelectTransactionCurrency"
+						},
+						{
+							"name": "ISOCurrencyCode"
+						},
+						{
+							"name": "JoinTransactionCurrency"
 						}
 					],
 					"scriptLines": [
@@ -2052,6 +2263,41 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> tenancytype",
+						"source(output(",
+						"          createdby as string,",
+						"          createdbyname as string,",
+						"          createdbyyominame as string,",
+						"          createdon as string,",
+						"          createdonbehalfby as string,",
+						"          createdonbehalfbyname as string,",
+						"          createdonbehalfbyyominame as string,",
+						"          currencyname as string,",
+						"          currencyprecision as string,",
+						"          currencysymbol as string,",
+						"          entityimage_timestamp as string,",
+						"          entityimage_url as string,",
+						"          entityimageid as string,",
+						"          exchangerate as string,",
+						"          importsequencenumber as string,",
+						"          isocurrencycode as string,",
+						"          modifiedby as string,",
+						"          modifiedbyname as string,",
+						"          modifiedbyyominame as string,",
+						"          modifiedon as string,",
+						"          modifiedonbehalfby as string,",
+						"          modifiedonbehalfbyname as string,",
+						"          modifiedonbehalfbyyominame as string,",
+						"          organizationid as string,",
+						"          overriddencreatedon as string,",
+						"          statecode as string,",
+						"          statuscode as string,",
+						"          transactioncurrencyid as string,",
+						"          uniquedscid as string,",
+						"          versionnumber as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> transactioncurrency",
 						"tenancycategory select(mapColumn(",
 						"          phg_tenancycategoryid,",
 						"          phg_integrationkey",
@@ -2100,7 +2346,7 @@
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> JoinTenancyType",
-						"JoinTenancyType select(mapColumn(",
+						"JoinTransactionCurrency select(mapColumn(",
 						"          phg_integrationkey = SelectA@phg_integrationkey,",
 						"          phg_name,",
 						"          phg_urn,",
@@ -2109,10 +2355,51 @@
 						"          phg_tenancystartdate,",
 						"          phg_tenancyenddate,",
 						"          phg_balance,",
-						"          phg_rentcharges",
+						"          phg_rentcharges,",
+						"          transactioncurrencyid",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"transactioncurrency select(mapColumn(",
+						"          createdby,",
+						"          createdbyname,",
+						"          createdbyyominame,",
+						"          createdon,",
+						"          createdonbehalfby,",
+						"          createdonbehalfbyname,",
+						"          createdonbehalfbyyominame,",
+						"          currencyname,",
+						"          currencyprecision,",
+						"          currencysymbol,",
+						"          entityimage_timestamp,",
+						"          entityimage_url,",
+						"          entityimageid,",
+						"          exchangerate,",
+						"          importsequencenumber,",
+						"          isocurrencycode,",
+						"          modifiedby,",
+						"          modifiedbyname,",
+						"          modifiedbyyominame,",
+						"          modifiedon,",
+						"          modifiedonbehalfby,",
+						"          modifiedonbehalfbyname,",
+						"          modifiedonbehalfbyyominame,",
+						"          organizationid,",
+						"          overriddencreatedon,",
+						"          statecode,",
+						"          statuscode,",
+						"          transactioncurrencyid,",
+						"          uniquedscid,",
+						"          versionnumber",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
+						"JoinTenancyType derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+						"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTransactionCurrency",
 						"SelectColumnsForSink sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:[($DatalakeFilename)],",
@@ -2127,7 +2414,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancycategory')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancytype')]"
+				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancytype')]",
+				"[concat(variables('factoryId'), '/datasets/DS_transactioncurrency')]"
 			]
 		},
 		{
@@ -2215,7 +2503,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_PipeDelimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -2360,7 +2648,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "DS_Datalake_PipeDelimited_Reference",
+											"referenceName": "DS_Datalake_PipeDelimited",
 											"type": "DatasetReference",
 											"parameters": {
 												"Container": {
@@ -3030,6 +3318,7 @@
 																	},
 																	"tenancycategory": {},
 																	"tenancytype": {},
+																	"transactioncurrency": {},
 																	"Transformed": {
 																		"Container": {
 																			"value": "@item().DatalakeContainer",
@@ -3196,6 +3485,17 @@
 																		"sink": {
 																			"name": "phg_urn",
 																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
 																		}
 																	}
 																],
