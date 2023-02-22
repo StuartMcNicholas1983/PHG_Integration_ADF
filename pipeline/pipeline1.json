@@ -134,7 +134,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_Datalake_Delimited",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "data-sync",

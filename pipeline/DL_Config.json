@@ -347,7 +347,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_Datalake_Delimited",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "data-sync",
@@ -372,7 +372,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "CommonDataServiceForAppsSource",
-						"query": "<fetch>\n\t<entity name=\"stringmap\">\t\t\n\t\t\n\t\t<attribute name=\"attributename\"/>\t\t\n\t\t<attribute name=\"attributevalue\"/>\n\t\t<attribute name=\"objecttypecode\"/>\n\t\t<attribute name=\"value\"/>\n\n\t\t<filter type=\"and\">\n\t\t\t<condition attribute=\"attributename\" operator=\"like\" value=\"phg%\"/>\n\t\t</filter>\n\t\t\n\t</entity>\n</fetch>\n"
+						"query": "<fetch>\n\t<entity name=\"stringmap\">\t\t\n\t\t\n\t\t<attribute name=\"attributename\"/>\t\t\n\t\t<attribute name=\"attributevalue\"/>\n\t\t<attribute name=\"objecttypecode\"/>\n\t\t<attribute name=\"value\"/>\n\n\t\t<filter type=\"and\">\n\t\t\t<condition attribute=\"attributename\" operator=\"like\" value=\"phg_%\"/>\n\t\t</filter>\n\t\t\n\t</entity>\n</fetch>\n"
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
@@ -453,7 +453,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_Datalake_Delimited",
+						"referenceName": "DS_Datalake_CommaDelimited",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "data-sync",

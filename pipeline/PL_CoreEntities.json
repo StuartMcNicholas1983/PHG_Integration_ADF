@@ -80,7 +80,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "DS_Datalake_Delimited_Reference",
+									"referenceName": "DS_Datalake_PipeDelimited_Reference",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
@@ -192,7 +192,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_Datalake_Delimited",
+									"referenceName": "DS_Datalake_PipeDelimited",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
@@ -225,7 +225,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "DS_Datalake_Delimited_Reference",
+									"referenceName": "DS_Datalake_PipeDelimited_Reference",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
@@ -815,7 +815,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Datalake_Delimited",
+														"referenceName": "DS_Datalake_PipeDelimited",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {
@@ -1065,7 +1065,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Datalake_Delimited",
+														"referenceName": "DS_Datalake_PipeDelimited",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {
@@ -1469,7 +1469,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Datalake_Delimited",
+														"referenceName": "DS_Datalake_PipeDelimited",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {

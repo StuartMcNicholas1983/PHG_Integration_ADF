@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS_Datalake_Delimited",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference"
 					},
 					"name": "Staging"
@@ -32,7 +32,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_Datalake_Delimited",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference"
 					},
 					"name": "Transformed"

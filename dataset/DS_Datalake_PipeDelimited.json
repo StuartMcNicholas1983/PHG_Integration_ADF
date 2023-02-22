@@ -1,5 +1,5 @@
 {
-	"name": "DS_Datalake_Delimited",
+	"name": "DS_Datalake_PipeDelimited",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "DataLake",

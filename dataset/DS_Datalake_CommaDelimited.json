@@ -1,5 +1,5 @@
 {
-	"name": "DS_Datalake_PipeDelimited_Reference",
+	"name": "DS_Datalake_CommaDelimited",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "DataLake",
@@ -37,29 +37,12 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": "|",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
-			"quoteChar": ""
+			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "code",
-				"type": "String"
-			},
-			{
-				"name": "name",
-				"type": "String"
-			},
-			{
-				"name": "modified",
-				"type": "String"
-			},
-			{
-				"name": "created",
-				"type": "String"
-			}
-		]
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
