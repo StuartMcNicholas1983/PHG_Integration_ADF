@@ -80,8 +80,22 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "DS_Datalake_PipeDelimited_Reference",
-									"type": "DatasetReference"
+									"referenceName": "DS_Datalake_PipeDelimited",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Staging",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
 								},
 								"enableLogging": false,
 								"storeSettings": {
@@ -179,7 +193,21 @@
 							"outputs": [
 								{
 									"referenceName": "DS_Datalake_PipeDelimited",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Staging",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
@@ -197,8 +225,22 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "DS_Datalake_PipeDelimited_Reference",
-									"type": "DatasetReference"
+									"referenceName": "DS_Datalake_PipeDelimited",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Transformed",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
 								},
 								"enableLogging": false,
 								"storeSettings": {
@@ -774,7 +816,21 @@
 												"inputs": [
 													{
 														"referenceName": "DS_Datalake_PipeDelimited",
-														"type": "DatasetReference"
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
 													}
 												],
 												"outputs": [
@@ -1021,7 +1077,21 @@
 												"inputs": [
 													{
 														"referenceName": "DS_Datalake_PipeDelimited",
-														"type": "DatasetReference"
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
 													}
 												],
 												"outputs": [
@@ -1411,7 +1481,21 @@
 												"inputs": [
 													{
 														"referenceName": "DS_Datalake_PipeDelimited",
-														"type": "DatasetReference"
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
 													}
 												],
 												"outputs": [
