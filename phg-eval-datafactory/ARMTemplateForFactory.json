@@ -2951,7 +2951,7 @@
 									}
 								},
 								{
-									"name": "Switch Entity",
+									"name": "Switch Entity 1 of 2",
 									"type": "Switch",
 									"dependsOn": [
 										{
@@ -3557,28 +3557,67 @@
 												"value": "Tenancy",
 												"activities": [
 													{
-														"name": "Wait3",
-														"type": "Wait",
+														"name": "Stg_to_Trfd - Tenancy",
+														"type": "ExecuteDataFlow",
 														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
 														"userProperties": [],
 														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
-													},
-													{
-														"name": "Wait4",
-														"type": "Wait",
-														"dependsOn": [
-															{
-																"activity": "Wait3",
-																"dependencyConditions": [
-																	"Succeeded"
-																]
-															}
-														],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
+															"dataflow": {
+																"referenceName": "DF_StagingToTransformed_Tenancy",
+																"type": "DataFlowReference",
+																"parameters": {
+																	"DatalakeFilename": {
+																		"value": "'@{item().DatalakeFilename}'",
+																		"type": "Expression"
+																	}
+																},
+																"datasetParameters": {
+																	"Staging": {
+																		"Container": {
+																			"value": "@item().DatalakeContainer",
+																			"type": "Expression"
+																		},
+																		"Directory": {
+																			"value": "@item().DatalakeDirectory_Staging",
+																			"type": "Expression"
+																		},
+																		"Filename": {
+																			"value": "@item().DatalakeFilename",
+																			"type": "Expression"
+																		}
+																	},
+																	"tenancycategory": {},
+																	"tenancytype": {},
+																	"Transformed": {
+																		"Container": {
+																			"value": "@item().DatalakeContainer",
+																			"type": "Expression"
+																		},
+																		"Directory": {
+																			"value": "@item().DatalakeDirectory_Transformed",
+																			"type": "Expression"
+																		},
+																		"Filename": {
+																			"value": "@item().DatalakeFilename",
+																			"type": "Expression"
+																		}
+																	}
+																},
+																"linkedServiceParameters": {}
+															},
+															"staging": {},
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
+															},
+															"traceLevel": "Fine"
 														}
 													}
 												]
@@ -4021,6 +4060,47 @@
 														}
 													}
 												]
+											},
+											{
+												"value": "Transaction"
+											},
+											{
+												"value": "HouseholdMember"
+											}
+										]
+									}
+								},
+								{
+									"name": "Switch Entity 2 of 2",
+									"type": "Switch",
+									"dependsOn": [
+										{
+											"activity": "Switch Entity 1 of 2",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "DiaryNote",
+												"activities": [
+													{
+														"name": "Wait10",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
 											}
 										],
 										"defaultActivities": [
@@ -4066,6 +4146,7 @@
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
+				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Tenancy')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Contact')]"
 			]
 		},
@@ -4429,6 +4510,457 @@
 				"[concat(variables('factoryId'), '/datasets/DS_phg_religion')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_nationality')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_sexuality')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseEntity1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "phg_eval_dataverse",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "stringmap"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CommonDataServiceForAppsSource"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "attributename",
+											"type": "String"
+										},
+										"sink": {
+											"name": "attributename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "attributevalue",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "attributevalue",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "displayorder",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "displayorder",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "langid",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "langid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "objecttypecode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "objecttypecode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "organizationid",
+											"type": "Guid"
+										},
+										"sink": {
+											"name": "organizationid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "stringmapid",
+											"type": "Guid"
+										},
+										"sink": {
+											"name": "stringmapid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "value",
+											"type": "String"
+										},
+										"sink": {
+											"name": "value",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "versionnumber",
+											"type": "Int64"
+										},
+										"sink": {
+											"name": "versionnumber",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DataverseEntity1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": "data-sync",
+									"Directory": "OH_D365_DataSync\\Config",
+									"Filename": "stringmap.csv"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DataverseEntity1')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Tenancy')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancycategory",
+								"type": "DatasetReference"
+							},
+							"name": "tenancycategory"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancytype",
+								"type": "DatasetReference"
+							},
+							"name": "tenancytype"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_Delimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectTenancyCategory"
+						},
+						{
+							"name": "SelectTenancyType"
+						},
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "JoinTenancyCategory"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinTenancyType"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_name as string,",
+						"          phg_urn as long,",
+						"          phg_tenancycategoryid as string,",
+						"          phg_tenancytypeid as string,",
+						"          phg_tenancystartdate as string,",
+						"          phg_tenancyenddate as string,",
+						"          phg_balance as double,",
+						"          phg_rentcharges as double,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_tenancycategoryid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancycategory",
+						"source(output(",
+						"          phg_tenancytypeid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancytype",
+						"tenancycategory select(mapColumn(",
+						"          phg_tenancycategoryid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyCategory",
+						"tenancytype select(mapColumn(",
+						"          phg_tenancytypeid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyType",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"SelectStaging, SelectTenancyCategory join(SelectStaging@phg_tenancycategoryid == SelectTenancyCategory@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyCategory",
+						"JoinTenancyCategory select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid = SelectTenancyCategory@phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectTenancyType join(SelectA@phg_tenancytypeid == SelectTenancyType@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyType",
+						"JoinTenancyType select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_Delimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancycategory')]",
+				"[concat(variables('factoryId'), '/datasets/DS_phg_tenancytype')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_tenancytype')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_tenancytype.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_tenancytypeid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_tenancycategory')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_tenancycategory.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_tenancycategoryid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
 			]
 		}
 	]
