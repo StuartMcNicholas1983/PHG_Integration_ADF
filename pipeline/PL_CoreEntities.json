@@ -1373,7 +1373,22 @@
 									"value": "@item().Entity",
 									"type": "Expression"
 								},
-								"cases": [],
+								"cases": [
+									{
+										"value": "DiaryNote",
+										"activities": [
+											{
+												"name": "Wait10",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								],
 								"defaultActivities": [
 									{
 										"name": "Wait9",
