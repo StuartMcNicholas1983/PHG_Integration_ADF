@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DF_StagingToTransformed_Tenancy",
 	"properties": {
 		"folder": {
 			"name": "OH_D365_DataSync/Core"
@@ -13,14 +13,160 @@
 						"type": "DatasetReference"
 					},
 					"name": "Staging"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_tenancycategory",
+						"type": "DatasetReference"
+					},
+					"name": "tenancycategory"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_tenancytype",
+						"type": "DatasetReference"
+					},
+					"name": "tenancytype"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_Delimited",
+						"type": "DatasetReference"
+					},
+					"name": "Transformed"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectTenancyCategory"
+				},
+				{
+					"name": "SelectTenancyType"
+				},
+				{
+					"name": "SelectStaging"
+				},
+				{
+					"name": "JoinTenancyCategory"
+				},
+				{
+					"name": "SelectA"
+				},
+				{
+					"name": "JoinTenancyType"
+				},
+				{
+					"name": "SelectColumnsForSink"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"parameters{",
+				"     DatalakeFilename as string",
+				"}",
+				"source(output(",
+				"          phg_integrationkey as string,",
+				"          phg_name as string,",
+				"          phg_urn as long,",
+				"          phg_tenancycategoryid as string,",
+				"          phg_tenancytypeid as string,",
+				"          phg_tenancystartdate as string,",
+				"          phg_tenancyenddate as string,",
+				"          phg_balance as double,",
+				"          phg_rentcharges as double,",
+				"          modified as string,",
+				"          created as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Staging"
+				"     ignoreNoFilesFound: false) ~> Staging",
+				"source(output(",
+				"          phg_tenancycategoryid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> tenancycategory",
+				"source(output(",
+				"          phg_tenancytypeid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> tenancytype",
+				"tenancycategory select(mapColumn(",
+				"          phg_tenancycategoryid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTenancyCategory",
+				"tenancytype select(mapColumn(",
+				"          phg_tenancytypeid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTenancyType",
+				"Staging select(mapColumn(",
+				"          phg_integrationkey,",
+				"          phg_name,",
+				"          phg_urn,",
+				"          phg_tenancycategoryid,",
+				"          phg_tenancytypeid,",
+				"          phg_tenancystartdate,",
+				"          phg_tenancyenddate,",
+				"          phg_balance,",
+				"          phg_rentcharges",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+				"SelectStaging, SelectTenancyCategory join(SelectStaging@phg_tenancycategoryid == SelectTenancyCategory@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTenancyCategory",
+				"JoinTenancyCategory select(mapColumn(",
+				"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+				"          phg_name,",
+				"          phg_urn,",
+				"          phg_tenancycategoryid = SelectTenancyCategory@phg_tenancycategoryid,",
+				"          phg_tenancytypeid,",
+				"          phg_tenancystartdate,",
+				"          phg_tenancyenddate,",
+				"          phg_balance,",
+				"          phg_rentcharges",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectA",
+				"SelectA, SelectTenancyType join(SelectA@phg_tenancytypeid == SelectTenancyType@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTenancyType",
+				"JoinTenancyType select(mapColumn(",
+				"          phg_integrationkey = SelectA@phg_integrationkey,",
+				"          phg_name,",
+				"          phg_urn,",
+				"          phg_tenancycategoryid,",
+				"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
+				"          phg_tenancystartdate,",
+				"          phg_tenancyenddate,",
+				"          phg_balance,",
+				"          phg_rentcharges",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+				"SelectColumnsForSink sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[($DatalakeFilename)],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Transformed"
 			]
 		}
 	}
