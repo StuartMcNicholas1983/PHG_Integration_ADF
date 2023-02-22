@@ -1369,7 +1369,18 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"cases": []
+								"cases": [],
+								"defaultActivities": [
+									{
+										"name": "Wait9",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 1
+										}
+									}
+								]
 							}
 						}
 					]
