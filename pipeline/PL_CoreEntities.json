@@ -251,7 +251,7 @@
 							}
 						},
 						{
-							"name": "Switch Entity",
+							"name": "Switch Entity 1 of 2",
 							"type": "Switch",
 							"dependsOn": [
 								{
@@ -1346,19 +1346,30 @@
 												}
 											}
 										]
-									}
-								],
-								"defaultActivities": [
+									},
 									{
-										"name": "Wait9",
-										"type": "Wait",
-										"dependsOn": [],
-										"userProperties": [],
-										"typeProperties": {
-											"waitTimeInSeconds": 1
-										}
+										"value": "Transaction"
+									},
+									{
+										"value": "HouseholdMember"
 									}
 								]
+							}
+						},
+						{
+							"name": "Switch Entity 2 of 2",
+							"type": "Switch",
+							"dependsOn": [
+								{
+									"activity": "Switch Entity 1 of 2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"cases": []
 							}
 						}
 					]
