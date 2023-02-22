@@ -2604,6 +2604,7 @@
 							},
 							"sink": {
 								"type": "SqlServerSink",
+								"preCopyScript": "truncate table adf.ReferenceEntityCodeMap",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false
 							},
