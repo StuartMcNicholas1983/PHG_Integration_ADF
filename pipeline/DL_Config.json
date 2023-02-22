@@ -1,0 +1,533 @@
+{
+	"name": "DL_Config",
+	"properties": {
+		"activities": [
+			{
+				"name": "Transaction Currency",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CommonDataServiceForAppsSource"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "createdby",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "createdby",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdbyname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "createdbyname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdbyyominame",
+									"type": "String"
+								},
+								"sink": {
+									"name": "createdbyyominame",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdon",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "createdon",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdonbehalfby",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "createdonbehalfby",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdonbehalfbyname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "createdonbehalfbyname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdonbehalfbyyominame",
+									"type": "String"
+								},
+								"sink": {
+									"name": "createdonbehalfbyyominame",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "currencyname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "currencyname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "currencyprecision",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "currencyprecision",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "currencysymbol",
+									"type": "String"
+								},
+								"sink": {
+									"name": "currencysymbol",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "entityimage_timestamp",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "entityimage_timestamp",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "entityimage_url",
+									"type": "String"
+								},
+								"sink": {
+									"name": "entityimage_url",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "entityimageid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "entityimageid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "exchangerate",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "exchangerate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "importsequencenumber",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "importsequencenumber",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "isocurrencycode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "isocurrencycode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedby",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "modifiedby",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedbyname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "modifiedbyname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedbyyominame",
+									"type": "String"
+								},
+								"sink": {
+									"name": "modifiedbyyominame",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedon",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "modifiedon",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedonbehalfby",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "modifiedonbehalfby",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedonbehalfbyname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "modifiedonbehalfbyname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "modifiedonbehalfbyyominame",
+									"type": "String"
+								},
+								"sink": {
+									"name": "modifiedonbehalfbyyominame",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "organizationid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "organizationid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "overriddencreatedon",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "overriddencreatedon",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "statecode",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "statecode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "statuscode",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "statuscode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "transactioncurrencyid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "transactioncurrencyid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "uniquedscid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "uniquedscid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "versionnumber",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "versionnumber",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Dataverse_Eval",
+						"type": "DatasetReference",
+						"parameters": {
+							"EntityName": "transactioncurrency"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Datalake_Delimited",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "data-sync",
+							"Directory": "OH_D365_DataSync/Config",
+							"Filename": "transactioncurrency.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "String Map",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CommonDataServiceForAppsSource"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "attributename",
+									"type": "String"
+								},
+								"sink": {
+									"name": "attributename",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "attributevalue",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "attributevalue",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "displayorder",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "displayorder",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "langid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "langid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "objecttypecode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "objecttypecode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "organizationid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "organizationid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "stringmapid",
+									"type": "Guid"
+								},
+								"sink": {
+									"name": "stringmapid",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "value",
+									"type": "String"
+								},
+								"sink": {
+									"name": "value",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "versionnumber",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "versionnumber",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Dataverse_Eval",
+						"type": "DatasetReference",
+						"parameters": {
+							"EntityName": "stringmap"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Datalake_Delimited",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "data-sync",
+							"Directory": "OH_D365_DataSync/Config",
+							"Filename": "stringmap.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Transaction Currency",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "String Map",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"folder": {
+			"name": "OH_D365_DataSync/Child Pipelines"
+		},
+		"annotations": []
+	}
+}

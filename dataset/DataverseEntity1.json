@@ -9,7 +9,7 @@
 		"type": "CommonDataServiceForAppsEntity",
 		"schema": [],
 		"typeProperties": {
-			"entityName": "stringmap"
+			"entityName": "transactioncurrency"
 		}
 	}
 }

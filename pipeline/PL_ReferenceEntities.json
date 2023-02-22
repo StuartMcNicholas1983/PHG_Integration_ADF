@@ -651,7 +651,7 @@
 			}
 		},
 		"folder": {
-			"name": "OH_D365_DataSync/Child Pipelines"
+			"name": "OH_D365_DataSync/Source System Pipelines"
 		},
 		"annotations": [],
 		"lastPublishTime": "2023-02-15T20:38:51Z"
