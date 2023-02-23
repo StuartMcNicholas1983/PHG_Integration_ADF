@@ -963,7 +963,7 @@
 																	"physicalType": "Decimal"
 																},
 																"sink": {
-																	"name": "phg_balance_base",
+																	"name": "phg_balance",
 																	"type": "Decimal"
 																}
 															},
@@ -996,7 +996,7 @@
 																	"physicalType": "Decimal"
 																},
 																"sink": {
-																	"name": "phg_rentcharges_base",
+																	"name": "phg_rentcharges",
 																	"type": "Decimal"
 																}
 															},
