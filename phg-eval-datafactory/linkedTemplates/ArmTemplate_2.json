@@ -13,7 +13,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Tenancy')]",
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_HousingAccount')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -32,17 +32,10 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "DS_phg_tenancycategory",
+								"referenceName": "DS_phg_housingaccounttype",
 								"type": "DatasetReference"
 							},
-							"name": "tenancycategory"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_tenancytype",
-								"type": "DatasetReference"
-							},
-							"name": "tenancytype"
+							"name": "housingaccounttype"
 						},
 						{
 							"dataset": {
@@ -53,10 +46,10 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "DS_phg_property",
+								"referenceName": "DS_phg_tenancy",
 								"type": "DatasetReference"
 							},
-							"name": "property"
+							"name": "tenancy"
 						}
 					],
 					"sinks": [
@@ -70,22 +63,13 @@
 					],
 					"transformations": [
 						{
-							"name": "SelectTenancyCategory"
-						},
-						{
-							"name": "SelectTenancyType"
+							"name": "SelectHouisngAccountType"
 						},
 						{
 							"name": "SelectStaging"
 						},
 						{
-							"name": "JoinTenancyCategory"
-						},
-						{
-							"name": "SelectA"
-						},
-						{
-							"name": "JoinTenancyType"
+							"name": "JoinHousingAccountType"
 						},
 						{
 							"name": "SelectColumnsForSink"
@@ -100,16 +84,16 @@
 							"name": "JoinTransactionCurrency"
 						},
 						{
-							"name": "SelectProperty"
+							"name": "SelectTenancy"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinTenancy"
 						},
 						{
 							"name": "SelectB"
-						},
-						{
-							"name": "JoinProperty"
-						},
-						{
-							"name": "SelectC"
 						}
 					],
 					"scriptLines": [
@@ -119,36 +103,30 @@
 						"source(output(",
 						"          phg_integrationkey as string,",
 						"          phg_name as string,",
-						"          phg_urn as long,",
-						"          phg_tenancycategoryid as string,",
-						"          phg_tenancytypeid as string,",
-						"          phg_tenancystartdate as string,",
-						"          phg_tenancyenddate as string,",
-						"          phg_propertyid as string,",
-						"          phg_balance as double,",
-						"          phg_rentcharges as double,",
-						"          modified as string,",
-						"          created as string",
+						"          phg_accountholder1 as string,",
+						"          phg_accountholder2 as string,",
+						"          phg_accounttypeid as string,",
+						"          phg_allpayref as string,",
+						"          phg_currentbalance as decimal(10,0),",
+						"          phg_grossrent as decimal(10,0),",
+						"          phg_netcharge as decimal(10,0),",
+						"          phg_totalservicechargeamount as decimal(10,0),",
+						"          phg_housingbenefitreceived as boolean,",
+						"          phg_tenancyid as string,",
+						"          modified as timestamp,",
+						"          created as timestamp",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> Staging",
 						"source(output(",
-						"          phg_tenancycategoryid as string,",
+						"          phg_housingaccounttypeid as string,",
 						"          phg_integrationkey as string,",
 						"          phg_name as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> tenancycategory",
-						"source(output(",
-						"          phg_tenancytypeid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> tenancytype",
+						"     ignoreNoFilesFound: false) ~> housingaccounttype",
 						"source(output(",
 						"          createdby as string,",
 						"          createdbyname as string,",
@@ -185,74 +163,53 @@
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> transactioncurrency",
 						"source(output(",
-						"          phg_propertyid as string,",
+						"          phg_tenancyid as string,",
 						"          phg_integrationkey as string,",
 						"          phg_name as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> property",
-						"tenancycategory select(mapColumn(",
-						"          phg_tenancycategoryid,",
+						"     ignoreNoFilesFound: false) ~> tenancy",
+						"housingaccounttype select(mapColumn(",
+						"          phg_housingaccounttypeid,",
 						"          phg_integrationkey",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancyCategory",
-						"tenancytype select(mapColumn(",
-						"          phg_tenancytypeid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancyType",
+						"     skipDuplicateMapOutputs: true) ~> SelectHouisngAccountType",
 						"Staging select(mapColumn(",
 						"          phg_integrationkey,",
 						"          phg_name,",
-						"          phg_urn,",
-						"          phg_tenancycategoryid,",
-						"          phg_tenancytypeid,",
-						"          phg_tenancystartdate,",
-						"          phg_tenancyenddate,",
-						"          phg_propertyid,",
-						"          phg_balance,",
-						"          phg_rentcharges",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
-						"SelectStaging, SelectTenancyCategory join(SelectStaging@phg_tenancycategoryid == SelectTenancyCategory@phg_integrationkey,",
+						"SelectStaging, SelectHouisngAccountType join(phg_accounttypeid == SelectHouisngAccountType@phg_integrationkey,",
 						"     joinType:'left',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinTenancyCategory",
-						"JoinTenancyCategory select(mapColumn(",
-						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
-						"          phg_name,",
-						"          phg_urn,",
-						"          phg_tenancycategoryid = SelectTenancyCategory@phg_tenancycategoryid,",
-						"          phg_tenancytypeid,",
-						"          phg_tenancystartdate,",
-						"          phg_tenancyenddate,",
-						"          phg_propertyid,",
-						"          phg_balance,",
-						"          phg_rentcharges",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectA",
-						"SelectA, SelectTenancyType join(SelectA@phg_tenancytypeid == SelectTenancyType@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinTenancyType",
+						"     broadcast: 'auto')~> JoinHousingAccountType",
 						"JoinTransactionCurrency select(mapColumn(",
 						"          phg_integrationkey,",
 						"          phg_name,",
-						"          phg_urn,",
-						"          phg_tenancycategoryid,",
-						"          phg_tenancytypeid,",
-						"          phg_tenancystartdate,",
-						"          phg_tenancyenddate,",
-						"          phg_propertyid,",
-						"          phg_balance,",
-						"          phg_rentcharges,",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid,",
 						"          transactioncurrencyid",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
@@ -266,51 +223,55 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
-						"SelectC derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+						"SelectB derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
 						"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
 						"     joinType:'left',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> JoinTransactionCurrency",
-						"property select(mapColumn(",
-						"          phg_propertyid,",
+						"tenancy select(mapColumn(",
+						"          phg_tenancyid,",
 						"          phg_integrationkey",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectProperty",
-						"JoinTenancyType select(mapColumn(",
-						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancy",
+						"JoinHousingAccountType select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
 						"          phg_name,",
-						"          phg_urn,",
-						"          phg_tenancycategoryid,",
-						"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
-						"          phg_tenancystartdate,",
-						"          phg_tenancyenddate,",
-						"          phg_propertyid,",
-						"          phg_balance,",
-						"          phg_rentcharges",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid = phg_housingaccounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectB",
-						"SelectB, SelectProperty join(SelectB@phg_propertyid == SelectProperty@phg_integrationkey,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectTenancy join(SelectA@phg_tenancyid == SelectTenancy@phg_integrationkey,",
 						"     joinType:'left',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinProperty",
-						"JoinProperty select(mapColumn(",
-						"          phg_integrationkey = SelectB@phg_integrationkey,",
+						"     broadcast: 'auto')~> JoinTenancy",
+						"JoinTenancy select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
 						"          phg_name,",
-						"          phg_urn,",
-						"          phg_tenancycategoryid,",
-						"          phg_tenancytypeid,",
-						"          phg_tenancystartdate,",
-						"          phg_tenancyenddate,",
-						"          phg_propertyid = SelectProperty@phg_propertyid,",
-						"          phg_balance,",
-						"          phg_rentcharges",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid = SelectTenancy@phg_tenancyid",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectC",
+						"     skipDuplicateMapOutputs: true) ~> SelectB",
 						"SelectColumnsForSink sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:[($DatalakeFilename)],",
@@ -3115,7 +3076,7 @@
 				"lastPublishTime": "2023-02-17T13:03:59Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Tenancy')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_HousingAccount')]"
 			]
 		},
 		{
