@@ -378,6 +378,17 @@
 														"mappings": [
 															{
 																"source": {
+																	"name": "phg_integrationkey",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_integrationkey",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
 																	"name": "phg_addressline1",
 																	"type": "String",
 																	"physicalType": "String"
@@ -521,17 +532,6 @@
 															},
 															{
 																"source": {
-																	"name": "phg_integrationkey",
-																	"type": "String",
-																	"physicalType": "String"
-																},
-																"sink": {
-																	"name": "phg_integrationkey",
-																	"type": "String"
-																}
-															},
-															{
-																"source": {
 																	"name": "phg_managementareaid",
 																	"type": "Guid",
 																	"physicalType": "Guid"
@@ -671,6 +671,17 @@
 																"sink": {
 																	"name": "phg_propertyfloorlevel",
 																	"type": "Int32"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_tenancyid",
+																	"type": "Guid",
+																	"physicalType": "Guid"
+																},
+																"sink": {
+																	"name": "phg_tenancyid",
+																	"type": "Guid"
 																}
 															},
 															{
@@ -1063,6 +1074,17 @@
 																},
 																"sink": {
 																	"name": "transactioncurrencyid",
+																	"type": "Guid"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_propertyid",
+																	"type": "Guid",
+																	"physicalType": "Guid"
+																},
+																"sink": {
+																	"name": "phg_propertyid",
 																	"type": "Guid"
 																}
 															}
@@ -1517,29 +1539,148 @@
 										"value": "HousingAccount",
 										"activities": [
 											{
-												"name": "Wait7",
-												"type": "Wait",
+												"name": "Stg_to_Trfd - Housing Account",
+												"type": "ExecuteDataFlow",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
+													"dataflow": {
+														"referenceName": "DF_StagingToTransformed_HousingAccount",
+														"type": "DataFlowReference",
+														"parameters": {
+															"DatalakeFilename": {
+																"value": "'@{item().DatalakeFilename}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"Staging": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Staging",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															},
+															"Transformed": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Transformed",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															}
+														}
+													},
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
 												}
 											},
 											{
-												"name": "Wait8",
-												"type": "Wait",
+												"name": "Trfd_to_Dest - HousingAccount",
+												"type": "Copy",
 												"dependsOn": [
 													{
-														"activity": "Wait7",
+														"activity": "Stg_to_Trfd - Housing Account",
 														"dependencyConditions": [
 															"Succeeded"
 														]
 													}
 												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
-												}
+													"source": {
+														"type": "DelimitedTextSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "DelimitedTextReadSettings"
+														}
+													},
+													"sink": {
+														"type": "CommonDataServiceForAppsSink",
+														"writeBatchSize": 10,
+														"writeBehavior": "upsert",
+														"ignoreNullValues": false,
+														"alternateKeyName": {
+															"value": "@item().UpsertKeyColumn",
+															"type": "Expression"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "DS_Datalake_PipeDelimited",
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DS_Dataverse_Eval",
+														"type": "DatasetReference",
+														"parameters": {
+															"EntityName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												]
 											}
 										]
 									},
