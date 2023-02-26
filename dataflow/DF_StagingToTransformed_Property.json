@@ -41,6 +41,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "parish"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_tenancy",
+						"type": "DatasetReference"
+					},
+					"name": "tenancy"
 				}
 			],
 			"sinks": [
@@ -94,6 +101,12 @@
 				},
 				{
 					"name": "SelectParish"
+				},
+				{
+					"name": "SelectTenancy"
+				},
+				{
+					"name": "JoinTenancy"
 				}
 			],
 			"scriptLines": [
@@ -120,6 +133,7 @@
 				"          phg_lift as boolean,",
 				"          phg_anyadaptions as boolean,",
 				"          phg_blockreference as string,",
+				"          phg_tenancyid as string,",
 				"          phg_plotnumber as integer,",
 				"          phg_builddate as date,",
 				"          phg_floorplanurl as string,",
@@ -178,8 +192,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> parish",
-				"SelectD select(mapColumn(",
-				"          phg_integrationkey,",
+				"source(output(",
+				"          phg_tenancyid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> tenancy",
+				"JoinTenancy select(mapColumn(",
+				"          phg_integrationkey = SelectD@phg_integrationkey,",
 				"          phg_addressline1,",
 				"          phg_addressline2,",
 				"          phg_addressline3,",
@@ -198,6 +220,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid = SelectTenancy@phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -261,6 +284,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -304,6 +328,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -347,6 +372,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -390,6 +416,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -433,6 +460,7 @@
 				"          phg_lift,",
 				"          phg_anyadaptions,",
 				"          phg_blockreference,",
+				"          phg_tenancyid,",
 				"          phg_plotnumber,",
 				"          phg_builddate,",
 				"          phg_floorplanurl,",
@@ -480,6 +508,17 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> SelectParish",
+				"tenancy select(mapColumn(",
+				"          phg_tenancyid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTenancy",
+				"SelectD, SelectTenancy join(SelectD@phg_tenancyid == SelectTenancy@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTenancy",
 				"SelectColumnsForSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[($DatalakeFilename)],",
