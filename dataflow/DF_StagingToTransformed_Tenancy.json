@@ -267,7 +267,7 @@
 				"          phg_name,",
 				"          phg_urn,",
 				"          phg_tenancycategoryid,",
-				"          phg_tenancytypeid = SelectA@phg_tenancytypeid,",
+				"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
 				"          phg_tenancystartdate,",
 				"          phg_tenancyenddate,",
 				"          phg_propertyid,",
