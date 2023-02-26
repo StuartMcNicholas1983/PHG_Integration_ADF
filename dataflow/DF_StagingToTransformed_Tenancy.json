@@ -34,6 +34,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "transactioncurrency"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_property",
+						"type": "DatasetReference"
+					},
+					"name": "property"
 				}
 			],
 			"sinks": [
@@ -75,6 +82,18 @@
 				},
 				{
 					"name": "JoinTransactionCurrency"
+				},
+				{
+					"name": "SelectProperty"
+				},
+				{
+					"name": "SelectB"
+				},
+				{
+					"name": "JoinProperty"
+				},
+				{
+					"name": "SelectC"
 				}
 			],
 			"scriptLines": [
@@ -89,6 +108,7 @@
 				"          phg_tenancytypeid as string,",
 				"          phg_tenancystartdate as string,",
 				"          phg_tenancyenddate as string,",
+				"          phg_propertyid as string,",
 				"          phg_balance as double,",
 				"          phg_rentcharges as double,",
 				"          modified as string,",
@@ -148,6 +168,14 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> transactioncurrency",
+				"source(output(",
+				"          phg_propertyid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> property",
 				"tenancycategory select(mapColumn(",
 				"          phg_tenancycategoryid,",
 				"          phg_integrationkey",
@@ -168,6 +196,7 @@
 				"          phg_tenancytypeid,",
 				"          phg_tenancystartdate,",
 				"          phg_tenancyenddate,",
+				"          phg_propertyid,",
 				"          phg_balance,",
 				"          phg_rentcharges",
 				"     ),",
@@ -186,6 +215,7 @@
 				"          phg_tenancytypeid,",
 				"          phg_tenancystartdate,",
 				"          phg_tenancyenddate,",
+				"          phg_propertyid,",
 				"          phg_balance,",
 				"          phg_rentcharges",
 				"     ),",
@@ -197,13 +227,14 @@
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinTenancyType",
 				"JoinTransactionCurrency select(mapColumn(",
-				"          phg_integrationkey = SelectA@phg_integrationkey,",
+				"          phg_integrationkey,",
 				"          phg_name,",
 				"          phg_urn,",
 				"          phg_tenancycategoryid,",
-				"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
+				"          phg_tenancytypeid,",
 				"          phg_tenancystartdate,",
 				"          phg_tenancyenddate,",
+				"          phg_propertyid,",
 				"          phg_balance,",
 				"          phg_rentcharges,",
 				"          transactioncurrencyid",
@@ -219,12 +250,51 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
-				"JoinTenancyType derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+				"SelectC derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
 				"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinTransactionCurrency",
+				"property select(mapColumn(",
+				"          phg_propertyid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectProperty",
+				"JoinTenancyType select(mapColumn(",
+				"          phg_integrationkey = SelectA@phg_integrationkey,",
+				"          phg_name,",
+				"          phg_urn,",
+				"          phg_tenancycategoryid,",
+				"          phg_tenancytypeid = SelectA@phg_tenancytypeid,",
+				"          phg_tenancystartdate,",
+				"          phg_tenancyenddate,",
+				"          phg_propertyid,",
+				"          phg_balance,",
+				"          phg_rentcharges",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectB",
+				"SelectB, SelectProperty join(SelectB@phg_propertyid == SelectProperty@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinProperty",
+				"JoinProperty select(mapColumn(",
+				"          phg_integrationkey = SelectB@phg_integrationkey,",
+				"          phg_name,",
+				"          phg_urn,",
+				"          phg_tenancycategoryid,",
+				"          phg_tenancytypeid,",
+				"          phg_tenancystartdate,",
+				"          phg_tenancyenddate,",
+				"          phg_propertyid = SelectProperty@phg_propertyid,",
+				"          phg_balance,",
+				"          phg_rentcharges",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectC",
 				"SelectColumnsForSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[($DatalakeFilename)],",
