@@ -2756,13 +2756,12 @@
 																			"type": "Expression"
 																		}
 																	}
-																},
-																"linkedServiceParameters": {}
+																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -2825,6 +2824,17 @@
 																	},
 																	{
 																		"source": {
+																			"name": "phg_name",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_name",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
 																			"name": "phg_accountholder2",
 																			"type": "Guid",
 																			"physicalType": "Guid"
@@ -2876,6 +2886,17 @@
 																		"sink": {
 																			"name": "phg_housingbenefitreceived",
 																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_allpayref",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_allpayref",
+																			"type": "String"
 																		}
 																	},
 																	{
