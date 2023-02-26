@@ -1,0 +1,40 @@
+{
+	"name": "DS_phg_housingaccounttype",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataLake/D365"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "phg_housingaccounttype.csv",
+				"folderPath": "OH_D365_DataSync/D365",
+				"fileSystem": "data-sync"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "phg_housingaccounttypeid",
+				"type": "String"
+			},
+			{
+				"name": "phg_integrationkey",
+				"type": "String"
+			},
+			{
+				"name": "phg_name",
+				"type": "String"
+			}
+		]
+	}
+}
