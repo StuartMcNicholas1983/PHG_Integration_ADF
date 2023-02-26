@@ -1591,9 +1591,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
