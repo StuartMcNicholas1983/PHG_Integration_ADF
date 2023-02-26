@@ -1722,16 +1722,6 @@
 															},
 															{
 																"source": {
-																	"name": "phg_integrationkey",
-																	"physicalType": "String"
-																},
-																"sink": {
-																	"name": "phg_name",
-																	"type": "String"
-																}
-															},
-															{
-																"source": {
 																	"name": "phg_netcharge",
 																	"type": "Decimal",
 																	"physicalType": "Decimal"
