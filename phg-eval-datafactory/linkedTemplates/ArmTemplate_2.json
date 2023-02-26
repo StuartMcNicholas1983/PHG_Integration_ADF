@@ -283,7 +283,7 @@
 						"          phg_name,",
 						"          phg_urn,",
 						"          phg_tenancycategoryid,",
-						"          phg_tenancytypeid = SelectA@phg_tenancytypeid,",
+						"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
 						"          phg_tenancystartdate,",
 						"          phg_tenancyenddate,",
 						"          phg_propertyid,",
@@ -2850,6 +2850,129 @@
 															"enableStaging": false,
 															"translator": {
 																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "phg_accountholder1",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_accountholder1",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_accountholder2",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_accountholder2",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_accounttypeid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_accounttypeid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_currentbalance",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_currentbalance",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_grossrent",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_grossrent",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_housingbenefitreceived",
+																			"type": "Boolean",
+																			"physicalType": "Boolean"
+																		},
+																		"sink": {
+																			"name": "phg_housingbenefitreceived",
+																			"type": "Boolean"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_integrationkey",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_integrationkey",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_netcharge",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_netcharge",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_tenancyid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_tenancyid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_totalservicechargeamount",
+																			"type": "Decimal",
+																			"physicalType": "Decimal"
+																		},
+																		"sink": {
+																			"name": "phg_totalservicechargeamount",
+																			"type": "Decimal"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
+																		}
+																	}
+																],
 																"typeConversion": true,
 																"typeConversionSettings": {
 																	"allowDataTruncation": true,
