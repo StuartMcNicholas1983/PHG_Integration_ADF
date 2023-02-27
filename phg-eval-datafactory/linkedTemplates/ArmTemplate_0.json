@@ -553,6 +553,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_housingaccounttype')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_housingaccounttype.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_housingaccounttypeid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_phg_managementarea')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -671,51 +716,6 @@
 				"schema": [
 					{
 						"name": "phg_parishid",
-						"type": "String"
-					},
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_phg_propertybuildtype')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataLake/D365"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "phg_propertybuildtype.csv",
-						"folderPath": "OH_D365_DataSync/D365",
-						"fileSystem": "data-sync"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "phg_propertybuildtypeid",
 						"type": "String"
 					},
 					{
