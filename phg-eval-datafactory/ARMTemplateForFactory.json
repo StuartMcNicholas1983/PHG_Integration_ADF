@@ -1104,9 +1104,9 @@
 																}
 															},
 															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
+															"compute": {
+																"coreCount": 8,
+																"computeType": "General"
 															},
 															"traceLevel": "Fine"
 														}
@@ -1700,9 +1700,9 @@
 																}
 															},
 															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
+															"compute": {
+																"coreCount": 8,
+																"computeType": "General"
 															},
 															"traceLevel": "Fine"
 														}
@@ -1977,9 +1977,9 @@
 																}
 															},
 															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
+															"compute": {
+																"coreCount": 8,
+																"computeType": "General"
 															},
 															"traceLevel": "Fine"
 														}
@@ -2385,9 +2385,9 @@
 																}
 															},
 															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
+															"compute": {
+																"coreCount": 8,
+																"computeType": "General"
 															},
 															"traceLevel": "Fine"
 														}
@@ -2697,9 +2697,9 @@
 																"linkedServiceParameters": {}
 															},
 															"staging": {},
-															"integrationRuntime": {
-																"referenceName": "AIR-TTL",
-																"type": "IntegrationRuntimeReference"
+															"compute": {
+																"coreCount": 8,
+																"computeType": "General"
 															},
 															"traceLevel": "Fine"
 														}
@@ -2912,7 +2912,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]",
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Tenancy')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Contact')]",
@@ -3683,9 +3682,9 @@
 											}
 										},
 										"staging": {},
-										"integrationRuntime": {
-											"referenceName": "AIR-TTL",
-											"type": "IntegrationRuntimeReference"
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
 										},
 										"traceLevel": "Fine"
 									}
@@ -3918,7 +3917,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed')]",
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/linkedServices/Control')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]"
 			]
