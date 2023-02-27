@@ -1,0 +1,204 @@
+{
+	"name": "DF_StagingToTransformed_Transaction",
+	"properties": {
+		"folder": {
+			"name": "OH_D365_DataSync/Core"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_PipeDelimited",
+						"type": "DatasetReference"
+					},
+					"name": "Staging"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_phg_transactiontype",
+						"type": "DatasetReference"
+					},
+					"name": "transactiontype"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_transactioncurrency",
+						"type": "DatasetReference"
+					},
+					"name": "transactioncurrency"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_PipeDelimited",
+						"type": "DatasetReference"
+					},
+					"name": "Transformed"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectTransactionType"
+				},
+				{
+					"name": "SelectStaging"
+				},
+				{
+					"name": "JoinTransactionType"
+				},
+				{
+					"name": "SelectA"
+				},
+				{
+					"name": "SelectTransactionCurrency"
+				},
+				{
+					"name": "ISOCurrencyCode"
+				},
+				{
+					"name": "JoinTransactionCurrency"
+				},
+				{
+					"name": "SelectColumnsForSink"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DatalakeFilename as string",
+				"}",
+				"source(output(",
+				"          phg_integrationkey as string,",
+				"          phg_name as string,",
+				"          phg_date as string,",
+				"          phg_transactionnumber as string,",
+				"          phg_transactiontypeid as string,",
+				"          phg_balance as decimal(10,0),",
+				"          phg_charges as decimal(10,0),",
+				"          phg_debit as decimal(10,0),",
+				"          modified as string,",
+				"          created as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Staging",
+				"source(output(",
+				"          phg_transactiontypeid as string,",
+				"          phg_integrationkey as string,",
+				"          phg_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> transactiontype",
+				"source(output(",
+				"          createdby as string,",
+				"          createdbyname as string,",
+				"          createdbyyominame as string,",
+				"          createdon as string,",
+				"          createdonbehalfby as string,",
+				"          createdonbehalfbyname as string,",
+				"          createdonbehalfbyyominame as string,",
+				"          currencyname as string,",
+				"          currencyprecision as string,",
+				"          currencysymbol as string,",
+				"          entityimage_timestamp as string,",
+				"          entityimage_url as string,",
+				"          entityimageid as string,",
+				"          exchangerate as string,",
+				"          importsequencenumber as string,",
+				"          isocurrencycode as string,",
+				"          modifiedby as string,",
+				"          modifiedbyname as string,",
+				"          modifiedbyyominame as string,",
+				"          modifiedon as string,",
+				"          modifiedonbehalfby as string,",
+				"          modifiedonbehalfbyname as string,",
+				"          modifiedonbehalfbyyominame as string,",
+				"          organizationid as string,",
+				"          overriddencreatedon as string,",
+				"          statecode as string,",
+				"          statuscode as string,",
+				"          transactioncurrencyid as string,",
+				"          uniquedscid as string,",
+				"          versionnumber as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> transactioncurrency",
+				"transactiontype select(mapColumn(",
+				"          phg_transactiontypeid,",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTransactionType",
+				"Staging select(mapColumn(",
+				"          phg_integrationkey,",
+				"          phg_name,",
+				"          phg_date,",
+				"          phg_transactionnumber,",
+				"          phg_transactiontypeid,",
+				"          phg_balance,",
+				"          phg_charges,",
+				"          phg_debit",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+				"SelectStaging, SelectTransactionType join(SelectStaging@phg_transactiontypeid == SelectTransactionType@phg_integrationkey,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTransactionType",
+				"JoinTransactionType select(mapColumn(",
+				"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+				"          phg_name,",
+				"          phg_date,",
+				"          phg_transactionnumber,",
+				"          phg_transactiontypeid = SelectTransactionType@phg_transactiontypeid,",
+				"          phg_balance,",
+				"          phg_charges,",
+				"          phg_debit",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectA",
+				"transactioncurrency select(mapColumn(",
+				"          currencyname,",
+				"          isocurrencycode,",
+				"          statecode,",
+				"          statuscode,",
+				"          transactioncurrencyid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
+				"SelectA derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+				"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTransactionCurrency",
+				"JoinTransactionCurrency select(mapColumn(",
+				"          phg_integrationkey,",
+				"          phg_name,",
+				"          phg_date,",
+				"          phg_transactionnumber,",
+				"          phg_transactiontypeid,",
+				"          phg_balance,",
+				"          phg_charges,",
+				"          phg_debit,",
+				"          transactioncurrencyid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+				"SelectColumnsForSink sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[($DatalakeFilename)],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Transformed"
+			]
+		}
+	}
+}
