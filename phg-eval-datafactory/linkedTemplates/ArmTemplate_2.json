@@ -13,6 +13,166 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_HouseholdMember')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancy",
+								"type": "DatasetReference"
+							},
+							"name": "tenancy"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_contact",
+								"type": "DatasetReference"
+							},
+							"name": "contact"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "SelectTenancy"
+						},
+						{
+							"name": "SelectContact"
+						},
+						{
+							"name": "JoinTenancy"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinContact"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_name as string,",
+						"          phg_contactid as string,",
+						"          phg_tenancyid as string,",
+						"          phg_type as string,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_tenancyid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancy",
+						"source(output(",
+						"          contactid as string,",
+						"          phg_integrationkey as string,",
+						"          fullname as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> contact",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_contactid,",
+						"          phg_tenancyid,",
+						"          phg_type",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"tenancy select(mapColumn(",
+						"          phg_tenancyid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancy",
+						"contact select(mapColumn(",
+						"          contactid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectContact",
+						"SelectStaging, SelectTenancy join(SelectStaging@phg_tenancyid == SelectTenancy@phg_integrationkey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancy",
+						"JoinTenancy select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_contactid,",
+						"          phg_tenancyid = SelectTenancy@phg_tenancyid,",
+						"          phg_type",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectContact join(phg_contactid == SelectContact@phg_integrationkey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinContact",
+						"JoinContact select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_contactid = contactid,",
+						"          phg_tenancyid,",
+						"          phg_type",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_HousingAccount')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1122,166 +1282,6 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectC",
-						"SelectColumnsForSink sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:[($DatalakeFilename)],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> Transformed"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_HouseholdMember')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Core"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "Staging"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_tenancy",
-								"type": "DatasetReference"
-							},
-							"name": "tenancy"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_contact",
-								"type": "DatasetReference"
-							},
-							"name": "contact"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "Transformed"
-						}
-					],
-					"transformations": [
-						{
-							"name": "SelectStaging"
-						},
-						{
-							"name": "SelectTenancy"
-						},
-						{
-							"name": "SelectContact"
-						},
-						{
-							"name": "JoinTenancy"
-						},
-						{
-							"name": "SelectA"
-						},
-						{
-							"name": "JoinContact"
-						},
-						{
-							"name": "SelectColumnsForSink"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     DatalakeFilename as string",
-						"}",
-						"source(output(",
-						"          phg_integrationkey as string,",
-						"          phg_name as string,",
-						"          phg_contactid as string,",
-						"          phg_tenancyid as string,",
-						"          phg_type as string,",
-						"          modified as string,",
-						"          created as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Staging",
-						"source(output(",
-						"          phg_tenancyid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> tenancy",
-						"source(output(",
-						"          contactid as string,",
-						"          phg_integrationkey as string,",
-						"          fullname as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> contact",
-						"Staging select(mapColumn(",
-						"          phg_integrationkey,",
-						"          phg_name,",
-						"          phg_contactid,",
-						"          phg_tenancyid,",
-						"          phg_type",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
-						"tenancy select(mapColumn(",
-						"          phg_tenancyid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancy",
-						"contact select(mapColumn(",
-						"          contactid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectContact",
-						"SelectStaging, SelectTenancy join(SelectStaging@phg_tenancyid == SelectTenancy@phg_integrationkey,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinTenancy",
-						"JoinTenancy select(mapColumn(",
-						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
-						"          phg_name,",
-						"          phg_contactid,",
-						"          phg_tenancyid = SelectTenancy@phg_tenancyid,",
-						"          phg_type",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectA",
-						"SelectA, SelectContact join(phg_contactid == SelectContact@phg_integrationkey,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinContact",
-						"JoinContact select(mapColumn(",
-						"          phg_integrationkey = SelectA@phg_integrationkey,",
-						"          phg_name,",
-						"          phg_contactid = contactid,",
-						"          phg_tenancyid,",
-						"          phg_type",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
 						"SelectColumnsForSink sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:[($DatalakeFilename)],",
@@ -3413,8 +3413,7 @@
 																			"type": "Expression"
 																		}
 																	}
-																},
-																"linkedServiceParameters": {}
+																}
 															},
 															"staging": {},
 															"compute": {
@@ -3482,8 +3481,7 @@
 																			"type": "Expression"
 																		}
 																	}
-																},
-																"linkedServiceParameters": {}
+																}
 															},
 															"staging": {},
 															"compute": {
@@ -4338,87 +4336,13 @@
 									}
 								},
 								{
-									"name": "Stored procedure2",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "Transformed to Destination",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[spLog_Something]",
-										"storedProcedureParameters": {
-											"param1": {
-												"value": "1",
-												"type": "Int32"
-											},
-											"param2": {
-												"value": "1",
-												"type": "Int32"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "Control",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "Stored procedure3",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "Source to Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[spLog_Something]",
-										"storedProcedureParameters": {
-											"param1": {
-												"value": "1",
-												"type": "Int32"
-											},
-											"param2": {
-												"value": "1",
-												"type": "Int32"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "Control",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
 									"name": "Write to PipelineLog",
 									"type": "Copy",
 									"dependsOn": [
 										{
 											"activity": "Transformed to Destination",
 											"dependencyConditions": [
-												"Succeeded"
+												"Failed"
 											]
 										}
 									],
@@ -4481,7 +4405,7 @@
 										{
 											"activity": "Source to Staging",
 											"dependencyConditions": [
-												"Succeeded"
+												"Failed"
 											]
 										}
 									],
