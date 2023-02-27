@@ -3152,48 +3152,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AIR-DEV')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"description": "Azure Integration Runtime - Development ",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "UK South",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 10,
-							"cleanup": false
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AIR-PROD')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"description": "Azure Integration Runtime - Production",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "UK South",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 10,
-							"cleanup": false
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AIR-TTL')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -3203,9 +3161,9 @@
 					"computeProperties": {
 						"location": "AutoResolve",
 						"dataFlowProperties": {
-							"computeType": "General",
+							"computeType": "MemoryOptimized",
 							"coreCount": 8,
-							"timeToLive": 60,
+							"timeToLive": 15,
 							"cleanup": false
 						}
 					}
@@ -5256,7 +5214,7 @@
 								"value": "@activity('Core_Entities').output.value",
 								"type": "Expression"
 							},
-							"isSequential": true,
+							"isSequential": false,
 							"activities": [
 								{
 									"name": "Staging",
@@ -5522,9 +5480,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -6118,9 +6076,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -6395,9 +6353,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -6803,9 +6761,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -7100,9 +7058,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -7353,9 +7311,9 @@
 																}
 															},
 															"staging": {},
-															"compute": {
-																"coreCount": 8,
-																"computeType": "General"
+															"integrationRuntime": {
+																"referenceName": "AIR-TTL",
+																"type": "IntegrationRuntimeReference"
 															},
 															"traceLevel": "Fine"
 														}
@@ -7568,6 +7526,7 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Property')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Tenancy')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_StagingToTransformed_Contact')]",
