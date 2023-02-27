@@ -65,6 +65,7 @@
 						"value": "@activity('Core_Entities').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Staging",
