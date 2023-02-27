@@ -65,7 +65,7 @@
 						"value": "@activity('Core_Entities').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Staging",
@@ -325,9 +325,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
@@ -916,9 +916,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
@@ -1188,9 +1188,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
@@ -1592,9 +1592,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
@@ -1886,9 +1886,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
@@ -2136,9 +2136,9 @@
 															}
 														}
 													},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
 													},
 													"traceLevel": "Fine"
 												}
