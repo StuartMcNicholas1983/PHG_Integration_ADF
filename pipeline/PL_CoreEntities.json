@@ -1847,12 +1847,63 @@
 										"value": "HouseholdMember",
 										"activities": [
 											{
-												"name": "Wait12",
-												"type": "Wait",
+												"name": "Stg_to_Trfd - Household Member",
+												"type": "ExecuteDataFlow",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
+													"dataflow": {
+														"referenceName": "DF_StagingToTransformed_HouseholdMember",
+														"type": "DataFlowReference",
+														"parameters": {
+															"DatalakeFilename": {
+																"value": "'@{item().DatalakeFilename}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"Staging": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Staging",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															},
+															"Transformed": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Transformed",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															}
+														}
+													},
+													"integrationRuntime": {
+														"referenceName": "AIR-TTL",
+														"type": "IntegrationRuntimeReference"
+													},
+													"traceLevel": "Fine"
 												}
 											}
 										]
