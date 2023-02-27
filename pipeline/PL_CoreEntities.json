@@ -1833,12 +1833,63 @@
 										"value": "Transaction",
 										"activities": [
 											{
-												"name": "Wait11",
-												"type": "Wait",
+												"name": "Stg_to_Trfd - Transaction",
+												"type": "ExecuteDataFlow",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
+													"dataflow": {
+														"referenceName": "DF_StagingToTransformed_Transaction",
+														"type": "DataFlowReference",
+														"parameters": {
+															"DatalakeFilename": {
+																"value": "'@{item().DatalakeFilename}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"Staging": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Staging",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															},
+															"Transformed": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Transformed",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															}
+														}
+													},
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
 												}
 											}
 										]
