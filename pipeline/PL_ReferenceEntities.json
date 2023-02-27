@@ -441,87 +441,13 @@
 							}
 						},
 						{
-							"name": "Stored procedure2",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "Transformed to Destination",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[spLog_Something]",
-								"storedProcedureParameters": {
-									"param1": {
-										"value": "1",
-										"type": "Int32"
-									},
-									"param2": {
-										"value": "1",
-										"type": "Int32"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "Control",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
-							"name": "Stored procedure3",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "Source to Staging",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[spLog_Something]",
-								"storedProcedureParameters": {
-									"param1": {
-										"value": "1",
-										"type": "Int32"
-									},
-									"param2": {
-										"value": "1",
-										"type": "Int32"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "Control",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
 							"name": "Write to PipelineLog",
 							"type": "Copy",
 							"dependsOn": [
 								{
 									"activity": "Transformed to Destination",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
@@ -583,7 +509,7 @@
 								{
 									"activity": "Source to Staging",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
