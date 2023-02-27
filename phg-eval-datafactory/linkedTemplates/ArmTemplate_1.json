@@ -731,7 +731,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DL_Config')]",
+			"name": "[concat(parameters('factoryName'), '/PL_Config')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
