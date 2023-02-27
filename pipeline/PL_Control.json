@@ -176,7 +176,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "DL_Config",
+						"referenceName": "PL_Config",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
