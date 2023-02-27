@@ -6,9 +6,9 @@
 			"computeProperties": {
 				"location": "AutoResolve",
 				"dataFlowProperties": {
-					"computeType": "General",
+					"computeType": "MemoryOptimized",
 					"coreCount": 8,
-					"timeToLive": 60,
+					"timeToLive": 15,
 					"cleanup": false
 				}
 			}
