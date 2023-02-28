@@ -70,7 +70,7 @@
 								{
 									"activity": "Initialise",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
@@ -128,7 +128,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "Reference Entities",
+									"activity": "Initialise",
 									"dependencyConditions": [
 										"Succeeded"
 									]
