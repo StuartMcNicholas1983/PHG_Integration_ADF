@@ -77,7 +77,8 @@
 										"fileExtension": ".txt"
 									}
 								},
-								"enableStaging": false
+								"enableStaging": false,
+								"dataIntegrationUnits": 2
 							},
 							"inputs": [
 								{
