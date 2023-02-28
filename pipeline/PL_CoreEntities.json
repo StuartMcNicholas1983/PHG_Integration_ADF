@@ -252,7 +252,7 @@
 							}
 						},
 						{
-							"name": "Switch Entity 1 of 2",
+							"name": "Switch Entity",
 							"type": "Switch",
 							"dependsOn": [
 								{
@@ -2274,52 +2274,6 @@
 												]
 											}
 										]
-									}
-								]
-							}
-						},
-						{
-							"name": "Switch Entity 2 of 2",
-							"type": "Switch",
-							"dependsOn": [
-								{
-									"activity": "Switch Entity 1 of 2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"on": {
-									"value": "@item().Entity",
-									"type": "Expression"
-								},
-								"cases": [
-									{
-										"value": "DiaryNote",
-										"activities": [
-											{
-												"name": "Wait10",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 1
-												}
-											}
-										]
-									}
-								],
-								"defaultActivities": [
-									{
-										"name": "Wait9",
-										"type": "Wait",
-										"dependsOn": [],
-										"userProperties": [],
-										"typeProperties": {
-											"waitTimeInSeconds": 1
-										}
 									}
 								]
 							}
