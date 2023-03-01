@@ -52,6 +52,10 @@
 				"type": "String"
 			},
 			{
+				"name": "destination",
+				"type": "String"
+			},
+			{
 				"name": "modified",
 				"type": "String"
 			},

@@ -372,77 +372,6 @@
 							}
 						},
 						{
-							"name": "Staging to Transformed",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [
-								{
-									"activity": "Source to Staging",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataflow": {
-									"referenceName": "DF_StagingToTransformed",
-									"type": "DataFlowReference",
-									"parameters": {
-										"EntityQualifiedName": {
-											"value": "'@{item().DestEntity}'",
-											"type": "Expression"
-										},
-										"DatalakeFilename": {
-											"value": "'@{item().DatalakeFilename}'",
-											"type": "Expression"
-										}
-									},
-									"datasetParameters": {
-										"Staging": {
-											"Container": {
-												"value": "@item().DatalakeContainer",
-												"type": "Expression"
-											},
-											"Directory": {
-												"value": "@item().DatalakeDirectory_Staging",
-												"type": "Expression"
-											},
-											"Filename": {
-												"value": "@item().DatalakeFilename",
-												"type": "Expression"
-											}
-										},
-										"Transformed": {
-											"Container": {
-												"value": "@item().DatalakeContainer",
-												"type": "Expression"
-											},
-											"Directory": {
-												"value": "@item().DatalakeDirectory_Transformed",
-												"type": "Expression"
-											},
-											"Filename": {
-												"value": "@item().DatalakeFilename",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								"integrationRuntime": {
-									"referenceName": "AIR-TTL",
-									"type": "IntegrationRuntimeReference"
-								},
-								"traceLevel": "Fine"
-							}
-						},
-						{
 							"name": "Write to PipelineLog",
 							"type": "Copy",
 							"dependsOn": [
@@ -562,6 +491,134 @@
 									"parameters": {
 										"SchemaName": "dbo",
 										"TableName": "PipelineLog"
+									}
+								}
+							]
+						},
+						{
+							"name": "Staging to Transformed",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Source to Staging",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "code",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Entity_IntegrationKey",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "name",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Entity_Name",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "destination",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EntityQualifiedName",
+												"physicalType": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_Datalake_PipeDelimited_Reference",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Staging",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_Datalake_PipeDelimited_Reference",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Transformed",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
 									}
 								}
 							]
