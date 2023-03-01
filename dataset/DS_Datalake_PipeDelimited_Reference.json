@@ -44,11 +44,15 @@
 		},
 		"schema": [
 			{
-				"name": "code",
+				"name": "phg_integrationkey",
 				"type": "String"
 			},
 			{
-				"name": "name",
+				"name": "phg_code",
+				"type": "String"
+			},
+			{
+				"name": "phg_name",
 				"type": "String"
 			},
 			{

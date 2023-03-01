@@ -260,9 +260,7 @@
 									"mappings": [
 										{
 											"source": {
-												"name": "Entity_IntegrationKey",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_integrationkey"
 											},
 											"sink": {
 												"name": "phg_integrationkey",
@@ -271,9 +269,7 @@
 										},
 										{
 											"source": {
-												"name": "Entity_Code",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_code"
 											},
 											"sink": {
 												"name": "phg_code",
@@ -282,9 +278,7 @@
 										},
 										{
 											"source": {
-												"name": "Entity_Name",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_name"
 											},
 											"sink": {
 												"name": "phg_name",
@@ -543,46 +537,34 @@
 									"mappings": [
 										{
 											"source": {
-												"name": "code",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_code"
 											},
 											"sink": {
-												"name": "Entity_IntegrationKey",
-												"physicalType": "String"
+												"name": "phg_code"
 											}
 										},
 										{
 											"source": {
-												"name": "name",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_name"
 											},
 											"sink": {
-												"name": "Entity_Name",
-												"physicalType": "String"
+												"name": "phg_name"
 											}
 										},
 										{
 											"source": {
-												"name": "destination",
-												"type": "String",
-												"physicalType": "String"
+												"name": "phg_integrationkey"
 											},
 											"sink": {
-												"name": "EntityQualifiedName",
-												"physicalType": "String"
+												"name": "phg_integrationkey"
 											}
 										},
 										{
 											"source": {
-												"name": "code",
-												"type": "String",
-												"physicalType": "String"
+												"name": "destination"
 											},
 											"sink": {
-												"name": "Entity_Code",
-												"physicalType": "String"
+												"name": "destination"
 											}
 										}
 									],
