@@ -573,6 +573,17 @@
 												"name": "EntityQualifiedName",
 												"physicalType": "String"
 											}
+										},
+										{
+											"source": {
+												"name": "code",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Entity_Code",
+												"physicalType": "String"
+											}
 										}
 									],
 									"typeConversion": true,
