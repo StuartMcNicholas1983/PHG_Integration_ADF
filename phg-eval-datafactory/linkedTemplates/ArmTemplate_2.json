@@ -4201,7 +4201,7 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_propertybuildtypeid",
+																			"name": "phg_buildtypeid",
 																			"type": "Guid",
 																			"physicalType": "Guid"
 																		},
