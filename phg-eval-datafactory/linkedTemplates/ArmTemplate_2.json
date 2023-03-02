@@ -566,7 +566,14 @@
 											"type": "Expression"
 										}
 									},
-									"srcsystem": {
+									"sequenceGroup": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.SequenceGroup",
+											"type": "Expression"
+										}
+									},
+									"srcSystem": {
 										"type": "String",
 										"value": {
 											"value": "@pipeline().parameters.SourceSystemName",
@@ -592,7 +599,7 @@
 							{
 								"activity": "Core_Entities",
 								"dependencyConditions": [
-									"Succeeded"
+									"Failed"
 								]
 							}
 						],
@@ -2862,10 +2869,13 @@
 					},
 					"SourceSystemName": {
 						"type": "string"
+					},
+					"SequenceGroup": {
+						"type": "int"
 					}
 				},
 				"folder": {
-					"name": "OH_D365_DataSync/Source System Pipelines"
+					"name": "OH_D365_DataSync/Child Packages"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-17T13:03:59Z"
@@ -3057,7 +3067,7 @@
 					}
 				},
 				"folder": {
-					"name": "OH_D365_DataSync/Source System Pipelines"
+					"name": "Archive"
 				},
 				"annotations": []
 			},
@@ -3097,7 +3107,14 @@
 											"type": "Expression"
 										}
 									},
-									"srcsystem": {
+									"sequenceGroup": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.SequenceGroup",
+											"type": "Expression"
+										}
+									},
+									"srcSystem": {
 										"type": "String",
 										"value": {
 											"value": "@pipeline().parameters.SourceSystemName",
@@ -3123,7 +3140,7 @@
 							{
 								"activity": "Reference_Entities",
 								"dependencyConditions": [
-									"Succeeded"
+									"Failed"
 								]
 							}
 						],
@@ -3700,10 +3717,13 @@
 					},
 					"SourceSystemName": {
 						"type": "string"
+					},
+					"SequenceGroup": {
+						"type": "int"
 					}
 				},
 				"folder": {
-					"name": "OH_D365_DataSync/Source System Pipelines"
+					"name": "OH_D365_DataSync/Child Packages"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-15T20:38:51Z"
@@ -3717,16 +3737,520 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "SourceSystems",
+						"name": "SequenceGroups",
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "Config",
+								"activity": "SourceSystem",
 								"dependencyConditions": [
 									"Succeeded"
 								]
 							}
 						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SourceSystems').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Reference Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_ReferenceEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Core Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "Reference Entities",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_CoreEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "SourceSystem",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SourceSystems",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SourceSystems').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "D365_TransactionCurrency to SQL",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CommonDataServiceForAppsSource"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": "truncate table adf.d365_transactioncurrency",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "transactioncurrencyid",
+														"type": "Guid"
+													},
+													"sink": {
+														"name": "transactioncurrencyid",
+														"type": "Guid"
+													}
+												},
+												{
+													"source": {
+														"name": "isocurrencycode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "isocurrencycode",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "currencyname",
+														"type": "String"
+													},
+													"sink": {
+														"name": "currencyname",
+														"type": "String"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Dataverse_Eval",
+											"type": "DatasetReference",
+											"parameters": {
+												"EntityName": "transactioncurrency"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": "OH_D365_Config",
+												"SchemaName": "adf",
+												"TableName": "d365_transactioncurrency"
+											}
+										}
+									]
+								},
+								{
+									"name": "D365_StringMap to SQL",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "D365_TransactionCurrency to SQL",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CommonDataServiceForAppsSource",
+											"query": "<fetch>\r\n\t<entity name=\"stringmap\">\t\t\r\n\t\t\r\n\t\t<attribute name=\"attributename\"/>\t\t\r\n\t\t<attribute name=\"attributevalue\"/>\r\n\t\t<attribute name=\"objecttypecode\"/>\r\n\t\t<attribute name=\"value\"/>\r\n\r\n\t\t<filter type=\"and\">\r\n\t\t\t<condition attribute=\"attributename\" operator=\"like\" value=\"phg_%\"/>\r\n\t\t</filter>\r\n\t\t\r\n\t</entity>\r\n</fetch>\r\n"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": "truncate table adf.d365_stringmap",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "attributename",
+														"type": "String"
+													},
+													"sink": {
+														"name": "attributename",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "attributevalue",
+														"type": "Int32"
+													},
+													"sink": {
+														"name": "attributevalue",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "objecttypecode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "objecttypecode",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "value",
+														"type": "String"
+													},
+													"sink": {
+														"name": "value",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "stringmapid",
+														"type": "Guid"
+													},
+													"sink": {
+														"name": "stringmapid",
+														"type": "Guid"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Dataverse_Eval",
+											"type": "DatasetReference",
+											"parameters": {
+												"EntityName": "stringmap"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": "OH_D365_Config",
+												"SchemaName": "adf",
+												"TableName": "d365_stringmap"
+											}
+										}
+									]
+								},
+								{
+									"name": "Reference Entity Code Map to SQL",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "D365_StringMap to SQL",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ExcelSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": "truncate table adf.ReferenceEntityCodeMap",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SourceSystem",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "SourceSystem",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "SourceSchema",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "SourceSchema",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "SourceTable",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "SourceTable",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "SourceCode",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "SourceCode",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Entity",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Entity",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "EntityQualifiedName",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "EntityQualifiedName",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "EntityCode",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "EntityCode",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "EntityValue",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "EntityValue",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Excel_ReferenceEntityCodeMap",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "OH_D365_Config",
+													"type": "Expression"
+												},
+												"SchemaName": "adf",
+												"TableName": "ReferenceEntityCodeMap"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "SourceSystems",
+						"type": "Lookup",
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -3758,146 +4282,6 @@
 							},
 							"firstRowOnly": false
 						}
-					},
-					{
-						"name": "SourceSystem",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "SourceSystems",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('SourceSystems').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Reference Entities",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "Initialise",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_ReferenceEntities",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"PipelineName": {
-												"value": "@item().Pipeline",
-												"type": "Expression"
-											},
-											"SourceSystemName": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
-									"name": "Core Entities",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "D365 Lookups",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_CoreEntities",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"PipelineName": {
-												"value": "@item().Pipeline",
-												"type": "Expression"
-											},
-											"SourceSystemName": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
-									"name": "D365 Lookups",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "Reference Entities",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_D365Lookups",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
-								},
-								{
-									"name": "Initialise",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_Initialise",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().SrcDatabase",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Config",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_Config",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
 					}
 				],
 				"policy": {
@@ -3918,8 +4302,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_Initialise')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]"
 			]
 		}
 	]
