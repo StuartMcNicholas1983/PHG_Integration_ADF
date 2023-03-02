@@ -62,7 +62,7 @@
 					{
 						"activity": "Reference_Entities",
 						"dependencyConditions": [
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
