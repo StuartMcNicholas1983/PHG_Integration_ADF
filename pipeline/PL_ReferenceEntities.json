@@ -655,10 +655,9 @@
 									"writeBehavior": "upsert",
 									"upsertSettings": {
 										"useTempDB": true,
-										"keys": {
-											"value": "@item().UpsertKeyColumn",
-											"type": "Expression"
-										}
+										"keys": [
+											"phg_integrationkey"
+										]
 									},
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate"
