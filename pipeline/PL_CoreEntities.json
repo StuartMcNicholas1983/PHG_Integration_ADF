@@ -397,7 +397,6 @@
 															{
 																"source": {
 																	"name": "phg_buildtypeid",
-																	"type": "Guid",
 																	"physicalType": "Guid"
 																},
 																"sink": {
