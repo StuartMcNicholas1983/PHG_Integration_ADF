@@ -652,7 +652,14 @@
 								},
 								"sink": {
 									"type": "SqlServerSink",
-									"writeBehavior": "insert",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": {
+											"value": "@item().UpsertKeyColumn",
+											"type": "Expression"
+										}
+									},
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate"
 								},
@@ -669,7 +676,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_SQL_OnPrem",
+									"referenceName": "DS_SQL_OnPrem_Tbl",
 									"type": "DatasetReference",
 									"parameters": {
 										"ServerName": {
@@ -680,7 +687,11 @@
 											"value": "@item().SrcDatabase",
 											"type": "Expression"
 										},
-										"SchemaName": "d365"
+										"SchemaName": "d365",
+										"TableName": {
+											"value": "@item().DestEntity",
+											"type": "Expression"
+										}
 									}
 								}
 							]
