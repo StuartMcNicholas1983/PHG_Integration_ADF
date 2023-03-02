@@ -1,5 +1,5 @@
 {
-	"name": "PL_CoreEntities_DFs",
+	"name": "PL_CoreEntities",
 	"properties": {
 		"activities": [
 			{
@@ -264,7 +264,7 @@
 							"type": "Switch",
 							"dependsOn": [
 								{
-									"activity": "Source to Staging",
+									"activity": "Staging to Transformed",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -281,76 +281,9 @@
 										"value": "Property",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Property",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.00:10:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_Property",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - Property",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Property",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.00:10:00",
 													"retry": 0,
@@ -873,76 +806,9 @@
 										"value": "Tenancy",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Tenancy",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_Tenancy",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - Tenancy",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Tenancy",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -1146,76 +1012,9 @@
 										"value": "Contact",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Contact",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_Contact",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - Contact",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Contact",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -1551,76 +1350,9 @@
 										"value": "HousingAccount",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Housing Account",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_HousingAccount",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - HousingAccount",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Housing Account",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -1846,76 +1578,9 @@
 										"value": "Transaction",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Transaction",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_Transaction",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - Transaction",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Transaction",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -2097,76 +1762,9 @@
 										"value": "HouseholdMember",
 										"activities": [
 											{
-												"name": "Stg_to_Trfd - Household Member",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "DF_StagingToTransformed_HouseholdMember",
-														"type": "DataFlowReference",
-														"parameters": {
-															"DatalakeFilename": {
-																"value": "'@{item().DatalakeFilename}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"Staging": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Staging",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															},
-															"Transformed": {
-																"Container": {
-																	"value": "@item().DatalakeContainer",
-																	"type": "Expression"
-																},
-																"Directory": {
-																	"value": "@item().DatalakeDirectory_Transformed",
-																	"type": "Expression"
-																},
-																"Filename": {
-																	"value": "@item().DatalakeFilename",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
-													"integrationRuntime": {
-														"referenceName": "AIR-TTL",
-														"type": "IntegrationRuntimeReference"
-													},
-													"traceLevel": "Fine"
-												}
-											},
-											{
 												"name": "Trfd_to_Dest - HouseholdMember",
 												"type": "Copy",
-												"dependsOn": [
-													{
-														"activity": "Stg_to_Trfd - Household Member",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -2291,6 +1889,171 @@
 									}
 								]
 							}
+						},
+						{
+							"name": "Staging to Transformed",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Source to Staging",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_Datalake_PipeDelimited",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Staging",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_Datalake_PipeDelimited",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@item().DatalakeContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@item().DatalakeDirectory_Transformed",
+											"type": "Expression"
+										},
+										"Filename": {
+											"value": "@item().DatalakeFilename",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Destination to Source",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Switch Entity",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "CommonDataServiceForAppsSource",
+									"query": {
+										"value": "@item().FetchXML",
+										"type": "Expression"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": [
+											"phg_integrationkey"
+										]
+									},
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_Dataverse_Eval",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityName": "a"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQL_OnPrem_Tbl",
+									"type": "DatasetReference",
+									"parameters": {
+										"ServerName": {
+											"value": "@item().SrcServer",
+											"type": "Expression"
+										},
+										"DatabaseName": {
+											"value": "@item().SrcDatabase",
+											"type": "Expression"
+										},
+										"SchemaName": "d365",
+										"TableName": {
+											"value": "@item().DestEntity",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}
@@ -2308,7 +2071,7 @@
 			}
 		},
 		"folder": {
-			"name": "Archive"
+			"name": "OH_D365_DataSync/Child Packages"
 		},
 		"annotations": [],
 		"lastPublishTime": "2023-02-17T13:03:59Z"

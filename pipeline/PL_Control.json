@@ -605,7 +605,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "PL_CoreEntities",
+									"referenceName": "PL_CoreEntities_DFs",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
