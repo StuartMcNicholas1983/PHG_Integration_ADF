@@ -1147,7 +1147,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_CoreEntities_DFs",
+											"referenceName": "PL_CoreEntities",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -1193,7 +1193,7 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Excel_ReferenceEntityCodeMap')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities_DFs')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]"
 			]
 		},
 		{
