@@ -163,8 +163,13 @@
 								},
 								"sink": {
 									"type": "SqlServerSink",
-									"preCopyScript": "truncate table adf.d365_transactioncurrency",
-									"writeBehavior": "insert",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": [
+											"transactioncurrencyid"
+										]
+									},
 									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
@@ -255,8 +260,13 @@
 								},
 								"sink": {
 									"type": "SqlServerSink",
-									"preCopyScript": "truncate table adf.d365_stringmap",
-									"writeBehavior": "insert",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": [
+											"stringmapid"
+										]
+									},
 									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
