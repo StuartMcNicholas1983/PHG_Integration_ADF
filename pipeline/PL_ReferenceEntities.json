@@ -30,7 +30,14 @@
 									"type": "Expression"
 								}
 							},
-							"srcsystem": {
+							"sequenceGroup": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.SequenceGroup",
+									"type": "Expression"
+								}
+							},
+							"srcSystem": {
 								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.SourceSystemName",
@@ -55,7 +62,7 @@
 					{
 						"activity": "Reference_Entities",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
@@ -632,7 +639,7 @@
 			}
 		},
 		"folder": {
-			"name": "OH_D365_DataSync/Source System Pipelines"
+			"name": "OH_D365_DataSync/Child Packages"
 		},
 		"annotations": [],
 		"lastPublishTime": "2023-02-15T20:38:51Z"
