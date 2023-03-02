@@ -58,7 +58,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SourceSystems').output.value",
+						"value": "@activity('SequenceGroups').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
