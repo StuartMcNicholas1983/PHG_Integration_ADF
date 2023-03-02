@@ -197,9 +197,12 @@
 											"value": "@item().SrcServer",
 											"type": "Expression"
 										},
-										"DatabaseName": "OH_D365_Config",
-										"SchemaName": "adf",
-										"TableName": "d365_transactioncurrency"
+										"DatabaseName": {
+											"value": "@item().SrcDatabase",
+											"type": "Expression"
+										},
+										"SchemaName": "d365",
+										"TableName": "transactioncurrency"
 									}
 								}
 							]
@@ -314,9 +317,12 @@
 											"value": "@item().SrcServer",
 											"type": "Expression"
 										},
-										"DatabaseName": "OH_D365_Config",
-										"SchemaName": "adf",
-										"TableName": "d365_stringmap"
+										"DatabaseName": {
+											"value": "@item().SrcDatabase",
+											"type": "Expression"
+										},
+										"SchemaName": "d365",
+										"TableName": "stringmap"
 									}
 								}
 							]
@@ -479,7 +485,7 @@
 											"type": "Expression"
 										},
 										"DatabaseName": {
-											"value": "OH_D365_Config",
+											"value": "@item().SrcDatabase",
 											"type": "Expression"
 										},
 										"SchemaName": "adf",
