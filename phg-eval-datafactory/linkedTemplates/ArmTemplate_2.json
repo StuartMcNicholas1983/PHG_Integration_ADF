@@ -5950,7 +5950,7 @@
 								"value": "@activity('SequenceGroups - Reference').output.value",
 								"type": "Expression"
 							},
-							"isSequential": false,
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "Reference Entities",
@@ -6485,6 +6485,7 @@
 								"value": "@activity('SequenceGroups - Core').output.value",
 								"type": "Expression"
 							},
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "Core Entities",
