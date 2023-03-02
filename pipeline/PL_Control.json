@@ -49,7 +49,7 @@
 				}
 			},
 			{
-				"name": "SequenceGroup",
+				"name": "SequenceGroup - Reference",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -531,7 +531,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroup",
+						"activity": "SequenceGroup - Reference",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -572,7 +572,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "SequenceGroup - Core",
 				"type": "ForEach",
 				"dependsOn": [
 					{
