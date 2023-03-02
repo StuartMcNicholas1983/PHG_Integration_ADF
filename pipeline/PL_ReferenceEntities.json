@@ -168,7 +168,6 @@
 									}
 								},
 								"enableStaging": false,
-								"dataIntegrationUnits": 2,
 								"translator": {
 									"type": "TabularTranslator",
 									"typeConversion": true,
@@ -261,7 +260,6 @@
 									}
 								},
 								"enableStaging": false,
-								"dataIntegrationUnits": 2,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
