@@ -626,6 +626,9 @@
 			},
 			"SourceSystemName": {
 				"type": "string"
+			},
+			"SequenceGroup": {
+				"type": "int"
 			}
 		},
 		"folder": {
