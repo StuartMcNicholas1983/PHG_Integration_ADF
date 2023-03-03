@@ -5103,6 +5103,39 @@
 																			"name": "telephone2",
 																			"type": "String"
 																		}
+																	},
+																	{
+																		"source": {
+																			"name": "gendercode",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "gendercode",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_systemorigin",
+																			"type": "Int32",
+																			"physicalType": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_systemorigin",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_primarytenancyid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_primarytenancyid",
+																			"type": "Guid"
+																		}
 																	}
 																],
 																"typeConversion": true,
