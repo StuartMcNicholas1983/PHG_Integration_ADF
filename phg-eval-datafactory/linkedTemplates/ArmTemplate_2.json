@@ -5128,12 +5128,12 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_primarytenancyid",
+																			"name": "phg_primarytenancy",
 																			"type": "Guid",
 																			"physicalType": "Guid"
 																		},
 																		"sink": {
-																			"name": "phg_primarytenancyid",
+																			"name": "phg_primarytenancy",
 																			"type": "Guid"
 																		}
 																	}
