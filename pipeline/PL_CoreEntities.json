@@ -1917,13 +1917,215 @@
 										"value": "Warranty",
 										"activities": [
 											{
-												"name": "Wait1",
-												"type": "Wait",
+												"name": "Trfd_to_Dest - Warranty",
+												"type": "Copy",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
-												}
+													"source": {
+														"type": "DelimitedTextSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "DelimitedTextReadSettings"
+														}
+													},
+													"sink": {
+														"type": "CommonDataServiceForAppsSink",
+														"writeBatchSize": 10,
+														"writeBehavior": "upsert",
+														"ignoreNullValues": false,
+														"alternateKeyName": {
+															"value": "@item().UpsertKeyColumn",
+															"type": "Expression"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"mappings": [
+															{
+																"source": {
+																	"name": "phg_contractorid",
+																	"type": "Guid",
+																	"physicalType": "Guid"
+																},
+																"sink": {
+																	"name": "phg_contractorid",
+																	"type": "Guid"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_description",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_description",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_expirydate",
+																	"type": "DateTime",
+																	"physicalType": "DateTime"
+																},
+																"sink": {
+																	"name": "phg_expirydate",
+																	"type": "DateTime"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_integrationkey",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_integrationkey",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_name",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_name",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_propertyid",
+																	"type": "Guid",
+																	"physicalType": "Guid"
+																},
+																"sink": {
+																	"name": "phg_propertyid",
+																	"type": "Guid"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_relation",
+																	"type": "Int32",
+																	"physicalType": "Int32"
+																},
+																"sink": {
+																	"name": "phg_relation",
+																	"type": "Int32"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_relationcode",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_relationcode",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_relationsubcode",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_selationsubcode",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_startdate",
+																	"type": "DateTime",
+																	"physicalType": "DateTime"
+																},
+																"sink": {
+																	"name": "phg_startdate",
+																	"type": "DateTime"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_warrantycode",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_warrantycode",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
+																	"name": "phg_warrantytype",
+																	"type": "Int32",
+																	"physicalType": "Int32"
+																},
+																"sink": {
+																	"name": "phg_warrantytype",
+																	"type": "Int32"
+																}
+															}
+														],
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "DS_Datalake_PipeDelimited",
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DS_Dataverse_Eval",
+														"type": "DatasetReference",
+														"parameters": {
+															"EntityName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												]
 											}
 										]
 									}
