@@ -4432,12 +4432,23 @@
 																	},
 																	{
 																		"source": {
-																			"name": "phg_propertystatusid",
+																			"name": "phg_propertystatus",
 																			"type": "Guid",
 																			"physicalType": "Guid"
 																		},
 																		"sink": {
 																			"name": "phg_propertystatus",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_substatus",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_substatus",
 																			"type": "Guid"
 																		}
 																	},
@@ -5759,17 +5770,6 @@
 															"translator": {
 																"type": "TabularTranslator",
 																"mappings": [
-																	{
-																		"source": {
-																			"name": "phg_contractorid",
-																			"type": "Guid",
-																			"physicalType": "Guid"
-																		},
-																		"sink": {
-																			"name": "phg_contractorid",
-																			"type": "Guid"
-																		}
-																	},
 																	{
 																		"source": {
 																			"name": "phg_description",
