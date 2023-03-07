@@ -5938,13 +5938,160 @@
 												"value": "Component",
 												"activities": [
 													{
-														"name": "Wait1",
-														"type": "Wait",
+														"name": "Trfd_to_Dest - Component",
+														"type": "Copy",
 														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
 														"userProperties": [],
 														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
+															"source": {
+																"type": "DelimitedTextSource",
+																"storeSettings": {
+																	"type": "AzureBlobFSReadSettings",
+																	"recursive": true,
+																	"enablePartitionDiscovery": false
+																},
+																"formatSettings": {
+																	"type": "DelimitedTextReadSettings"
+																}
+															},
+															"sink": {
+																"type": "CommonDataServiceForAppsSink",
+																"writeBatchSize": 10,
+																"writeBehavior": "upsert",
+																"ignoreNullValues": false,
+																"alternateKeyName": {
+																	"value": "@item().UpsertKeyColumn",
+																	"type": "Expression"
+																}
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "phg_componenttypeid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_componenttypeid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_integrationkey",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_integrationkey",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_make",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_make",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_model",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_model",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_name",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "phg_name",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_propertyid",
+																			"type": "Guid",
+																			"physicalType": "Guid"
+																		},
+																		"sink": {
+																			"name": "phg_propertyid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "phg_replacementcycledate",
+																			"type": "DateTime",
+																			"physicalType": "DateTime"
+																		},
+																		"sink": {
+																			"name": "phg_replacementcycledate",
+																			"type": "DateTime"
+																		}
+																	}
+																],
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Datalake_PipeDelimited",
+																"type": "DatasetReference",
+																"parameters": {
+																	"Container": {
+																		"value": "@item().DatalakeContainer",
+																		"type": "Expression"
+																	},
+																	"Directory": {
+																		"value": "@item().DatalakeDirectory_Transformed",
+																		"type": "Expression"
+																	},
+																	"Filename": {
+																		"value": "@item().DatalakeFilename",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_Dataverse_Eval",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
 													}
 												]
 											}
