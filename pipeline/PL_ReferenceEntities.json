@@ -158,13 +158,6 @@
 												"value": "@item().srcSystem",
 												"type": "Expression"
 											}
-										},
-										"strEntity": {
-											"type": "String",
-											"value": {
-												"value": "@item().Entity",
-												"type": "Expression"
-											}
 										}
 									},
 									"queryTimeout": "02:00:00",
