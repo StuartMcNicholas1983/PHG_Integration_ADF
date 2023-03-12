@@ -152,6 +152,13 @@
 												"value": "@convertToUtc('01/01/2023 00:00:00', 'GMT Standard Time')",
 												"type": "Expression"
 											}
+										},
+										"strSourceSystem": {
+											"type": "String",
+											"value": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											}
 										}
 									},
 									"queryTimeout": "02:00:00",
