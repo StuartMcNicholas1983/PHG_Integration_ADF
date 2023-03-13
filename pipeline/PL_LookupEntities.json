@@ -445,12 +445,226 @@
 										"value": "Ref Entity Code Map",
 										"activities": [
 											{
-												"name": "Wait4",
-												"type": "Wait",
+												"name": "Reference Entity Code Map to SQL",
+												"type": "Copy",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
+													"source": {
+														"type": "ExcelSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														}
+													},
+													"sink": {
+														"type": "SqlServerSink",
+														"preCopyScript": "truncate table adf.ReferenceEntityCodeMap",
+														"writeBehavior": "insert",
+														"sqlWriterUseTableLock": false
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"mappings": [
+															{
+																"source": {
+																	"name": "SourceSystem",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "SourceSystem",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "SourceSchema",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "SourceSchema",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "SourceTable",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "SourceTable",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "SourceCode",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "SourceCode",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "Entity",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "Entity",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "EntityQualifiedName",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "EntityQualifiedName",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "EntityCode",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "EntityCode",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "EntityValue",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "EntityValue",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															}
+														],
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "DS_Excel_ReferenceEntityCodeMap",
+														"type": "DatasetReference"
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DS_SQL_OnPrem_Tbl",
+														"type": "DatasetReference",
+														"parameters": {
+															"ServerName": {
+																"value": "@item().SrcServer",
+																"type": "Expression"
+															},
+															"DatabaseName": {
+																"value": "@item().SrcDatabase",
+																"type": "Expression"
+															},
+															"SchemaName": {
+																"value": "@item().DestSchema",
+																"type": "Expression"
+															},
+															"TableName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											},
+											{
+												"name": "PipelineParameters LogEnd - TransactionCurrency_copy1",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "Reference Entity Code Map to SQL",
+														"dependencyConditions": [
+															"Completed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_LogEnd]",
+													"storedProcedureParameters": {
+														"dtLastPipelineRunEnd": {
+															"value": {
+																"value": "@{utcnow()}",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"strEntity": {
+															"value": {
+																"value": "@item().Entity",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strLastPipelineRunStatus": {
+															"value": {
+																"value": "@{activity('Reference Entity Code Map to SQL').output.executionDetails[0].status}",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strSourceSystem": {
+															"value": {
+																"value": "@item().SrcSystem",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "Control",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
