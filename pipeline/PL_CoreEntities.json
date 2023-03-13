@@ -817,7 +817,7 @@
 													{
 														"activity": "Trfd_to_Dest - Property",
 														"dependencyConditions": [
-															"Succeeded"
+															"Completed"
 														]
 													}
 												],
