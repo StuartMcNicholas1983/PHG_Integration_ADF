@@ -10809,7 +10809,7 @@
 							},
 							"activities": [
 								{
-									"name": "Switch1",
+									"name": "Switch Entity",
 									"type": "Switch",
 									"dependsOn": [],
 									"userProperties": [],
@@ -10823,13 +10823,107 @@
 												"value": "Transaction Currency",
 												"activities": [
 													{
-														"name": "Wait2",
-														"type": "Wait",
+														"name": "D365_TransactionCurrency to SQL",
+														"type": "Copy",
 														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
 														"userProperties": [],
 														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@item().FetchXML",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"writeBehavior": "upsert",
+																"upsertSettings": {
+																	"useTempDB": false,
+																	"keys": [
+																		"transactioncurrencyid"
+																	]
+																},
+																"sqlWriterUseTableLock": false,
+																"tableOption": "autoCreate"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
+																		},
+																		"sink": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "isocurrencycode",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "isocurrencycode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "currencyname",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "currencyname",
+																			"type": "String"
+																		}
+																	}
+																]
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Dataverse_Eval",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": "transactioncurrency"
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().SrcServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().SrcDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
 													}
 												]
 											},
@@ -10837,13 +10931,127 @@
 												"value": "String Map",
 												"activities": [
 													{
-														"name": "Wait3",
-														"type": "Wait",
+														"name": "D365_Stringmap to SQL",
+														"type": "Copy",
 														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
 														"userProperties": [],
 														"typeProperties": {
-															"waitTimeInSeconds": 1
-														}
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@item().FetchXML",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"writeBehavior": "upsert",
+																"upsertSettings": {
+																	"useTempDB": false,
+																	"keys": [
+																		"stringmapid"
+																	]
+																},
+																"sqlWriterUseTableLock": false,
+																"tableOption": "autoCreate"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "attributename",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "attributename",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "attributevalue",
+																			"type": "Int32"
+																		},
+																		"sink": {
+																			"name": "attributevalue",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "objecttypecode",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "objecttypecode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "value",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "value",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "stringmapid",
+																			"type": "Guid"
+																		},
+																		"sink": {
+																			"name": "stringmapid",
+																			"type": "Guid"
+																		}
+																	}
+																]
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Dataverse_Eval",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": "stringmap"
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().SrcServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().SrcDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
 													}
 												]
 											},
@@ -10900,7 +11108,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]"
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]"
 			]
 		}
 	]
