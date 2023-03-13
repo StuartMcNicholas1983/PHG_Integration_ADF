@@ -8350,13 +8350,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										},
-										{
-											"activity": "Transformed",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -9047,6 +9041,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Property",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Property",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Property').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -9252,6 +9303,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Tenancy",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Tenancy",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -9622,6 +9730,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Contact",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Contact",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -9849,6 +10014,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - HousingAccount",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - HousingAccount",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -10032,6 +10254,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Transaction",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Transaction",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Transaction').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -10160,6 +10439,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - HouseholdMember",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - HouseholdMember",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - HouseholdMember').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -10365,6 +10701,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Warranty",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Warranty",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											},
@@ -10526,6 +10919,63 @@
 																}
 															}
 														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Component",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Trfd_to_Dest - Component",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Trfd_to_Dest - Component').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
 													}
 												]
 											}
@@ -10696,6 +11146,69 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "PipelineParameters LogStart",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogStart]",
+										"storedProcedureParameters": {
+											"dtLastPipelineRunStart": {
+												"value": {
+													"value": "@{utcnow()}",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"guidLastPipelineRun": {
+												"value": {
+													"value": "@pipeline().RunId",
+													"type": "Expression"
+												},
+												"type": "Guid"
+											},
+											"strEntity": {
+												"value": {
+													"value": "@item().Entity",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strSourceSystem": {
+												"value": {
+													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
@@ -10727,7 +11240,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]"
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
+				"[concat(variables('factoryId'), '/linkedServices/Control')]"
 			]
 		},
 		{
@@ -10811,7 +11325,14 @@
 								{
 									"name": "Switch Entity",
 									"type": "Switch",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"on": {
@@ -11082,6 +11603,56 @@
 											}
 										]
 									}
+								},
+								{
+									"name": "PipelineParameters LogStart",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogStart]",
+										"storedProcedureParameters": {
+											"dtLastPipelineRunStart": {
+												"value": {
+													"value": "@{utcnow()}",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"guidLastPipelineRun": {
+												"value": {
+													"value": "@pipeline().RunId",
+													"type": "Expression"
+												},
+												"type": "Guid"
+											},
+											"strEntity": {
+												"value": {
+													"value": "@item().Entity",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strSourceSystem": {
+												"value": {
+													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
@@ -11109,6 +11680,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/linkedServices/Control')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]"
 			]
