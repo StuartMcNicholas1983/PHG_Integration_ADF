@@ -545,7 +545,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "SourceSystem",
+								"activity": "SequenceGroup - Lookup",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -643,7 +643,7 @@
 							{
 								"activity": "SourceSystems",
 								"dependencyConditions": [
-									"Succeeded"
+									"Failed"
 								]
 							}
 						],
@@ -1043,7 +1043,14 @@
 					{
 						"name": "SourceSystems",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Wait1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -1171,6 +1178,110 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "SequenceGroups - Lookup",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Wait1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Lookup"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Lookup",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Lookup').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Lookup Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_LookupEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
 					}
 				],
 				"policy": {
@@ -1195,7 +1306,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Excel_ReferenceEntityCodeMap')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]
 		},
 		{
@@ -10616,6 +10728,179 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse_Eval')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_Entities",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Lookup"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									},
+									"sequenceGroup": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.SequenceGroup",
+											"type": "Expression"
+										}
+									},
+									"srcSystem": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.SourceSystemName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Entity",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_Entities",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_Entities').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Switch1",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Transaction Currency",
+												"activities": [
+													{
+														"name": "Wait2",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											},
+											{
+												"value": "String Map",
+												"activities": [
+													{
+														"name": "Wait3",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											},
+											{
+												"value": "Ref Entity Code Map",
+												"activities": [
+													{
+														"name": "Wait4",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string"
+					},
+					"SourceSystemName": {
+						"type": "string"
+					},
+					"SequenceGroup": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync/Child Packages"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]"
 			]
 		}
 	]
