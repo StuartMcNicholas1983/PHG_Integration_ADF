@@ -178,11 +178,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"ServerName": {
-																"value": "@item().SrcServer",
+																"value": "@item().DestServer",
 																"type": "Expression"
 															},
 															"DatabaseName": {
-																"value": "@item().SrcDatabase",
+																"value": "@item().DestDatabase",
 																"type": "Expression"
 															},
 															"SchemaName": {
@@ -363,11 +363,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"ServerName": {
-																"value": "@item().SrcServer",
+																"value": "@item().DestServer",
 																"type": "Expression"
 															},
 															"DatabaseName": {
-																"value": "@item().SrcDatabase",
+																"value": "@item().DestDatabase",
 																"type": "Expression"
 															},
 															"SchemaName": {
@@ -591,11 +591,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"ServerName": {
-																"value": "@item().SrcServer",
+																"value": "@item().DestServer",
 																"type": "Expression"
 															},
 															"DatabaseName": {
-																"value": "@item().SrcDatabase",
+																"value": "@item().DestDatabase",
 																"type": "Expression"
 															},
 															"SchemaName": {
