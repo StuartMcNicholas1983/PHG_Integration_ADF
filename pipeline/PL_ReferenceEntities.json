@@ -142,7 +142,7 @@
 										"dtLastPipelineRun": {
 											"type": "DateTime",
 											"value": {
-												"value": "@convertToUtc('01/01/2023 00:00:00', 'GMT Standard Time')",
+												"value": "@item().LastSuccessfulPipelineRunStart",
 												"type": "Expression"
 											}
 										},
@@ -490,11 +490,8 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DS_Dataverse_Eval",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityName": "a"
-									}
+									"referenceName": "DS_Dataverse",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -680,6 +677,15 @@
 															"name": "phg_name",
 															"type": "String"
 														}
+													},
+													{
+														"source": {
+															"name": "phg_checksum"
+														},
+														"sink": {
+															"name": "phg_checksum",
+															"type": "String"
+														}
 													}
 												],
 												"typeConversion": true,
@@ -711,14 +717,8 @@
 										],
 										"outputs": [
 											{
-												"referenceName": "DS_Dataverse_Eval",
-												"type": "DatasetReference",
-												"parameters": {
-													"EntityName": {
-														"value": "@item().DestEntity",
-														"type": "Expression"
-													}
-												}
+												"referenceName": "DS_Dataverse",
+												"type": "DatasetReference"
 											}
 										]
 									},

@@ -143,7 +143,7 @@
 										"dtLastPipelineRun": {
 											"type": "DateTime",
 											"value": {
-												"value": "@convertToUtc('01/01/2023 00:00:00', 'GMT Standard Time')",
+												"value": "@item().LastSuccessfulPipelineRunStart",
 												"type": "Expression"
 											}
 										},
@@ -768,6 +768,17 @@
 																	"name": "phg_gascapped",
 																	"type": "Boolean"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -799,14 +810,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -1030,6 +1035,17 @@
 																	"name": "phg_propertyid",
 																	"type": "Guid"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -1061,14 +1077,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -1457,6 +1467,17 @@
 																	"name": "phg_primarytenancy",
 																	"type": "Guid"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -1488,14 +1509,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -1741,6 +1756,17 @@
 																	"name": "transactioncurrencyid",
 																	"type": "Guid"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -1772,14 +1798,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -1981,6 +2001,17 @@
 																	"name": "transactioncurrencyid",
 																	"type": "Guid"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -2012,14 +2043,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -2197,14 +2222,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -2428,6 +2447,17 @@
 																	"name": "phg_warrantytype",
 																	"type": "Int32"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -2459,14 +2489,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -2646,6 +2670,17 @@
 																	"name": "phg_replacementcycledate",
 																	"type": "DateTime"
 																}
+															},
+															{
+																"source": {
+																	"name": "phg_checksum",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "phg_checksum",
+																	"type": "String"
+																}
 															}
 														],
 														"typeConversion": true,
@@ -2677,14 +2712,8 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
-														"type": "DatasetReference",
-														"parameters": {
-															"EntityName": {
-																"value": "@item().DestEntity",
-																"type": "Expression"
-															}
-														}
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference"
 													}
 												]
 											},
@@ -2886,11 +2915,8 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DS_Dataverse_Eval",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityName": "a"
-									}
+									"referenceName": "DS_Dataverse",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [

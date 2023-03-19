@@ -1,8 +1,8 @@
 {
-	"name": "DS_Dataverse_Eval",
+	"name": "DS_Dataverse",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "phg_eval_dataverse",
+			"referenceName": "phg_dev_dataverse",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

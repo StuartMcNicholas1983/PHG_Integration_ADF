@@ -165,7 +165,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
+														"referenceName": "DS_Dataverse",
 														"type": "DatasetReference",
 														"parameters": {
 															"EntityName": "transactioncurrency"
@@ -350,7 +350,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Dataverse_Eval",
+														"referenceName": "DS_Dataverse",
 														"type": "DatasetReference",
 														"parameters": {
 															"EntityName": "stringmap"

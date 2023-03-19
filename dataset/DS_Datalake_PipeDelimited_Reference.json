@@ -66,6 +66,10 @@
 			{
 				"name": "created",
 				"type": "String"
+			},
+			{
+				"name": "phg_checksum",
+				"type": "String"
 			}
 		]
 	},
