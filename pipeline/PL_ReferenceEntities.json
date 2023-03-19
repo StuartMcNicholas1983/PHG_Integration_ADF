@@ -368,34 +368,52 @@
 									"mappings": [
 										{
 											"source": {
-												"name": "phg_code"
+												"name": "phg_code",
+												"type": "String"
 											},
 											"sink": {
-												"name": "phg_code"
+												"name": "phg_code",
+												"type": "String"
 											}
 										},
 										{
 											"source": {
-												"name": "phg_name"
+												"name": "phg_name",
+												"type": "String"
 											},
 											"sink": {
-												"name": "phg_name"
+												"name": "phg_name",
+												"type": "String"
 											}
 										},
 										{
 											"source": {
-												"name": "phg_integrationkey"
+												"name": "phg_integrationkey",
+												"type": "String"
 											},
 											"sink": {
-												"name": "phg_integrationkey"
+												"name": "phg_integrationkey",
+												"type": "String"
 											}
 										},
 										{
 											"source": {
-												"name": "destination"
+												"name": "destination",
+												"type": "String"
 											},
 											"sink": {
-												"name": "destination"
+												"name": "destination",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "phg_checksum",
+												"type": "String"
+											},
+											"sink": {
+												"name": "phg_checksum",
+												"type": "String"
 											}
 										}
 									],
@@ -491,13 +509,7 @@
 							"inputs": [
 								{
 									"referenceName": "DS_Dataverse",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityName": {
-											"value": "@item().DestEntity",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -724,13 +736,7 @@
 										"outputs": [
 											{
 												"referenceName": "DS_Dataverse",
-												"type": "DatasetReference",
-												"parameters": {
-													"EntityName": {
-														"value": "@item().DestEntity",
-														"type": "Expression"
-													}
-												}
+												"type": "DatasetReference"
 											}
 										]
 									},
