@@ -491,7 +491,13 @@
 							"inputs": [
 								{
 									"referenceName": "DS_Dataverse",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityName": {
+											"value": "@item().DestEntity",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
@@ -718,7 +724,13 @@
 										"outputs": [
 											{
 												"referenceName": "DS_Dataverse",
-												"type": "DatasetReference"
+												"type": "DatasetReference",
+												"parameters": {
+													"EntityName": {
+														"value": "@item().DestEntity",
+														"type": "Expression"
+													}
+												}
 											}
 										]
 									},
