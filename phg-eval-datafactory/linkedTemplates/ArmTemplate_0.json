@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'DataLake'"
 		},
+		"phg_dev_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_dev_dataverse'"
+		},
 		"phg_eval_dataverse_servicePrincipalCredential": {
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
@@ -26,6 +30,10 @@
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
+		},
+		"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"type": "string",
@@ -82,6 +90,27 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('DataLake_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/phg_dev_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-development.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
 					}
 				}
 			},
@@ -244,89 +273,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited_Reference')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Dataverse')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "DataLake",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string"
-					},
-					"Filename": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "DataLake"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().Filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": [
-					{
-						"name": "phg_integrationkey",
-						"type": "String"
-					},
-					{
-						"name": "phg_code",
-						"type": "String"
-					},
-					{
-						"name": "phg_name",
-						"type": "String"
-					},
-					{
-						"name": "destination",
-						"type": "String"
-					},
-					{
-						"name": "modified",
-						"type": "String"
-					},
-					{
-						"name": "created",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Dataverse_Eval')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "phg_eval_dataverse",
+					"referenceName": "phg_dev_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -348,7 +300,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
 			]
 		},
 		{

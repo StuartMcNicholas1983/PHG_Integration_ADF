@@ -28,6 +28,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer_OnPrem'"
 		},
+		"phg_dev_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_dev_dataverse'"
+		},
 		"phg_eval_dataverse_servicePrincipalCredential": {
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
@@ -39,6 +43,10 @@
 		"SqlServer_OnPrem_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "GROUPICT\\stuart.mcnicholas"
+		},
+		"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"type": "string",
@@ -80,11 +88,17 @@
 					"DataLake_accountKey": {
 						"value": "[parameters('DataLake_accountKey')]"
 					},
+					"phg_dev_dataverse_servicePrincipalCredential": {
+						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
+					},
 					"phg_eval_dataverse_servicePrincipalCredential": {
 						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
 					},
 					"DataLake_properties_typeProperties_url": {
 						"value": "[parameters('DataLake_properties_typeProperties_url')]"
+					},
+					"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]"
 					},
 					"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]"
