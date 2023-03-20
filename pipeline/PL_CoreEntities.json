@@ -146,13 +146,6 @@
 												"value": "@item().LastSuccessfulPipelineRunStart",
 												"type": "Expression"
 											}
-										},
-										"strSourceSystem": {
-											"type": "String",
-											"value": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											}
 										}
 									},
 									"queryTimeout": "02:00:00",
