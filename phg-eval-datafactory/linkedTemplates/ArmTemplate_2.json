@@ -1557,14 +1557,7 @@
 													{
 														"name": "Trfd_to_Dest - Contact",
 														"type": "Copy",
-														"dependsOn": [
-															{
-																"activity": "Wait1",
-																"dependencyConditions": [
-																	"Failed"
-																]
-															}
-														],
+														"dependsOn": [],
 														"policy": {
 															"timeout": "0.12:00:00",
 															"retry": 0,
@@ -1992,15 +1985,6 @@
 														"linkedServiceName": {
 															"referenceName": "Control",
 															"type": "LinkedServiceReference"
-														}
-													},
-													{
-														"name": "Wait1",
-														"type": "Wait",
-														"dependsOn": [],
-														"userProperties": [],
-														"typeProperties": {
-															"waitTimeInSeconds": 1
 														}
 													}
 												]
