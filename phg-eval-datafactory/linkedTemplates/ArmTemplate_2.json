@@ -9354,7 +9354,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_CoreEntities_old",
+											"referenceName": "PL_CoreEntities",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -9484,7 +9484,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities_old')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]
 		}
