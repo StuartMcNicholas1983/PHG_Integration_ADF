@@ -13,6 +13,319 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Tenancy')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancycategory",
+								"type": "DatasetReference"
+							},
+							"name": "tenancycategory"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancytype",
+								"type": "DatasetReference"
+							},
+							"name": "tenancytype"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_transactioncurrency",
+								"type": "DatasetReference"
+							},
+							"name": "transactioncurrency"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_property",
+								"type": "DatasetReference"
+							},
+							"name": "property"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectTenancyCategory"
+						},
+						{
+							"name": "SelectTenancyType"
+						},
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "JoinTenancyCategory"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinTenancyType"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "SelectTransactionCurrency"
+						},
+						{
+							"name": "ISOCurrencyCode"
+						},
+						{
+							"name": "JoinTransactionCurrency"
+						},
+						{
+							"name": "SelectProperty"
+						},
+						{
+							"name": "SelectB"
+						},
+						{
+							"name": "JoinProperty"
+						},
+						{
+							"name": "SelectC"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_name as string,",
+						"          phg_urn as long,",
+						"          phg_tenancycategoryid as string,",
+						"          phg_tenancytypeid as string,",
+						"          phg_tenancystartdate as string,",
+						"          phg_tenancyenddate as string,",
+						"          phg_propertyid as string,",
+						"          phg_balance as double,",
+						"          phg_rentcharges as double,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_tenancycategoryid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancycategory",
+						"source(output(",
+						"          phg_tenancytypeid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancytype",
+						"source(output(",
+						"          createdby as string,",
+						"          createdbyname as string,",
+						"          createdbyyominame as string,",
+						"          createdon as string,",
+						"          createdonbehalfby as string,",
+						"          createdonbehalfbyname as string,",
+						"          createdonbehalfbyyominame as string,",
+						"          currencyname as string,",
+						"          currencyprecision as string,",
+						"          currencysymbol as string,",
+						"          entityimage_timestamp as string,",
+						"          entityimage_url as string,",
+						"          entityimageid as string,",
+						"          exchangerate as string,",
+						"          importsequencenumber as string,",
+						"          isocurrencycode as string,",
+						"          modifiedby as string,",
+						"          modifiedbyname as string,",
+						"          modifiedbyyominame as string,",
+						"          modifiedon as string,",
+						"          modifiedonbehalfby as string,",
+						"          modifiedonbehalfbyname as string,",
+						"          modifiedonbehalfbyyominame as string,",
+						"          organizationid as string,",
+						"          overriddencreatedon as string,",
+						"          statecode as string,",
+						"          statuscode as string,",
+						"          transactioncurrencyid as string,",
+						"          uniquedscid as string,",
+						"          versionnumber as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> transactioncurrency",
+						"source(output(",
+						"          phg_propertyid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> property",
+						"tenancycategory select(mapColumn(",
+						"          phg_tenancycategoryid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyCategory",
+						"tenancytype select(mapColumn(",
+						"          phg_tenancytypeid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyType",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"SelectStaging, SelectTenancyCategory join(SelectStaging@phg_tenancycategoryid == SelectTenancyCategory@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyCategory",
+						"JoinTenancyCategory select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid = SelectTenancyCategory@phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectTenancyType join(SelectA@phg_tenancytypeid == SelectTenancyType@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyType",
+						"JoinTransactionCurrency select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"transactioncurrency select(mapColumn(",
+						"          currencyname,",
+						"          isocurrencycode,",
+						"          statecode,",
+						"          statuscode,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
+						"SelectC derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+						"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTransactionCurrency",
+						"property select(mapColumn(",
+						"          phg_propertyid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectProperty",
+						"JoinTenancyType select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectB",
+						"SelectB, SelectProperty join(SelectB@phg_propertyid == SelectProperty@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinProperty",
+						"JoinProperty select(mapColumn(",
+						"          phg_integrationkey = SelectB@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid = SelectProperty@phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectC",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Transaction')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -216,380 +529,6 @@
 						"     partitionBy('hash', 1)) ~> Transformed"
 					]
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "CommonDataServiceForAppsSink",
-								"writeBatchSize": 10,
-								"writeBehavior": "upsert"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "donotbulkemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotbulkemail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotemail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotphone",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotphone",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotpostalmail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotpostalmail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "emailaddress1",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "emailaddress1",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "firstname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "firstname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "fullname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "fullname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "lastname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "lastname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "middlename",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "middlename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "mobilephone",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "mobilephone",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_age",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_age",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_integrationkey",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_integrationkey",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_nationaility",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_nationaility",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ninumber",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_ninumber",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_previousname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_previousname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_relgion",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_relgion",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_sexuality",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_sexuality",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "telephone2",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "telephone2",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "gendercode",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "gendercode",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_systemorigin",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_systemorigin",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_primarytenancy",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_primarytenancy",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_checksum",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_checksum",
-											"type": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Transformed/Fortis",
-									"Filename": "fortis_contact.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference",
-								"parameters": {
-									"EntityName": "contact"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -4458,7 +4397,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities')]",
+			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities_old')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -5359,6 +5298,84 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem_Tbl",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+									"DatabaseName": "OH_D365_Config",
+									"SchemaName": "d365",
+									"TableName": "stg_contact"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": "data-sync",
+									"Directory": "OH_D365_DataSync/Staging/Fortis",
+									"Filename": "fortis_contact.csv"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_Control')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5437,7 +5454,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_ReferenceEntities",
+											"referenceName": "PL_ReferenceEntities_old",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -5662,7 +5679,7 @@
 				"lastPublishTime": "2023-02-17T13:03:59Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities_old')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]

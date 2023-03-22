@@ -136,7 +136,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_ReferenceEntities",
+											"referenceName": "PL_ReferenceEntities_old",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -362,7 +362,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities_old')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]
@@ -4245,7 +4245,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities')]",
+			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities_old')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -5151,6 +5151,466 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
 				"[concat(variables('factoryId'), '/linkedServices/Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CommonDataServiceForAppsSink",
+								"writeBatchSize": 10,
+								"writeBehavior": "upsert",
+								"ignoreNullValues": false,
+								"alternateKeyName": "phg_integrationkey"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "donotbulkemail",
+											"type": "Boolean",
+											"physicalType": "Boolean"
+										},
+										"sink": {
+											"name": "donotbulkemail",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "donotemail",
+											"type": "Boolean",
+											"physicalType": "Boolean"
+										},
+										"sink": {
+											"name": "donotemail",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "donotphone",
+											"type": "Boolean",
+											"physicalType": "Boolean"
+										},
+										"sink": {
+											"name": "donotphone",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "donotpostalmail",
+											"type": "Boolean",
+											"physicalType": "Boolean"
+										},
+										"sink": {
+											"name": "donotpostalmail",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "emailaddress1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "emailaddress1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "firstname",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "firstname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fullname",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fullname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lastname",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "lastname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "middlename",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "middlename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "mobilephone",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "mobilephone",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_age",
+											"type": "Int32",
+											"physicalType": "Int32"
+										},
+										"sink": {
+											"name": "phg_age",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_dateofbirth",
+											"type": "DateTime",
+											"physicalType": "DateTime"
+										},
+										"sink": {
+											"name": "phg_dateofbirth",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_dateofdeath",
+											"type": "DateTime",
+											"physicalType": "DateTime"
+										},
+										"sink": {
+											"name": "phg_dateofdeath",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_ethnicgroup",
+											"type": "Guid",
+											"physicalType": "Guid"
+										},
+										"sink": {
+											"name": "phg_ethnicgroup",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_integrationkey",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phg_integrationkey",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_lastloggedin",
+											"type": "DateTime",
+											"physicalType": "DateTime"
+										},
+										"sink": {
+											"name": "phg_lastloggedin",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_nationaility",
+											"type": "Guid",
+											"physicalType": "Guid"
+										},
+										"sink": {
+											"name": "phg_nationaility",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_ninumber",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phg_ninumber",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_previousname",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phg_previousname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_registeredonportal",
+											"type": "Boolean",
+											"physicalType": "Boolean"
+										},
+										"sink": {
+											"name": "phg_registeredonportal",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_relgion",
+											"type": "Guid",
+											"physicalType": "Guid"
+										},
+										"sink": {
+											"name": "phg_relgion",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_sexuality",
+											"type": "Guid",
+											"physicalType": "Guid"
+										},
+										"sink": {
+											"name": "phg_sexuality",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "telephone2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "telephone2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "gendercode",
+											"type": "Int32",
+											"physicalType": "Int32"
+										},
+										"sink": {
+											"name": "gendercode",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_systemorigin",
+											"type": "Int32",
+											"physicalType": "Int32"
+										},
+										"sink": {
+											"name": "phg_systemorigin",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_primarytenancy",
+											"type": "Guid",
+											"physicalType": "Guid"
+										},
+										"sink": {
+											"name": "phg_primarytenancy",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "phg_checksum",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phg_checksum",
+											"type": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": "data-sync",
+									"Directory": "OH_D365_DataSync/Staging/Fortis",
+									"Filename": "fortis_contact.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference",
+								"parameters": {
+									"EntityName": "contact"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem_Tbl",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+									"DatabaseName": "OH_D365_Config",
+									"SchemaName": "d365",
+									"TableName": "stg_contact"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": "data-sync",
+									"Directory": "OH_D365_DataSync/Staging/Fortis",
+									"Filename": "fortis_contact.csv"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]"
 			]
 		},
 		{
@@ -8549,383 +9009,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_transactiontype')]",
 				"[concat(variables('factoryId'), '/datasets/DS_transactioncurrency')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "CommonDataServiceForAppsSink",
-								"writeBatchSize": 10,
-								"writeBehavior": "upsert"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "donotbulkemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotbulkemail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotemail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotphone",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotphone",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotpostalmail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotpostalmail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "emailaddress1",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "emailaddress1",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "firstname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "firstname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "fullname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "fullname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "lastname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "lastname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "middlename",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "middlename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "mobilephone",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "mobilephone",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_age",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_age",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_integrationkey",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_integrationkey",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_nationaility",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_nationaility",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ninumber",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_ninumber",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_previousname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_previousname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_relgion",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_relgion",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_sexuality",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_sexuality",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "telephone2",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "telephone2",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "gendercode",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "gendercode",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_systemorigin",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_systemorigin",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_primarytenancy",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_primarytenancy",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_checksum",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_checksum",
-											"type": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Transformed/Fortis",
-									"Filename": "fortis_contact.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference",
-								"parameters": {
-									"EntityName": "contact"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
 			]
 		}
 	]
