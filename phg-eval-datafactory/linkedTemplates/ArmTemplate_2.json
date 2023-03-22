@@ -533,7 +533,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
+			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities_old')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3624,7 +3624,7 @@
 					}
 				},
 				"folder": {
-					"name": "OH_D365_DataSync/Child Packages"
+					"name": "Archive"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-17T13:03:59Z"
@@ -5290,7 +5290,7 @@
 					}
 				},
 				"folder": {
-					"name": "OH_D365_DataSync/Child Packages"
+					"name": "Archive"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-15T20:38:51Z"
@@ -6353,7 +6353,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_CoreEntities",
+											"referenceName": "PL_CoreEntities_old",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -6483,7 +6483,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities_old')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]
 		}
