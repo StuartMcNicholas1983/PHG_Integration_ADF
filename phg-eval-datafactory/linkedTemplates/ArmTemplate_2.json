@@ -6257,7 +6257,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "PL_ReferenceEntities_old",
+											"referenceName": "PL_ReferenceEntities",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -6482,7 +6482,7 @@
 				"lastPublishTime": "2023-02-17T13:03:59Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities_old')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
 			]
