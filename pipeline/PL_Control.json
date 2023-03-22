@@ -74,7 +74,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "PL_ReferenceEntities",
+									"referenceName": "PL_ReferenceEntities_old",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
