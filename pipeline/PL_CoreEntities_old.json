@@ -1,5 +1,5 @@
 {
-	"name": "PL_CoreEntities",
+	"name": "PL_CoreEntities_old",
 	"properties": {
 		"activities": [
 			{
@@ -3083,7 +3083,7 @@
 			}
 		},
 		"folder": {
-			"name": "OH_D365_DataSync/Child Packages"
+			"name": "Archive"
 		},
 		"annotations": [],
 		"lastPublishTime": "2023-02-17T13:03:59Z"

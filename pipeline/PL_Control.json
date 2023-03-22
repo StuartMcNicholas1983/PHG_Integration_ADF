@@ -169,7 +169,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "PL_CoreEntities",
+									"referenceName": "PL_CoreEntities_old",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
