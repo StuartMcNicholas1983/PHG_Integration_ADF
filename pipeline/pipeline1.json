@@ -29,7 +29,9 @@
 					"sink": {
 						"type": "CommonDataServiceForAppsSink",
 						"writeBatchSize": 10,
-						"writeBehavior": "upsert"
+						"writeBehavior": "upsert",
+						"ignoreNullValues": false,
+						"alternateKeyName": "phg_integrationkey"
 					},
 					"enableStaging": false,
 					"translator": {
@@ -346,7 +348,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "data-sync",
-							"Directory": "OH_D365_DataSync/Transformed/Fortis",
+							"Directory": "OH_D365_DataSync/Staging/Fortis",
 							"Filename": "fortis_contact.csv"
 						}
 					}
