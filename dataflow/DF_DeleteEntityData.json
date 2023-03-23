@@ -79,7 +79,8 @@
 				"     upsertable:false,",
 				"     alternateKeyName: 'phg_integrationkey',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> DeleteProperties",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1) ~> DeleteProperties",
 				"AlterRowTenancy sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:true,",
@@ -88,7 +89,8 @@
 				"     upsertable:false,",
 				"     alternateKeyName: 'phg_integrationkey',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> DeleteTenancies"
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2) ~> DeleteTenancies"
 			]
 		}
 	}
