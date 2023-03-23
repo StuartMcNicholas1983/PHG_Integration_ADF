@@ -329,6 +329,106 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Delete"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "DeletionData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteProperties"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteTenancies"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "AlterRowProperty"
+						},
+						{
+							"name": "AlterRowTenancy"
+						},
+						{
+							"name": "SelectProperties"
+						},
+						{
+							"name": "SelectTenancies"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Entity as string,",
+						"          phg_integrationkey as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DeletionData",
+						"DeletionData split(equals(Entity,\"phg_property\"),",
+						"     equals(Entity,\"phg_tenancy\"),",
+						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
+						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
+						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
+						"split1@Property select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
+						"split1@Tenancy select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+						"AlterRowProperty sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1) ~> DeleteProperties",
+						"AlterRowTenancy sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2) ~> DeleteTenancies"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6754,7 +6854,7 @@
 										{
 											"activity": "Staging to Transformed",
 											"dependencyConditions": [
-												"Failed"
+												"Succeeded"
 											]
 										}
 									],
@@ -6782,12 +6882,52 @@
 										],
 										"defaultActivities": [
 											{
-												"name": "Wait2",
-												"type": "Wait",
+												"name": "Delete Entity Data",
+												"type": "ExecuteDataFlow",
 												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
 												"userProperties": [],
 												"typeProperties": {
-													"waitTimeInSeconds": 1
+													"dataflow": {
+														"referenceName": "DF_DeleteEntityData",
+														"type": "DataFlowReference",
+														"parameters": {},
+														"datasetParameters": {
+															"DeletionData": {
+																"Container": {
+																	"value": "@item().DatalakeContainer",
+																	"type": "Expression"
+																},
+																"Directory": {
+																	"value": "@item().DatalakeDirectory_Transformed",
+																	"type": "Expression"
+																},
+																"Filename": {
+																	"value": "@item().DatalakeFilename",
+																	"type": "Expression"
+																}
+															},
+															"DeleteProperties": {
+																"EntityName": "phg_property"
+															},
+															"DeleteTenancies": {
+																"EntityName": "phg_tenancy"
+															}
+														},
+														"linkedServiceParameters": {}
+													},
+													"staging": {},
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
 												}
 											}
 										]
@@ -6851,7 +6991,9 @@
 				"annotations": [],
 				"lastPublishTime": "2023-02-15T20:38:51Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
