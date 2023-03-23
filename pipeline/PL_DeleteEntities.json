@@ -378,7 +378,29 @@
 										"typeProperties": {
 											"dataflow": {
 												"referenceName": "DF_DeleteEntityData",
-												"type": "DataFlowReference"
+												"type": "DataFlowReference",
+												"datasetParameters": {
+													"DeletionData": {
+														"Container": {
+															"value": "@item().DatalakeContainer",
+															"type": "Expression"
+														},
+														"Directory": {
+															"value": "@item().DatalakeDirectory_Transformed",
+															"type": "Expression"
+														},
+														"Filename": {
+															"value": "@item().DatalakeFilename",
+															"type": "Expression"
+														}
+													},
+													"DeleteProperties": {
+														"EntityName": "phg_properties"
+													},
+													"DeleteTenancies": {
+														"EntityName": "phg_tenancies"
+													}
+												}
 											},
 											"compute": {
 												"coreCount": 8,
