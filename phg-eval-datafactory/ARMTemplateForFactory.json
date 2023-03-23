@@ -58,6 +58,316 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_Control')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SequenceGroups - Reference",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroup - Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Reference"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Reference",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Reference",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Reference').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Reference Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_ReferenceEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "SequenceGroups - Core",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroup - Reference",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Core"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Core",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Core').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Core Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_CoreEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "SequenceGroups - Lookup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Lookup"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Lookup",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Lookup').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Lookup Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_LookupEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string",
+						"defaultValue": "OH_D365_DataSync"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-17T13:03:59Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6156,6 +6466,455 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_DeleteEntities')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Delete_Entities",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Delete"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									},
+									"sequenceGroup": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.SequenceGroup",
+											"type": "Expression"
+										}
+									},
+									"srcSystem": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.SourceSystemName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Entity",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Delete_Entities",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Delete_Entities').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Delete Transformed",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "Source to Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.00:10:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "DS_Datalake_PipeDelimited_Reference",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_Transformed",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
+								},
+								{
+									"name": "Write to PipelineLog 1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Staging to Transformed",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.00:10:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT '@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Staging to Transformed').output.rowsCopied}' as RowsCopied,\n'@{activity('Staging to Transformed').output.rowsRead}' as RowsRead,\n'@{activity('Staging to Transformed').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Staging to Transformed').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Staging to Transformed').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n'@{activity('Staging to Transformed').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Staging to Transformed').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Staging to Transformed').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Staging to Transformed').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Staging to Transformed').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Staging to Transformed').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Staging to Transformed').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_Control",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_Control_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"SchemaName": "dbo",
+												"TableName": "PipelineLog"
+											}
+										}
+									]
+								},
+								{
+									"name": "Staging to Transformed",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_Datalake_PipeDelimited",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@item().DatalakeContainer",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@item().DatalakeDirectory_Transformed",
+													"type": "Expression"
+												},
+												"Filename": {
+													"value": "@item().DatalakeFilename",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "PipelineParameters LogStart",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogStart]",
+										"storedProcedureParameters": {
+											"dtLastPipelineRunStart": {
+												"value": {
+													"value": "@{utcnow()}",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"guidLastPipelineRun": {
+												"value": {
+													"value": "@pipeline().RunId",
+													"type": "Expression"
+												},
+												"type": "Guid"
+											},
+											"strEntity": {
+												"value": {
+													"value": "@item().Entity",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strSourceSystem": {
+												"value": {
+													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Entities",
+									"type": "Switch",
+									"dependsOn": [
+										{
+											"activity": "Staging to Transformed",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Case1",
+												"activities": [
+													{
+														"name": "Wait1",
+														"type": "Wait",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"waitTimeInSeconds": 1
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait2",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "Source to Staging",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": {
+											"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
+											"type": "Expression"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer_OnPrem",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": {
+												"value": "@item().SrcServer",
+												"type": "Expression"
+											},
+											"DatabaseName": {
+												"value": "@item().SrcDatabase",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string"
+					},
+					"SourceSystemName": {
+						"type": "string"
+					},
+					"SequenceGroup": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync/Child Packages"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-15T20:38:51Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited_Reference')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
+				"[concat(variables('factoryId'), '/linkedServices/Control')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -8647,14 +9406,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy data1",
-						"type": "Copy",
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -8665,353 +9424,28 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "CommonDataServiceForAppsSink",
-								"writeBatchSize": 10,
-								"writeBehavior": "upsert",
-								"ignoreNullValues": false,
-								"alternateKeyName": "phg_integrationkey"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "donotbulkemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotbulkemail",
-											"type": "Boolean"
-										}
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"Container": "data-sync",
+										"Directory": "OH_D365_DataSync/Transformed/Fortis/",
+										"Filename": "fortis_property.csv"
 									},
-									{
-										"source": {
-											"name": "donotemail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotemail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotphone",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotphone",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "donotpostalmail",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "donotpostalmail",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "emailaddress1",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "emailaddress1",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "firstname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "firstname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "fullname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "fullname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "lastname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "lastname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "middlename",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "middlename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "mobilephone",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "mobilephone",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_age",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_age",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofbirth",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_dateofdeath",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_ethnicgroup",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_integrationkey",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_integrationkey",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime",
-											"physicalType": "DateTime"
-										},
-										"sink": {
-											"name": "phg_lastloggedin",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_nationaility",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_nationaility",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_ninumber",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_ninumber",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_previousname",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_previousname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean",
-											"physicalType": "Boolean"
-										},
-										"sink": {
-											"name": "phg_registeredonportal",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_relgion",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_relgion",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_sexuality",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_sexuality",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "telephone2",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "telephone2",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "gendercode",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "gendercode",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_systemorigin",
-											"type": "Int32",
-											"physicalType": "Int32"
-										},
-										"sink": {
-											"name": "phg_systemorigin",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_primarytenancy",
-											"type": "Guid",
-											"physicalType": "Guid"
-										},
-										"sink": {
-											"name": "phg_primarytenancy",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_checksum",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "phg_checksum",
-											"type": "String"
-										}
+									"sink1": {
+										"EntityName": "phg_property"
 									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
 								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Staging/Fortis",
-									"Filename": "fortis_contact.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference",
-								"parameters": {
-									"EntityName": "contact"
-								}
-							}
-						]
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -9021,89 +9455,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_SQL_OnPrem_Tbl",
-								"type": "DatasetReference",
-								"parameters": {
-									"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
-									"DatabaseName": "OH_D365_Config",
-									"SchemaName": "d365",
-									"TableName": "stg_contact"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Staging/Fortis",
-									"Filename": "fortis_contact.csv"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
 			]
 		},
 		{
@@ -12505,313 +12857,115 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_Control')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "SequenceGroups - Reference",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "SequenceGroup - Lookup",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
-								"storedProcedureParameters": {
-									"entityType": {
-										"type": "String",
-										"value": "Reference"
-									},
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
 							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
 							},
-							"firstRowOnly": false
+							"name": "source1"
 						}
-					},
-					{
-						"name": "SequenceGroup - Reference",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "SequenceGroups - Reference",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('SequenceGroups - Reference').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Reference Entities",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_ReferenceEntities",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"PipelineName": {
-												"value": "@item().Pipeline",
-												"type": "Expression"
-											},
-											"SourceSystemName": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											},
-											"SequenceGroup": {
-												"value": "@item().SequenceGroup",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "SequenceGroups - Core",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "SequenceGroup - Reference",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
-								"storedProcedureParameters": {
-									"entityType": {
-										"type": "String",
-										"value": "Core"
-									},
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
+					],
+					"sinks": [
+						{
 							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
 							},
-							"firstRowOnly": false
+							"name": "sink1"
 						}
-					},
-					{
-						"name": "SequenceGroup - Core",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "SequenceGroups - Core",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('SequenceGroups - Core').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Core Entities",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_CoreEntities",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"PipelineName": {
-												"value": "@item().Pipeline",
-												"type": "Expression"
-											},
-											"SourceSystemName": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											},
-											"SequenceGroup": {
-												"value": "@item().SequenceGroup",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "SequenceGroups - Lookup",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
+					],
+					"transformations": [
+						{
+							"name": "select1"
 						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
-								"storedProcedureParameters": {
-									"entityType": {
-										"type": "String",
-										"value": "Lookup"
-									},
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "AlterRow1"
 						}
-					},
-					{
-						"name": "SequenceGroup - Lookup",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "SequenceGroups - Lookup",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('SequenceGroups - Lookup').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Lookup Entities",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PL_LookupEntities",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"PipelineName": {
-												"value": "@item().Pipeline",
-												"type": "Expression"
-											},
-											"SourceSystemName": {
-												"value": "@item().SrcSystem",
-												"type": "Expression"
-											},
-											"SequenceGroup": {
-												"value": "@item().SequenceGroup",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"PipelineName": {
-						"type": "string",
-						"defaultValue": "OH_D365_DataSync"
-					}
-				},
-				"folder": {
-					"name": "OH_D365_DataSync"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-17T13:03:59Z"
+					],
+					"scriptLines": [
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_addressline1 as string,",
+						"          phg_addressline2 as string,",
+						"          phg_addressline3 as string,",
+						"          phg_addressline4 as string,",
+						"          phg_postcode as string,",
+						"          phg_name as string,",
+						"          phg_uprn as string,",
+						"          phg_propertystatus as string,",
+						"          phg_substatus as string,",
+						"          phg_propertytype as string,",
+						"          phg_sharedownership as boolean,",
+						"          phg_numberoffloors as string,",
+						"          phg_propertyfloorlevel as boolean,",
+						"          phg_numberofbedrooms as string,",
+						"          phg_numberofbathrooms as string,",
+						"          phg_numberofreceptionrooms as string,",
+						"          phg_maximumnumberofoccupants as string,",
+						"          phg_lift as boolean,",
+						"          phg_anyadaptions as boolean,",
+						"          phg_blockreference as string,",
+						"          phg_tenancyid as string,",
+						"          phg_plotnumber as boolean,",
+						"          phg_builddate as string,",
+						"          phg_managementareaid as string,",
+						"          phg_buildtypeid as string,",
+						"          phg_floorplanurl as string,",
+						"          phg_parkingspace as boolean,",
+						"          phg_dateoffinaldisposal as string,",
+						"          phg_cookersupply as boolean,",
+						"          phg_garden as boolean,",
+						"          phg_parishid as string,",
+						"          phg_areaid as string,",
+						"          phg_subareaid as string,",
+						"          phg_wardcode as string,",
+						"          phg_estatecode as string,",
+						"          phg_subareacode as string,",
+						"          phg_gascapped as boolean,",
+						"          phg_fuelservicedate as string,",
+						"          phg_ownedbycustomer as boolean,",
+						"          phg_ownedbyphg as short,",
+						"          phg_gasmeterserialnumber as string,",
+						"          phg_electricmeterserialnumber as string,",
+						"          modified as string,",
+						"          created as string,",
+						"          phg_checksum as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 filter(equals(phg_integrationkey,'(F)PCP34602')) ~> filter1",
+						"filter1 alterRow(deleteIf(true())) ~> AlterRow1",
+						"AlterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
 			]
 		}
 	]
