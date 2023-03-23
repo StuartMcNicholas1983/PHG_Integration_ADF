@@ -1,0 +1,27 @@
+{
+	"name": "DF_DeleteEntityData",
+	"properties": {
+		"folder": {
+			"name": "OH_D365_DataSync/Delete"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Datalake_PipeDelimited",
+						"type": "DatasetReference"
+					},
+					"name": "DeletionData"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DeletionData"
+			]
+		}
+	}
+}
