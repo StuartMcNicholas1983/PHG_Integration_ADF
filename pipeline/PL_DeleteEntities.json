@@ -395,10 +395,10 @@
 														}
 													},
 													"DeleteProperties": {
-														"EntityName": "phg_properties"
+														"EntityName": "phg_property"
 													},
 													"DeleteTenancies": {
-														"EntityName": "phg_tenancies"
+														"EntityName": "phg_tenancy"
 													}
 												}
 											},
