@@ -279,7 +279,7 @@
 								{
 									"activity": "Delete Transformed",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								}
 							],
