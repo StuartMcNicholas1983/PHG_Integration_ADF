@@ -36,10 +36,16 @@
 					"name": "split1"
 				},
 				{
-					"name": "alterRowProperty"
+					"name": "AlterRowProperty"
 				},
 				{
-					"name": "alterRowTenancy"
+					"name": "AlterRowTenancy"
+				},
+				{
+					"name": "SelectProperties"
+				},
+				{
+					"name": "SelectTenancies"
 				}
 			],
 			"scriptLines": [
@@ -53,9 +59,19 @@
 				"DeletionData split(equals(Entity,\"phg_property\"),",
 				"     equals(Entity,\"phg_tenancy\"),",
 				"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
-				"split1@Property alterRow(deleteIf(true())) ~> alterRowProperty",
-				"split1@Tenancy alterRow(deleteIf(true())) ~> alterRowTenancy",
-				"alterRowProperty sink(allowSchemaDrift: true,",
+				"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
+				"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
+				"split1@Property select(mapColumn(",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectProperties",
+				"split1@Tenancy select(mapColumn(",
+				"          phg_integrationkey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+				"AlterRowProperty sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:true,",
 				"     insertable:false,",
@@ -64,7 +80,7 @@
 				"     alternateKeyName: 'phg_integrationkey',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> DeleteProperties",
-				"alterRowTenancy sink(allowSchemaDrift: true,",
+				"AlterRowTenancy sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:true,",
 				"     insertable:false,",
