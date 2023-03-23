@@ -443,15 +443,6 @@
 								"storedProcedureName": {
 									"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
 									"type": "Expression"
-								},
-								"storedProcedureParameters": {
-									"dtLastPipelineRun": {
-										"value": {
-											"value": "@item().LastSuccessfulPipelineRunStart",
-											"type": "Expression"
-										},
-										"type": "Datetime"
-									}
 								}
 							},
 							"linkedServiceName": {
