@@ -15,12 +15,64 @@
 					"name": "DeletionData"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Dataverse",
+						"type": "DatasetReference"
+					},
+					"name": "DeleteProperties"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_Dataverse",
+						"type": "DatasetReference"
+					},
+					"name": "DeleteTenancies"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "alterRowProperty"
+				},
+				{
+					"name": "alterRowTenancy"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          Entity as string,",
+				"          phg_integrationkey as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> DeletionData"
+				"     ignoreNoFilesFound: false) ~> DeletionData",
+				"DeletionData split(equals(Entity,\"phg_property\"),",
+				"     equals(Entity,\"phg_tenancy\"),",
+				"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
+				"split1@Property alterRow(deleteIf(true())) ~> alterRowProperty",
+				"split1@Tenancy alterRow(deleteIf(true())) ~> alterRowTenancy",
+				"alterRowProperty sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:true,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     alternateKeyName: 'phg_integrationkey',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DeleteProperties",
+				"alterRowTenancy sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:true,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     alternateKeyName: 'phg_integrationkey',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DeleteTenancies"
 			]
 		}
 	}
