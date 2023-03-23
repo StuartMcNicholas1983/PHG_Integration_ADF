@@ -97,6 +97,7 @@
 				"     insertable:false,",
 				"     updateable:false,",
 				"     upsertable:false,",
+				"     alternateKeyName: 'phg_integrationkey',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
