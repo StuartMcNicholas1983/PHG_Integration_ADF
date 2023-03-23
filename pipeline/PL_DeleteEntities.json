@@ -220,58 +220,6 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
-									"mappings": [
-										{
-											"source": {
-												"name": "phg_code",
-												"type": "String"
-											},
-											"sink": {
-												"name": "phg_code",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "phg_name",
-												"type": "String"
-											},
-											"sink": {
-												"name": "phg_name",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "phg_integrationkey",
-												"type": "String"
-											},
-											"sink": {
-												"name": "phg_integrationkey",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "destination",
-												"type": "String"
-											},
-											"sink": {
-												"name": "destination",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "phg_checksum",
-												"type": "String"
-											},
-											"sink": {
-												"name": "phg_checksum",
-												"type": "String"
-											}
-										}
-									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
@@ -331,7 +279,7 @@
 								{
 									"activity": "Delete Transformed",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
