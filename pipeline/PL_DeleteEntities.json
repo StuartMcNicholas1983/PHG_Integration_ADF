@@ -336,7 +336,7 @@
 								{
 									"activity": "Staging to Transformed",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
