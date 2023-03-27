@@ -448,6 +448,13 @@
 											"type": "Expression"
 										},
 										"type": "String"
+									},
+									"strEntityType": {
+										"value": {
+											"value": "@item().EntityType",
+											"type": "Expression"
+										},
+										"type": "String"
 									}
 								}
 							},
@@ -651,6 +658,13 @@
 												"strSourceSystem": {
 													"value": {
 														"value": "@item().SrcSystem",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"strEntityType": {
+													"value": {
+														"value": "@item().EntityType",
 														"type": "Expression"
 													},
 													"type": "String"
