@@ -353,7 +353,22 @@
 									"value": "@item().Entity",
 									"type": "Expression"
 								},
-								"cases": [],
+								"cases": [
+									{
+										"value": "Case1",
+										"activities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								],
 								"defaultActivities": [
 									{
 										"name": "Delete Entity Data",
