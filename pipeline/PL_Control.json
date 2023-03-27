@@ -248,6 +248,7 @@
 						"value": "@activity('SequenceGroups - Lookup').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Lookup Entities",
@@ -257,6 +258,101 @@
 							"typeProperties": {
 								"pipeline": {
 									"referenceName": "PL_LookupEntities",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"PipelineName": {
+										"value": "@item().Pipeline",
+										"type": "Expression"
+									},
+									"SourceSystemName": {
+										"value": "@item().SrcSystem",
+										"type": "Expression"
+									},
+									"SequenceGroup": {
+										"value": "@item().SequenceGroup",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "SequenceGroups - Delete",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Core",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SequenceGroups]",
+						"storedProcedureParameters": {
+							"entityType": {
+								"type": "String",
+								"value": "Delete"
+							},
+							"pipeline": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SequenceGroup - Delete",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroups - Delete",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SequenceGroups - Delete').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Delete Entities",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_DeleteEntities",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
