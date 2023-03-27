@@ -555,8 +555,7 @@
 												"name": "phg_integrationkey"
 											},
 											"sink": {
-												"name": "phg_integrationkey",
-												"type": "String"
+												"name": "phg_integrationkey"
 											}
 										},
 										{
@@ -564,8 +563,7 @@
 												"name": "phg_code"
 											},
 											"sink": {
-												"name": "phg_code",
-												"type": "String"
+												"name": "phg_code"
 											}
 										},
 										{
@@ -573,8 +571,7 @@
 												"name": "phg_name"
 											},
 											"sink": {
-												"name": "phg_name",
-												"type": "String"
+												"name": "phg_name"
 											}
 										},
 										{
@@ -582,8 +579,7 @@
 												"name": "phg_checksum"
 											},
 											"sink": {
-												"name": "phg_checksum",
-												"type": "String"
+												"name": "phg_checksum"
 											}
 										}
 									],
