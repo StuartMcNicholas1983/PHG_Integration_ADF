@@ -542,7 +542,7 @@
 									},
 									"strLastPipelineRunStatus": {
 										"value": {
-											"value": "@{activity('Delete Entity Data').output.runStatus}",
+											"value": "@{activity('Delete Entity Data').output.runStatus.metrics.DeleteProperties.progressState}",
 											"type": "Expression"
 										},
 										"type": "String"
