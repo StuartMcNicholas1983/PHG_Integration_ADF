@@ -725,6 +725,13 @@
 											"type": "Expression"
 										},
 										"type": "String"
+									},
+									"strEntityType": {
+										"value": {
+											"value": "@item().EntityType",
+											"type": "Expression"
+										},
+										"type": "String"
 									}
 								}
 							},
