@@ -7039,8 +7039,12 @@
 															},
 															"DeleteTenancies": {
 																"EntityName": "phg_tenancy"
+															},
+															"DeleteContacts": {
+																"EntityName": "contact"
 															}
-														}
+														},
+														"linkedServiceParameters": {}
 													},
 													"staging": {},
 													"compute": {
@@ -7048,6 +7052,70 @@
 														"computeType": "General"
 													},
 													"traceLevel": "Fine"
+												}
+											},
+											{
+												"name": "PipelineParameters LogEnd",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "Delete Entity Data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+													"storedProcedureParameters": {
+														"dtLastPipelineRunEnd": {
+															"value": {
+																"value": "@utcNow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"strEntity": {
+															"value": {
+																"value": "@item().Entity",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strEntityType": {
+															"value": {
+																"value": "@item().EntityType",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strLastPipelineRunStatus": {
+															"value": {
+																"value": "@{activity('Delete Entity Data').output.executionDetails[0].status}",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strSourceSystem": {
+															"value": {
+																"value": "@item().SrcSystem",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "Control",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -7085,6 +7153,78 @@
 											}
 										}
 									}
+								},
+								{
+									"name": "Destination to Source",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Entities",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CommonDataServiceForAppsSource",
+											"query": {
+												"value": "@item().FetchXML",
+												"type": "Expression"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table d365.',item().DestEntity)}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Dataverse",
+											"type": "DatasetReference",
+											"parameters": {
+												"EntityName": {
+													"value": "@item().DestEntity",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": "d365",
+												"TableName": {
+													"value": "@item().DestEntity",
+													"type": "Expression"
+												}
+											}
+										}
+									]
 								}
 							]
 						}
@@ -7119,6 +7259,7 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/linkedServices/Control')]",
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData')]"
 			]
 		},
@@ -11207,6 +11348,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "DeleteTenancies"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteContacts"
 						}
 					],
 					"transformations": [
@@ -11224,6 +11372,12 @@
 						},
 						{
 							"name": "SelectTenancies"
+						},
+						{
+							"name": "SelectContacts"
+						},
+						{
+							"name": "AlterRowContact"
 						}
 					],
 					"scriptLines": [
@@ -11236,7 +11390,8 @@
 						"     ignoreNoFilesFound: false) ~> DeletionData",
 						"DeletionData split(equals(Entity,\"phg_property\"),",
 						"     equals(Entity,\"phg_tenancy\"),",
-						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
+						"     equals(Entity,\"contact\"),",
+						"     disjoint: false) ~> split1@(Property, Tenancy, Contact, Other)",
 						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
 						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
 						"split1@Property select(mapColumn(",
@@ -11249,6 +11404,12 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+						"split1@Contact select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectContacts",
+						"SelectContacts alterRow(deleteIf(true())) ~> AlterRowContact",
 						"AlterRowProperty sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:true,",
@@ -11268,7 +11429,16 @@
 						"     alternateKeyName: 'phg_integrationkey',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2) ~> DeleteTenancies"
+						"     saveOrder: 2) ~> DeleteTenancies",
+						"AlterRowContact sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DeleteContacts"
 					]
 				}
 			},

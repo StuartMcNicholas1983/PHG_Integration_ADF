@@ -823,6 +823,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "DeleteTenancies"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteContacts"
 						}
 					],
 					"transformations": [
@@ -840,6 +847,12 @@
 						},
 						{
 							"name": "SelectTenancies"
+						},
+						{
+							"name": "SelectContacts"
+						},
+						{
+							"name": "AlterRowContact"
 						}
 					],
 					"scriptLines": [
@@ -852,7 +865,8 @@
 						"     ignoreNoFilesFound: false) ~> DeletionData",
 						"DeletionData split(equals(Entity,\"phg_property\"),",
 						"     equals(Entity,\"phg_tenancy\"),",
-						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
+						"     equals(Entity,\"contact\"),",
+						"     disjoint: false) ~> split1@(Property, Tenancy, Contact, Other)",
 						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
 						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
 						"split1@Property select(mapColumn(",
@@ -865,6 +879,12 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+						"split1@Contact select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectContacts",
+						"SelectContacts alterRow(deleteIf(true())) ~> AlterRowContact",
 						"AlterRowProperty sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:true,",
@@ -884,7 +904,16 @@
 						"     alternateKeyName: 'phg_integrationkey',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2) ~> DeleteTenancies"
+						"     saveOrder: 2) ~> DeleteTenancies",
+						"AlterRowContact sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DeleteContacts"
 					]
 				}
 			},
