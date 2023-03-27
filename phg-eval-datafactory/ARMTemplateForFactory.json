@@ -312,6 +312,7 @@
 								"value": "@activity('SequenceGroups - Lookup').output.value",
 								"type": "Expression"
 							},
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "Lookup Entities",
@@ -321,6 +322,102 @@
 									"typeProperties": {
 										"pipeline": {
 											"referenceName": "PL_LookupEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "SequenceGroups - Delete",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroup - Core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Delete"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Delete",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Delete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Delete').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Delete Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_DeleteEntities",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -364,7 +461,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_DeleteEntities')]"
 			]
 		},
 		{
@@ -6807,7 +6905,7 @@
 										{
 											"activity": "Staging to Transformed",
 											"dependencyConditions": [
-												"Succeeded"
+												"Failed"
 											]
 										}
 									],
@@ -6872,8 +6970,7 @@
 															"DeleteTenancies": {
 																"EntityName": "phg_tenancy"
 															}
-														},
-														"linkedServiceParameters": {}
+														}
 													},
 													"staging": {},
 													"compute": {
@@ -11019,6 +11116,109 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Delete"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "DeletionData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteProperties"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteTenancies"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "AlterRowProperty"
+						},
+						{
+							"name": "AlterRowTenancy"
+						},
+						{
+							"name": "SelectProperties"
+						},
+						{
+							"name": "SelectTenancies"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Entity as string,",
+						"          phg_integrationkey as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DeletionData",
+						"DeletionData split(equals(Entity,\"phg_property\"),",
+						"     equals(Entity,\"phg_tenancy\"),",
+						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
+						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
+						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
+						"split1@Property select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
+						"split1@Tenancy select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+						"AlterRowProperty sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1) ~> DeleteProperties",
+						"AlterRowTenancy sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2) ~> DeleteTenancies"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -13001,109 +13201,6 @@
 						"     alternateKeyName: 'phg_integrationkey',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Delete"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "DeletionData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteProperties"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteTenancies"
-						}
-					],
-					"transformations": [
-						{
-							"name": "split1"
-						},
-						{
-							"name": "AlterRowProperty"
-						},
-						{
-							"name": "AlterRowTenancy"
-						},
-						{
-							"name": "SelectProperties"
-						},
-						{
-							"name": "SelectTenancies"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Entity as string,",
-						"          phg_integrationkey as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DeletionData",
-						"DeletionData split(equals(Entity,\"phg_property\"),",
-						"     equals(Entity,\"phg_tenancy\"),",
-						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
-						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
-						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
-						"split1@Property select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
-						"split1@Tenancy select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
-						"AlterRowProperty sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 1) ~> DeleteProperties",
-						"AlterRowTenancy sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2) ~> DeleteTenancies"
 					]
 				}
 			},

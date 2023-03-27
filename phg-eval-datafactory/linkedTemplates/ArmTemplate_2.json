@@ -13,6 +13,319 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Tenancy')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancycategory",
+								"type": "DatasetReference"
+							},
+							"name": "tenancycategory"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancytype",
+								"type": "DatasetReference"
+							},
+							"name": "tenancytype"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_transactioncurrency",
+								"type": "DatasetReference"
+							},
+							"name": "transactioncurrency"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_property",
+								"type": "DatasetReference"
+							},
+							"name": "property"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectTenancyCategory"
+						},
+						{
+							"name": "SelectTenancyType"
+						},
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "JoinTenancyCategory"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinTenancyType"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "SelectTransactionCurrency"
+						},
+						{
+							"name": "ISOCurrencyCode"
+						},
+						{
+							"name": "JoinTransactionCurrency"
+						},
+						{
+							"name": "SelectProperty"
+						},
+						{
+							"name": "SelectB"
+						},
+						{
+							"name": "JoinProperty"
+						},
+						{
+							"name": "SelectC"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_name as string,",
+						"          phg_urn as long,",
+						"          phg_tenancycategoryid as string,",
+						"          phg_tenancytypeid as string,",
+						"          phg_tenancystartdate as string,",
+						"          phg_tenancyenddate as string,",
+						"          phg_propertyid as string,",
+						"          phg_balance as double,",
+						"          phg_rentcharges as double,",
+						"          modified as string,",
+						"          created as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_tenancycategoryid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancycategory",
+						"source(output(",
+						"          phg_tenancytypeid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancytype",
+						"source(output(",
+						"          createdby as string,",
+						"          createdbyname as string,",
+						"          createdbyyominame as string,",
+						"          createdon as string,",
+						"          createdonbehalfby as string,",
+						"          createdonbehalfbyname as string,",
+						"          createdonbehalfbyyominame as string,",
+						"          currencyname as string,",
+						"          currencyprecision as string,",
+						"          currencysymbol as string,",
+						"          entityimage_timestamp as string,",
+						"          entityimage_url as string,",
+						"          entityimageid as string,",
+						"          exchangerate as string,",
+						"          importsequencenumber as string,",
+						"          isocurrencycode as string,",
+						"          modifiedby as string,",
+						"          modifiedbyname as string,",
+						"          modifiedbyyominame as string,",
+						"          modifiedon as string,",
+						"          modifiedonbehalfby as string,",
+						"          modifiedonbehalfbyname as string,",
+						"          modifiedonbehalfbyyominame as string,",
+						"          organizationid as string,",
+						"          overriddencreatedon as string,",
+						"          statecode as string,",
+						"          statuscode as string,",
+						"          transactioncurrencyid as string,",
+						"          uniquedscid as string,",
+						"          versionnumber as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> transactioncurrency",
+						"source(output(",
+						"          phg_propertyid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> property",
+						"tenancycategory select(mapColumn(",
+						"          phg_tenancycategoryid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyCategory",
+						"tenancytype select(mapColumn(",
+						"          phg_tenancytypeid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancyType",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"SelectStaging, SelectTenancyCategory join(SelectStaging@phg_tenancycategoryid == SelectTenancyCategory@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyCategory",
+						"JoinTenancyCategory select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid = SelectTenancyCategory@phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectTenancyType join(SelectA@phg_tenancytypeid == SelectTenancyType@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancyType",
+						"JoinTransactionCurrency select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"transactioncurrency select(mapColumn(",
+						"          currencyname,",
+						"          isocurrencycode,",
+						"          statecode,",
+						"          statuscode,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
+						"SelectC derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+						"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTransactionCurrency",
+						"property select(mapColumn(",
+						"          phg_propertyid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectProperty",
+						"JoinTenancyType select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid = SelectTenancyType@phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectB",
+						"SelectB, SelectProperty join(SelectB@phg_propertyid == SelectProperty@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinProperty",
+						"JoinProperty select(mapColumn(",
+						"          phg_integrationkey = SelectB@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_urn,",
+						"          phg_tenancycategoryid,",
+						"          phg_tenancytypeid,",
+						"          phg_tenancystartdate,",
+						"          phg_tenancyenddate,",
+						"          phg_propertyid = SelectProperty@phg_propertyid,",
+						"          phg_balance,",
+						"          phg_rentcharges",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectC",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Transaction')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -323,106 +636,6 @@
 						"     alternateKeyName: 'phg_integrationkey',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Delete"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "DeletionData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteProperties"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteTenancies"
-						}
-					],
-					"transformations": [
-						{
-							"name": "split1"
-						},
-						{
-							"name": "AlterRowProperty"
-						},
-						{
-							"name": "AlterRowTenancy"
-						},
-						{
-							"name": "SelectProperties"
-						},
-						{
-							"name": "SelectTenancies"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Entity as string,",
-						"          phg_integrationkey as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DeletionData",
-						"DeletionData split(equals(Entity,\"phg_property\"),",
-						"     equals(Entity,\"phg_tenancy\"),",
-						"     disjoint: false) ~> split1@(Property, Tenancy, Other)",
-						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
-						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
-						"split1@Property select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
-						"split1@Tenancy select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
-						"AlterRowProperty sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 1) ~> DeleteProperties",
-						"AlterRowTenancy sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2) ~> DeleteTenancies"
 					]
 				}
 			},
@@ -6854,7 +7067,7 @@
 										{
 											"activity": "Staging to Transformed",
 											"dependencyConditions": [
-												"Succeeded"
+												"Failed"
 											]
 										}
 									],
@@ -6919,8 +7132,7 @@
 															"DeleteTenancies": {
 																"EntityName": "phg_tenancy"
 															}
-														},
-														"linkedServiceParameters": {}
+														}
 													},
 													"staging": {},
 													"compute": {
@@ -6991,9 +7203,7 @@
 				"annotations": [],
 				"lastPublishTime": "2023-02-15T20:38:51Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
@@ -9772,6 +9982,7 @@
 								"value": "@activity('SequenceGroups - Lookup').output.value",
 								"type": "Expression"
 							},
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "Lookup Entities",
@@ -9781,6 +9992,102 @@
 									"typeProperties": {
 										"pipeline": {
 											"referenceName": "PL_LookupEntities",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@item().Pipeline",
+												"type": "Expression"
+											},
+											"SourceSystemName": {
+												"value": "@item().SrcSystem",
+												"type": "Expression"
+											},
+											"SequenceGroup": {
+												"value": "@item().SequenceGroup",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "SequenceGroups - Delete",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroup - Core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SequenceGroups]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Delete"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SequenceGroup - Delete",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SequenceGroups - Delete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SequenceGroups - Delete').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Delete Entities",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_DeleteEntities",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -9823,7 +10130,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_ReferenceEntities')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_CoreEntities')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_LookupEntities')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_DeleteEntities')]"
 			]
 		}
 	]
