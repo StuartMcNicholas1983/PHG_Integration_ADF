@@ -1377,6 +1377,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -1647,6 +1654,13 @@
 																"strSourceSystem": {
 																	"value": {
 																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
 																		"type": "Expression"
 																	},
 																	"type": "String"
@@ -2088,6 +2102,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -2383,6 +2404,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -2634,6 +2662,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -2816,6 +2851,13 @@
 																"strSourceSystem": {
 																	"value": {
 																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
 																		"type": "Expression"
 																	},
 																	"type": "String"
@@ -3092,6 +3134,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -3321,6 +3370,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -3546,6 +3602,13 @@
 											"strSourceSystem": {
 												"value": {
 													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strEntityType": {
+												"value": {
+													"value": "@item().EntityType",
 													"type": "Expression"
 												},
 												"type": "String"
@@ -7052,6 +7115,13 @@
 													"type": "Expression"
 												},
 												"type": "String"
+											},
+											"strEntityType": {
+												"value": {
+													"value": "@item().EntityType",
+													"type": "Expression"
+												},
+												"type": "String"
 											}
 										}
 									},
@@ -7456,6 +7526,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -7638,6 +7715,13 @@
 																"strSourceSystem": {
 																	"value": {
 																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
 																		"type": "Expression"
 																	},
 																	"type": "String"
@@ -7870,6 +7954,13 @@
 																		"type": "Expression"
 																	},
 																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
 																}
 															}
 														},
@@ -7933,6 +8024,13 @@
 											"strSourceSystem": {
 												"value": {
 													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strEntityType": {
+												"value": {
+													"value": "@item().EntityType",
 													"type": "Expression"
 												},
 												"type": "String"
@@ -8424,6 +8522,13 @@
 													"type": "Expression"
 												},
 												"type": "String"
+											},
+											"strEntityType": {
+												"value": {
+													"value": "@item().EntityType",
+													"type": "Expression"
+												},
+												"type": "String"
 											}
 										}
 									},
@@ -8627,6 +8732,13 @@
 														"strSourceSystem": {
 															"value": {
 																"value": "@item().SrcSystem",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strEntityType": {
+															"value": {
+																"value": "@item().EntityType",
 																"type": "Expression"
 															},
 															"type": "String"
@@ -9673,59 +9785,6 @@
 				"lastPublishTime": "2023-02-15T20:38:51Z"
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow1",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {
-										"Container": "data-sync",
-										"Directory": "OH_D365_DataSync/Transformed/Fortis/",
-										"Filename": "fortis_property.csv"
-									},
-									"sink1": {
-										"EntityName": "phg_property"
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_Control')]",
