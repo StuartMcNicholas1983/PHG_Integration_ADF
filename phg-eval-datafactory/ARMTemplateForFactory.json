@@ -101,7 +101,7 @@
 									"isSequence": {
 										"type": "Boolean",
 										"value": {
-											"value": "@greater(indexOf('[R]',pipeline().parameters.SequenceList),0)\n",
+											"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[R]'),0)\n",
 											"type": "Expression"
 										}
 									}
@@ -204,7 +204,7 @@
 									"isSequence": {
 										"type": "Boolean",
 										"value": {
-											"value": "@greater(indexOf('[C]',pipeline().parameters.SequenceList),0)\n",
+											"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[C]'),0)\n",
 											"type": "Expression"
 										}
 									}
@@ -300,7 +300,7 @@
 									"isSequence": {
 										"type": "Boolean",
 										"value": {
-											"value": "@greater(indexOf('[L]',pipeline().parameters.SequenceList),0)\n",
+											"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[L]'),0)\n",
 											"type": "Expression"
 										}
 									}
@@ -403,7 +403,7 @@
 									"isSequence": {
 										"type": "Boolean",
 										"value": {
-											"value": "@greater(indexOf('[D]',pipeline().parameters.SequenceList),0)\n",
+											"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[D]'),0)\n",
 											"type": "Expression"
 										}
 									}
