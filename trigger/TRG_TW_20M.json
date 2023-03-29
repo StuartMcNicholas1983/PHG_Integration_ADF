@@ -1,0 +1,29 @@
+{
+	"name": "TRG_TW_20M",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "PL_Control",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"PipelineName": "OH_D365_Config",
+				"SequenceList": "[C]"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 20,
+			"startTime": "2023-03-29T10:18:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
