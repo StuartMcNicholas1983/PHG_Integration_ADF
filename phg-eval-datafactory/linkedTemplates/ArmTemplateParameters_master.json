@@ -38,6 +38,18 @@
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_Config"
+		},
+		"TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[L],[R]"
+		},
+		"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
+			"value": "OH_D365_Config"
+		},
+		"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
+			"value": "[[C]"
+		},
 		"containerUri": {
 			"value": ""
 		},

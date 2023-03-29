@@ -52,6 +52,22 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_Config"
+		},
+		"TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[L],[R]"
+		},
+		"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_Config"
+		},
+		"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C]"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -149,6 +165,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName')]"
+					},
+					"TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList')]"
+					},
+					"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
+						"value": "[parameters('TRG_TW_20M_properties_pipeline_parameters_PipelineName')]"
+					},
+					"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
+						"value": "[parameters('TRG_TW_20M_properties_pipeline_parameters_SequenceList')]"
 					}
 				}
 			},
