@@ -462,7 +462,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "DF_DeleteEntityData",
+									"referenceName": "DF_DeleteEntityData_copy1",
 									"type": "DataFlowReference",
 									"datasetParameters": {
 										"DeletionData": {
@@ -479,14 +479,11 @@
 												"type": "Expression"
 											}
 										},
-										"DeleteProperties": {
-											"EntityName": "phg_property"
-										},
-										"DeleteTenancies": {
-											"EntityName": "phg_tenancy"
-										},
-										"DeleteContacts": {
-											"EntityName": "contact"
+										"SinkDelete": {
+											"EntityName": {
+												"value": "@item().DestEntity",
+												"type": "Expression"
+											}
 										}
 									}
 								},
