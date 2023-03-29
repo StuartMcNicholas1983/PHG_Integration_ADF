@@ -52,11 +52,11 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
-		"TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_Daily6AM_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_Config"
 		},
-		"TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_Daily6AM_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[L],[R]"
 		},
@@ -13253,7 +13253,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_Daily_6AM')]",
+			"name": "[concat(parameters('factoryName'), '/TRG_S_Daily6AM')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -13266,8 +13266,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"PipelineName": "[parameters('TRG_Daily_6AM_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_Daily_6AM_properties_PL_Control_parameters_SequenceList')]"
+							"PipelineName": "[parameters('TRG_S_Daily6AM_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_Daily6AM_properties_PL_Control_parameters_SequenceList')]"
 						}
 					}
 				],
