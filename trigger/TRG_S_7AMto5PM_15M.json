@@ -10,7 +10,7 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"PipelineName": "reg",
+					"PipelineName": "OH_D365_DataSync",
 					"SequenceList": "[C]"
 				}
 			}
