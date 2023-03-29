@@ -1,5 +1,5 @@
 {
-	"name": "DF_DeleteEntityData",
+	"name": "DF_DeleteEntityData_old",
 	"properties": {
 		"folder": {
 			"name": "OH_D365_DataSync/Delete"
