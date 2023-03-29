@@ -40,7 +40,7 @@
 							"isSequence": {
 								"type": "Boolean",
 								"value": {
-									"value": "@greater(indexOf('[R]',pipeline().parameters.Sequence),0)\n",
+									"value": "@greater(indexOf('[R]',pipeline().parameters.SequenceList),0)\n",
 									"type": "Expression"
 								}
 							}
@@ -142,7 +142,7 @@
 							"isSequence": {
 								"type": "Boolean",
 								"value": {
-									"value": "@greater(indexOf('[C]',pipeline().parameters.Sequence),0)\n",
+									"value": "@greater(indexOf('[C]',pipeline().parameters.SequenceList),0)\n",
 									"type": "Expression"
 								}
 							}
@@ -237,7 +237,7 @@
 							"isSequence": {
 								"type": "Boolean",
 								"value": {
-									"value": "@greater(indexOf('[L]',pipeline().parameters.Sequence),0)\r\n",
+									"value": "@greater(indexOf('[L]',pipeline().parameters.SequenceList),0)\n",
 									"type": "Expression"
 								}
 							}
@@ -339,7 +339,7 @@
 							"isSequence": {
 								"type": "Boolean",
 								"value": {
-									"value": "@greater(indexOf('[D]',pipeline().parameters.Sequence),0)\n",
+									"value": "@greater(indexOf('[D]',pipeline().parameters.SequenceList),0)\n",
 									"type": "Expression"
 								}
 							}
@@ -409,7 +409,7 @@
 				"type": "string",
 				"defaultValue": "OH_D365_DataSync"
 			},
-			"Sequence": {
+			"SequenceList": {
 				"type": "string",
 				"defaultValue": "[L],[R],[C],[D]"
 			}
