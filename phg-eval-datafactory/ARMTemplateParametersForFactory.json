@@ -38,17 +38,23 @@
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
-		"TRG_S_Daily6AM_properties_PL_Control_parameters_PipelineName": {
-			"value": "OH_D365_Config"
+		"TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
 		},
-		"TRG_S_Daily6AM_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[L],[R]"
 		},
 		"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
-			"value": "OH_D365_Config"
+			"value": "OH_D365_DataSync"
 		},
 		"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
 			"value": "[[C]"
+		},
+		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
+		},
+		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[D]"
 		}
 	}
 }
