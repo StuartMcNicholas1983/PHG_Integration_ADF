@@ -3,16 +3,6 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipeline": {
-			"pipelineReference": {
-				"referenceName": "PL_Control",
-				"type": "PipelineReference"
-			},
-			"parameters": {
-				"PipelineName": "OH_D365_DataSync",
-				"SequenceList": "[C]"
-			}
-		},
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
 			"frequency": "Minute",
