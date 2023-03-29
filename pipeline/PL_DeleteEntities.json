@@ -462,7 +462,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "DF_DeleteEntityData_copy1",
+									"referenceName": "DF_DeleteEntityData",
 									"type": "DataFlowReference",
 									"datasetParameters": {
 										"DeletionData": {
