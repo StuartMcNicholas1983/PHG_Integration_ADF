@@ -2,7 +2,7 @@
 	"name": "TRG_TW_20M",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
 			"frequency": "Minute",
