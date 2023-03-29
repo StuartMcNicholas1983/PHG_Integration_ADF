@@ -1,0 +1,49 @@
+{
+	"name": "TRG_S_15Mins_7AMto5PM",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_Control",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"PipelineName": "reg",
+					"SequenceList": "[C]"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2023-03-29T13:03:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"minutes": [
+						0,
+						15,
+						30,
+						45
+					],
+					"hours": [
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
+			}
+		}
+	}
+}
