@@ -414,6 +414,11 @@
 				"defaultValue": "[L],[R],[C],[D]"
 			}
 		},
+		"variables": {
+			"Property_ProgressState": {
+				"type": "Array"
+			}
+		},
 		"folder": {
 			"name": "OH_D365_DataSync"
 		},
