@@ -44,17 +44,17 @@
 		"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[L],[R]"
 		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
-			"value": "OH_D365_DataSync"
-		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
-			"value": "[[D]"
-		},
 		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
 		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[C]"
+		},
+		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
+		},
+		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[D]"
 		}
 	}
 }
