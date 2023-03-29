@@ -8,8 +8,9 @@
 				"dataFlowProperties": {
 					"computeType": "General",
 					"coreCount": 8,
-					"timeToLive": 15,
-					"cleanup": false
+					"timeToLive": 30,
+					"cleanup": false,
+					"customProperties": []
 				}
 			}
 		}
