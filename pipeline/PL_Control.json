@@ -36,6 +36,13 @@
 									"value": "@pipeline().parameters.PipelineName",
 									"type": "Expression"
 								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greater(indexOf('[R]',pipeline().parameters.Sequence),0)\n",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -131,6 +138,13 @@
 									"value": "@pipeline().parameters.PipelineName",
 									"type": "Expression"
 								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greater(indexOf('[C]',pipeline().parameters.Sequence),0)\n",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -217,6 +231,13 @@
 								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greater(indexOf('[L]',pipeline().parameters.Sequence),0)\r\n",
 									"type": "Expression"
 								}
 							}
@@ -314,6 +335,13 @@
 									"value": "@pipeline().parameters.PipelineName",
 									"type": "Expression"
 								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greater(indexOf('[D]',pipeline().parameters.Sequence),0)\n",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -380,6 +408,10 @@
 			"PipelineName": {
 				"type": "string",
 				"defaultValue": "OH_D365_DataSync"
+			},
+			"Sequence": {
+				"type": "string",
+				"defaultValue": "[L],[R],[C],[D]"
 			}
 		},
 		"folder": {
