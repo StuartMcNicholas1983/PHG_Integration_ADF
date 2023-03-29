@@ -60,14 +60,6 @@
 			"type": "string",
 			"defaultValue": "[[L],[R]"
 		},
-		"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[C]"
-		},
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
@@ -75,6 +67,14 @@
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[D]"
+		},
+		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C]"
 		},
 		"containerUri": {
 			"type": "string",
@@ -180,17 +180,17 @@
 					"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
 						"value": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList')]"
 					},
-					"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
-						"value": "[parameters('TRG_TW_20M_properties_pipeline_parameters_PipelineName')]"
-					},
-					"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
-						"value": "[parameters('TRG_TW_20M_properties_pipeline_parameters_SequenceList')]"
-					},
 					"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
 						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]"
 					},
 					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
+					},
+					"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName')]"
+					},
+					"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList')]"
 					}
 				}
 			},

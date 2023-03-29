@@ -60,14 +60,6 @@
 			"type": "string",
 			"defaultValue": "[[L],[R]"
 		},
-		"TRG_TW_20M_properties_pipeline_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_TW_20M_properties_pipeline_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[C]"
-		},
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
@@ -75,6 +67,14 @@
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[D]"
+		},
+		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C]"
 		}
 	},
 	"variables": {
@@ -11218,6 +11218,110 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TRG_S_6AM_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2023-03-29T10:11:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_S_8PM_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2023-03-29T10:41:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								20
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_TW_20M')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 20,
+					"startTime": "2023-03-29T10:18:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 1,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AIR-TTL')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -13261,7 +13365,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_6AM_Daily')]",
+			"name": "[concat(parameters('factoryName'), '/TRG_S_7AMto5PM_15M')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -13274,8 +13378,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"PipelineName": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList')]"
+							"PipelineName": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList')]"
 						}
 					}
 				],
@@ -13284,89 +13388,27 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2023-03-29T10:11:00Z",
+						"startTime": "2023-03-29T13:03:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
-								0
+								0,
+								15,
+								30,
+								45
 							],
 							"hours": [
-								6
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_TW_20M')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "PL_Control",
-						"type": "PipelineReference"
-					},
-					"parameters": {
-						"PipelineName": "[parameters('TRG_TW_20M_properties_pipeline_parameters_PipelineName')]",
-						"SequenceList": "[parameters('TRG_TW_20M_properties_pipeline_parameters_SequenceList')]"
-					}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 20,
-					"startTime": "2023-03-29T10:18:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 1,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_8PM_Daily')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Control",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"PipelineName": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2023-03-29T10:41:00Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								20
+								7,
+								8,
+								9,
+								10,
+								11,
+								12,
+								13,
+								14,
+								15,
+								16,
+								17
 							]
 						}
 					}
