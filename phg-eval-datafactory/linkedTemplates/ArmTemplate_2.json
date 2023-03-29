@@ -1094,7 +1094,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData_copy1')]",
+			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -7773,7 +7773,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "DF_DeleteEntityData_copy1",
+											"referenceName": "DF_DeleteEntityData",
 											"type": "DataFlowReference",
 											"parameters": {},
 											"datasetParameters": {
@@ -7898,7 +7898,7 @@
 				"lastPublishTime": "2023-02-15T20:38:51Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData_copy1')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData')]"
 			]
 		},
 		{
