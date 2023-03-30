@@ -209,7 +209,14 @@
 			{
 				"name": "SequenceGroups - Lookup",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Reset PipelineRunsToday",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -401,6 +408,26 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Reset PipelineRunsToday",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Control",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
