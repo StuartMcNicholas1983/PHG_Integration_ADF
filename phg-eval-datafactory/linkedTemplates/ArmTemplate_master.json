@@ -76,6 +76,14 @@
 			"type": "string",
 			"defaultValue": "[[D]"
 		},
+		"trigger1_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"trigger1_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C]"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -191,6 +199,12 @@
 					},
 					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
+					},
+					"trigger1_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('trigger1_properties_PL_Control_parameters_PipelineName')]"
+					},
+					"trigger1_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('trigger1_properties_PL_Control_parameters_SequenceList')]"
 					}
 				}
 			},

@@ -30,6 +30,14 @@
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[D]"
+		},
+		"trigger1_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"trigger1_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C]"
 		}
 	},
 	"variables": {
@@ -11191,6 +11199,48 @@
 							],
 							"hours": [
 								20
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('trigger1_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('trigger1_properties_PL_Control_parameters_SequenceList')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 15,
+						"startTime": "2023-03-30T21:30:00Z",
+						"endTime": "2023-03-31T21:30:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								4
 							]
 						}
 					}
