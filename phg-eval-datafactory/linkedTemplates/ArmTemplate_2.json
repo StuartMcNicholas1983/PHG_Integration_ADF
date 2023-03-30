@@ -37,6 +37,280 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_HousingAccount')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Core"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Staging"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_housingaccounttype",
+								"type": "DatasetReference"
+							},
+							"name": "housingaccounttype"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_transactioncurrency",
+								"type": "DatasetReference"
+							},
+							"name": "transactioncurrency"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_phg_tenancy",
+								"type": "DatasetReference"
+							},
+							"name": "tenancy"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "Transformed"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectHouisngAccountType"
+						},
+						{
+							"name": "SelectStaging"
+						},
+						{
+							"name": "JoinHousingAccountType"
+						},
+						{
+							"name": "SelectColumnsForSink"
+						},
+						{
+							"name": "SelectTransactionCurrency"
+						},
+						{
+							"name": "ISOCurrencyCode"
+						},
+						{
+							"name": "JoinTransactionCurrency"
+						},
+						{
+							"name": "SelectTenancy"
+						},
+						{
+							"name": "SelectA"
+						},
+						{
+							"name": "JoinTenancy"
+						},
+						{
+							"name": "SelectB"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     DatalakeFilename as string",
+						"}",
+						"source(output(",
+						"          phg_integrationkey as string,",
+						"          phg_name as string,",
+						"          phg_accountholder1 as string,",
+						"          phg_accountholder2 as string,",
+						"          phg_accounttypeid as string,",
+						"          phg_allpayref as string,",
+						"          phg_currentbalance as decimal(10,0),",
+						"          phg_grossrent as decimal(10,0),",
+						"          phg_netcharge as decimal(10,0),",
+						"          phg_totalservicechargeamount as decimal(10,0),",
+						"          phg_housingbenefitreceived as boolean,",
+						"          phg_tenancyid as string,",
+						"          modified as timestamp,",
+						"          created as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Staging",
+						"source(output(",
+						"          phg_housingaccounttypeid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> housingaccounttype",
+						"source(output(",
+						"          createdby as string,",
+						"          createdbyname as string,",
+						"          createdbyyominame as string,",
+						"          createdon as string,",
+						"          createdonbehalfby as string,",
+						"          createdonbehalfbyname as string,",
+						"          createdonbehalfbyyominame as string,",
+						"          currencyname as string,",
+						"          currencyprecision as string,",
+						"          currencysymbol as string,",
+						"          entityimage_timestamp as string,",
+						"          entityimage_url as string,",
+						"          entityimageid as string,",
+						"          exchangerate as string,",
+						"          importsequencenumber as string,",
+						"          isocurrencycode as string,",
+						"          modifiedby as string,",
+						"          modifiedbyname as string,",
+						"          modifiedbyyominame as string,",
+						"          modifiedon as string,",
+						"          modifiedonbehalfby as string,",
+						"          modifiedonbehalfbyname as string,",
+						"          modifiedonbehalfbyyominame as string,",
+						"          organizationid as string,",
+						"          overriddencreatedon as string,",
+						"          statecode as string,",
+						"          statuscode as string,",
+						"          transactioncurrencyid as string,",
+						"          uniquedscid as string,",
+						"          versionnumber as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> transactioncurrency",
+						"source(output(",
+						"          phg_tenancyid as string,",
+						"          phg_integrationkey as string,",
+						"          phg_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> tenancy",
+						"housingaccounttype select(mapColumn(",
+						"          phg_housingaccounttypeid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectHouisngAccountType",
+						"Staging select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
+						"SelectStaging, SelectHouisngAccountType join(phg_accounttypeid == SelectHouisngAccountType@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinHousingAccountType",
+						"JoinTransactionCurrency select(mapColumn(",
+						"          phg_integrationkey,",
+						"          phg_name,",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
+						"transactioncurrency select(mapColumn(",
+						"          currencyname,",
+						"          isocurrencycode,",
+						"          statecode,",
+						"          statuscode,",
+						"          transactioncurrencyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTransactionCurrency",
+						"SelectB derive(isocurrencycode = \"GBP\") ~> ISOCurrencyCode",
+						"ISOCurrencyCode, SelectTransactionCurrency join(ISOCurrencyCode@isocurrencycode == SelectTransactionCurrency@isocurrencycode,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTransactionCurrency",
+						"tenancy select(mapColumn(",
+						"          phg_tenancyid,",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancy",
+						"JoinHousingAccountType select(mapColumn(",
+						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid = phg_housingaccounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectA",
+						"SelectA, SelectTenancy join(SelectA@phg_tenancyid == SelectTenancy@phg_integrationkey,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinTenancy",
+						"JoinTenancy select(mapColumn(",
+						"          phg_integrationkey = SelectA@phg_integrationkey,",
+						"          phg_name,",
+						"          phg_accountholder1,",
+						"          phg_accountholder2,",
+						"          phg_accounttypeid,",
+						"          phg_currentbalance,",
+						"          phg_grossrent,",
+						"          phg_netcharge,",
+						"          phg_totalservicechargeamount,",
+						"          phg_housingbenefitreceived,",
+						"          phg_allpayref,",
+						"          phg_tenancyid = SelectTenancy@phg_tenancyid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectB",
+						"SelectColumnsForSink sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:[($DatalakeFilename)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Transformed"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Property')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1088,71 +1362,6 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1)) ~> Transformed"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Delete"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "DeletionData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "SinkDelete"
-						}
-					],
-					"transformations": [
-						{
-							"name": "AlterRowProperty"
-						},
-						{
-							"name": "SelectColumn"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Entity as string,",
-						"          phg_integrationkey as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DeletionData",
-						"SelectColumn alterRow(deleteIf(true())) ~> AlterRowProperty",
-						"DeletionData select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectColumn",
-						"AlterRowProperty sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 0) ~> SinkDelete"
 					]
 				}
 			},
@@ -3999,81 +4208,6 @@
 									]
 								},
 								{
-									"name": "Destination to Source",
-									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "Switch Entity",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "CommonDataServiceForAppsSource",
-											"query": {
-												"value": "@item().FetchXML",
-												"type": "Expression"
-											}
-										},
-										"sink": {
-											"type": "SqlServerSink",
-											"writeBehavior": "upsert",
-											"upsertSettings": {
-												"useTempDB": true,
-												"keys": [
-													"phg_integrationkey"
-												]
-											},
-											"sqlWriterUseTableLock": false,
-											"tableOption": "autoCreate"
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_Dataverse",
-											"type": "DatasetReference",
-											"parameters": {
-												"EntityName": {
-													"value": "@item().DestEntity",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_SQL_OnPrem_Tbl",
-											"type": "DatasetReference",
-											"parameters": {
-												"ServerName": {
-													"value": "@item().SrcServer",
-													"type": "Expression"
-												},
-												"DatabaseName": {
-													"value": "@item().SrcDatabase",
-													"type": "Expression"
-												},
-												"SchemaName": "d365",
-												"TableName": {
-													"value": "@item().DestEntity",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								},
-								{
 									"name": "PipelineParameters LogStart",
 									"type": "SqlServerStoredProcedure",
 									"dependsOn": [
@@ -4177,6 +4311,95 @@
 												"type": "Expression"
 											}
 										}
+									}
+								},
+								{
+									"name": "If RowsCopied",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "Switch Entity",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@greater(activity('Staging to Transformed').output.rowsCopied,0)",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "Destination to Source",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "CommonDataServiceForAppsSource",
+														"query": {
+															"value": "@item().FetchXML",
+															"type": "Expression"
+														}
+													},
+													"sink": {
+														"type": "SqlServerSink",
+														"writeBehavior": "upsert",
+														"upsertSettings": {
+															"useTempDB": true,
+															"keys": [
+																"phg_integrationkey"
+															]
+														},
+														"sqlWriterUseTableLock": false,
+														"tableOption": "autoCreate"
+													},
+													"enableStaging": false
+												},
+												"inputs": [
+													{
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference",
+														"parameters": {
+															"EntityName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DS_SQL_OnPrem_Tbl",
+														"type": "DatasetReference",
+														"parameters": {
+															"ServerName": {
+																"value": "@item().SrcServer",
+																"type": "Expression"
+															},
+															"DatabaseName": {
+																"value": "@item().SrcDatabase",
+																"type": "Expression"
+															},
+															"SchemaName": "d365",
+															"TableName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											}
+										]
 									}
 								}
 							]
@@ -7797,8 +8020,7 @@
 														"type": "Expression"
 													}
 												}
-											},
-											"linkedServiceParameters": {}
+											}
 										},
 										"staging": {},
 										"integrationRuntime": {
@@ -7897,9 +8119,7 @@
 				"annotations": [],
 				"lastPublishTime": "2023-02-15T20:38:51Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_DeleteEntityData')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
@@ -10534,7 +10754,14 @@
 					{
 						"name": "SequenceGroups - Lookup",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Reset PipelineRunsToday",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -10728,6 +10955,26 @@
 									}
 								}
 							]
+						}
+					},
+					{
+						"name": "Reset PipelineRunsToday",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
