@@ -10961,6 +10961,17 @@
 																				},
 																				{
 																					"source": {
+																						"name": "phg_accountid",
+																						"type": "Guid",
+																						"physicalType": "Guid"
+																					},
+																					"sink": {
+																						"name": "phg_accountid",
+																						"type": "Guid"
+																					}
+																				},
+																				{
+																					"source": {
 																						"name": "phg_checksum",
 																						"type": "String",
 																						"physicalType": "String"
