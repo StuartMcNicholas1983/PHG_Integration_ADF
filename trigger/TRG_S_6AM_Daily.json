@@ -11,7 +11,7 @@
 				},
 				"parameters": {
 					"PipelineName": "OH_D365_DataSync",
-					"SequenceList": "[L],[R]"
+					"SequenceList": "[T]"
 				}
 			}
 		],
