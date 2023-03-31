@@ -3,18 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "PL_Control",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"PipelineName": "OH_D365_DataSync",
-					"SequenceList": "[C]"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
