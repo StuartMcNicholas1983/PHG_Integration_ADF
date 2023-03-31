@@ -533,6 +533,7 @@
 				}
 			}
 		],
+		"concurrency": 1,
 		"parameters": {
 			"PipelineName": {
 				"type": "string",
