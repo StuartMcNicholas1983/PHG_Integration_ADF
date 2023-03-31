@@ -13,7 +13,7 @@
 		},
 		"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
-			"defaultValue": "[[L],[R]"
+			"defaultValue": "[[T]"
 		},
 		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
@@ -30,6 +30,14 @@
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[D]"
+		},
+		"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[L],[R]"
 		}
 	},
 	"variables": {
@@ -11743,7 +11751,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -11821,6 +11829,47 @@
 							],
 							"hours": [
 								20
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_S_5AM_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 15,
+						"startTime": "2023-03-31T13:41:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								5
 							]
 						}
 					}
