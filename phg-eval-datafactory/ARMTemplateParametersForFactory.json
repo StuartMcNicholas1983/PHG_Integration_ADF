@@ -55,12 +55,6 @@
 		},
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[D]"
-		},
-		"trigger1_properties_PL_Control_parameters_PipelineName": {
-			"value": "OH_D365_DataSync"
-		},
-		"trigger1_properties_PL_Control_parameters_SequenceList": {
-			"value": "[[C]"
 		}
 	}
 }
