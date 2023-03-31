@@ -1696,10 +1696,13 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_primaryproperty"
+																				"name": "phg_primaryproperty",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
-																				"name": "phg_primaryproperty"
+																				"name": "phg_primaryproperty",
+																				"type": "Guid"
 																			}
 																		},
 																		{
