@@ -313,7 +313,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroup - Core",
+						"activity": "SequenceGroup - Transactional",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -428,6 +428,108 @@
 				"linkedServiceName": {
 					"referenceName": "Control",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SequenceGroups - Transactional",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Core",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SequenceGroups]",
+						"storedProcedureParameters": {
+							"entityType": {
+								"type": "String",
+								"value": "Transactional"
+							},
+							"pipeline": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[T]'),0)\n",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SequenceGroup - Transactional",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroups - Transactional",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SequenceGroups - Transactional').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Transactional Entities",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_TransactionalEntities",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"PipelineName": {
+										"value": "@item().Pipeline",
+										"type": "Expression"
+									},
+									"SourceSystemName": {
+										"value": "@item().SrcSystem",
+										"type": "Expression"
+									},
+									"SequenceGroup": {
+										"value": "@item().SequenceGroup",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
