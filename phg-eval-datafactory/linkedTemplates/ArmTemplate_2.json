@@ -11448,7 +11448,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -11465,9 +11465,9 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Day",
-						"interval": 15,
-						"startTime": "2023-03-31T13:41:00Z",
-						"timeZone": "UTC",
+						"interval": 1,
+						"startTime": "2023-03-31T13:41:00",
+						"timeZone": "GMT Standard Time",
 						"schedule": {
 							"minutes": [
 								0
@@ -11489,7 +11489,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -11507,8 +11507,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2023-03-29T10:11:00Z",
-						"timeZone": "UTC",
+						"startTime": "2023-03-29T10:11:00",
+						"timeZone": "GMT Standard Time",
 						"schedule": {
 							"minutes": [
 								0
@@ -11530,7 +11530,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -11548,8 +11548,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2023-03-29T13:03:00Z",
-						"timeZone": "UTC",
+						"startTime": "2023-03-29T13:03:00",
+						"timeZone": "GMT Standard Time",
 						"schedule": {
 							"minutes": [
 								0,
@@ -11582,7 +11582,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -11600,8 +11600,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2023-03-29T10:41:00Z",
-						"timeZone": "UTC",
+						"startTime": "2023-03-29T10:41:00",
+						"timeZone": "GMT Standard Time",
 						"schedule": {
 							"minutes": [
 								0
