@@ -52,6 +52,14 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[L],[R]"
+		},
 		"TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
@@ -75,14 +83,6 @@
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[D]"
-		},
-		"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[L],[R]"
 		},
 		"containerUri": {
 			"type": "string",
@@ -182,6 +182,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName')]"
+					},
+					"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList')]"
+					},
 					"TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName": {
 						"value": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName')]"
 					},
@@ -199,12 +205,6 @@
 					},
 					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
-					},
-					"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList')]"
 					}
 				}
 			},
