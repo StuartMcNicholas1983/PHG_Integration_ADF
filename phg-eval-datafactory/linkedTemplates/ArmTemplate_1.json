@@ -704,7 +704,7 @@
 								]
 							},
 							{
-								"activity": "Duration",
+								"activity": "Duration_SS",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -766,7 +766,7 @@
 						"type": "Wait",
 						"dependsOn": [
 							{
-								"activity": "StartTime",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Completed"
 								]
@@ -778,7 +778,7 @@
 						}
 					},
 					{
-						"name": "StartTime",
+						"name": "RunStart",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"userProperties": [],
@@ -791,7 +791,7 @@
 						}
 					},
 					{
-						"name": "EndTime",
+						"name": "RunEnd",
 						"type": "SetVariable",
 						"dependsOn": [
 							{
@@ -821,7 +821,7 @@
 								]
 							},
 							{
-								"activity": "Duration",
+								"activity": "Duration_SS",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -879,11 +879,11 @@
 						]
 					},
 					{
-						"name": "Duration",
+						"name": "Duration_SS",
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "EndTime",
+								"activity": "RunEnd",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -893,7 +893,7 @@
 						"typeProperties": {
 							"variableName": "Duration",
 							"value": {
-								"value": "@string(div(sub(ticks(formatDateTime(variables('EndTime'))),ticks(formatDateTime(variables('StartTime')))),1000))",
+								"value": "@string(div(sub(ticks(formatDateTime(variables('EndTime'))),ticks(formatDateTime(variables('StartTime')))),10000000))",
 								"type": "Expression"
 							}
 						}
@@ -911,6 +911,15 @@
 						"type": "String"
 					},
 					"Duration": {
+						"type": "String"
+					},
+					"RunStart": {
+						"type": "String"
+					},
+					"RunEnd": {
+						"type": "String"
+					},
+					"Duration_SS": {
 						"type": "String"
 					}
 				},
