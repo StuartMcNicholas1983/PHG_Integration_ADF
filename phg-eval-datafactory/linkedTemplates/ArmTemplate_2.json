@@ -2074,17 +2074,6 @@
 																						"name": "phg_gascapped",
 																						"type": "Boolean"
 																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_checksum",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "phg_checksum",
-																						"type": "String"
-																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -2353,17 +2342,6 @@
 																					"sink": {
 																						"name": "phg_propertyid",
 																						"type": "Guid"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_checksum",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "phg_checksum",
-																						"type": "String"
 																					}
 																				}
 																			],
