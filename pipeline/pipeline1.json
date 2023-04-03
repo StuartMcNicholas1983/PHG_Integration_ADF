@@ -13,7 +13,7 @@
 						]
 					},
 					{
-						"activity": "End",
+						"activity": "Duration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -74,7 +74,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Start",
+						"activity": "StartTime",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -86,13 +86,20 @@
 				}
 			},
 			{
-				"name": "Start",
+				"name": "StartTime",
 				"type": "SetVariable",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "StartTime",
+					"value": {
+						"value": "@string(utcNow())",
+						"type": "Expression"
+					}
+				}
 			},
 			{
-				"name": "End",
+				"name": "EndTime",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -102,7 +109,14 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "EndTime",
+					"value": {
+						"value": "@string(utcNow())",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Copy data Fail",
@@ -115,7 +129,7 @@
 						]
 					},
 					{
-						"activity": "End",
+						"activity": "Duration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -170,8 +184,39 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Duration",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "EndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Duration",
+					"value": {
+						"value": "@string(div(sub(ticks(formatDateTime(variables('EndTime'))),ticks(formatDateTime(variables('StartTime')))),1000))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"StartTime": {
+				"type": "String"
+			},
+			"EndTime": {
+				"type": "String"
+			},
+			"Duration": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
