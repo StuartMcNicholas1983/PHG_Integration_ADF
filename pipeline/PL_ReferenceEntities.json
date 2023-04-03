@@ -408,7 +408,7 @@
 								{
 									"activity": "PipelineParameters LogStart",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								}
 							],
