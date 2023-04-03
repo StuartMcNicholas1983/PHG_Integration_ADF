@@ -709,7 +709,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "@SELECT \n'@{pipeline().DataFactory}' as DataFactory,\n'@{pipeline().Pipeline}' as Pipeline,\n'@{pipeline().GroupId}' as GroupID,\n'@{pipeline().RunId}' as RunID,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{pipeline().TriggerType}' as TriggerType\n\n",
+									"value": "SELECT \n'@{pipeline().DataFactory}' as DataFactory,\n'@{pipeline().Pipeline}' as Pipeline,\n'@{pipeline().GroupId}' as GroupID,\n'@{pipeline().RunId}' as RunID,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{pipeline().TriggerType}' as TriggerType\n\n",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
