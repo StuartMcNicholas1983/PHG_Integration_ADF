@@ -2,7 +2,7 @@
 	"name": "TRG_S_8PM_Daily",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
