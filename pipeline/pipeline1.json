@@ -200,7 +200,7 @@
 				"typeProperties": {
 					"variableName": "Duration",
 					"value": {
-						"value": "@string(div(sub(ticks(formatDateTime(variables('EndTime'))),ticks(formatDateTime(variables('StartTime')))),1000000))",
+						"value": "@string(div(sub(ticks(formatDateTime(variables('EndTime'))),ticks(formatDateTime(variables('StartTime')))),10000000))",
 						"type": "Expression"
 					}
 				}
