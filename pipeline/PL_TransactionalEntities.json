@@ -857,9 +857,7 @@
 																	"mappings": [
 																		{
 																			"source": {
-																				"name": "phg_accountid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_accountid"
 																			},
 																			"sink": {
 																				"name": "phg_accountid",
@@ -868,9 +866,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_contactid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_contactid"
 																			},
 																			"sink": {
 																				"name": "phg_contactid",
@@ -879,9 +875,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrydate",
-																				"type": "DateTime",
-																				"physicalType": "DateTime"
+																				"name": "phg_entrydate"
 																			},
 																			"sink": {
 																				"name": "phg_entrydate",
@@ -890,9 +884,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrystatus",
-																				"type": "Int32",
-																				"physicalType": "Int32"
+																				"name": "phg_entrystatus"
 																			},
 																			"sink": {
 																				"name": "phg_entrystatus",
@@ -901,9 +893,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrytext",
-																				"type": "String",
-																				"physicalType": "String"
+																				"name": "phg_entrytext"
 																			},
 																			"sink": {
 																				"name": "phg_entrytext",
@@ -912,9 +902,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrytype",
-																				"type": "String",
-																				"physicalType": "String"
+																				"name": "phg_entrytype"
 																			},
 																			"sink": {
 																				"name": "phg_entrytype",
@@ -945,9 +933,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_sequence",
-																				"type": "Int32",
-																				"physicalType": "Int32"
+																				"name": "phg_sequence"
 																			},
 																			"sink": {
 																				"name": "phg_sequence",
@@ -956,9 +942,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_tenancyid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_tenancyid"
 																			},
 																			"sink": {
 																				"name": "phg_tenancyid",
