@@ -857,7 +857,9 @@
 																	"mappings": [
 																		{
 																			"source": {
-																				"name": "phg_accountid"
+																				"name": "phg_accountid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
 																				"name": "phg_accountid",
@@ -866,7 +868,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_contactid"
+																				"name": "phg_contactid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
 																				"name": "phg_contactid",
@@ -875,7 +879,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrydate"
+																				"name": "phg_entrydate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
 																			},
 																			"sink": {
 																				"name": "phg_entrydate",
@@ -884,7 +890,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrystatus"
+																				"name": "phg_entrystatus",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
 																				"name": "phg_entrystatus",
@@ -893,7 +901,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrytext"
+																				"name": "phg_entrytext",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "phg_entrytext",
@@ -902,7 +912,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_entrytype"
+																				"name": "phg_entrytype",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "phg_entrytype",
@@ -933,7 +945,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_sequence"
+																				"name": "phg_sequence",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
 																				"name": "phg_sequence",
@@ -942,7 +956,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_tenancyid"
+																				"name": "phg_tenancyid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
 																				"name": "phg_tenancyid",
@@ -1213,12 +1229,35 @@
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
 									"referenceName": "DS_SQL_Control",
 									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQL_Control_Tbl",
+									"type": "DatasetReference",
+									"parameters": {
+										"SchemaName": "dbo",
+										"TableName": "PipelineAuditDetailLog"
+									}
 								}
 							]
 						}
