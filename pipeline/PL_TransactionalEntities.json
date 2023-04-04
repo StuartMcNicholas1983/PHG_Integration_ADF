@@ -745,6 +745,20 @@
 															}
 														}
 													]
+												},
+												{
+													"value": "DiaryNote",
+													"activities": [
+														{
+															"name": "Wait1",
+															"type": "Wait",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"waitTimeInSeconds": 1
+															}
+														}
+													]
 												}
 											]
 										}
