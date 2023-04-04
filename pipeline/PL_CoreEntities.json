@@ -2186,10 +2186,13 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_type"
+																				"name": "phg_type",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
-																				"name": "phg_type"
+																				"name": "phg_type",
+																				"type": "Int32"
 																			}
 																		}
 																	],
