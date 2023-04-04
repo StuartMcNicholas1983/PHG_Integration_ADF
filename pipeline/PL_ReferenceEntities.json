@@ -521,6 +521,15 @@
 												"name": "phg_name",
 												"type": "String"
 											}
+										},
+										{
+											"source": {
+												"name": "phg_checksum"
+											},
+											"sink": {
+												"name": "phg_checksum",
+												"type": "String"
+											}
 										}
 									],
 									"typeConversion": true,
