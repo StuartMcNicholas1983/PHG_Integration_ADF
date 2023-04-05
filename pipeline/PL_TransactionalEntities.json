@@ -752,7 +752,7 @@
 															}
 														},
 														{
-															"name": "PipelineAuditDetailLog_2 T",
+															"name": "PipelineAuditDetailLog_2 Transaction",
 															"type": "Copy",
 															"dependsOn": [
 																{
