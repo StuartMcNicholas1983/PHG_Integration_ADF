@@ -1091,6 +1091,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 Property",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - Property",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Property').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Property').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Property').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Property').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Property').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Property').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -1371,6 +1432,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 Tenancy",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - Tenancy",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Tenancy').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Tenancy').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Tenancy').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Tenancy').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Tenancy').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Tenancy').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -1827,6 +1949,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 Contact",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - Contact",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Contact').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Contact').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Contact').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Contact').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Contact').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Contact').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -2129,6 +2312,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 HousingAccount",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - HousingAccount",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - HousingAccount').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - HousingAccount').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - HousingAccount').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - HousingAccount').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - HousingAccount').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - HousingAccount').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -2345,7 +2589,7 @@
 															}
 														},
 														{
-															"name": "PipelineAuditDetailLog_2 HM",
+															"name": "PipelineAuditDetailLog_2 HouseholdMember",
 															"type": "Copy",
 															"dependsOn": [
 																{
@@ -2684,6 +2928,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 Warranty",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - Warranty",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Warranty').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Warranty').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Warranty').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Warranty').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Warranty').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Warranty').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -2920,6 +3225,67 @@
 																"referenceName": "Control",
 																"type": "LinkedServiceReference"
 															}
+														},
+														{
+															"name": "PipelineAuditDetailLog_2 Component",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "Trfd_to_Dest - Component",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "AzureSqlSource",
+																	"sqlReaderQuery": {
+																		"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - HouseholdMember' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Component').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Component').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Component').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Component').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Component').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Component').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																		"type": "Expression"
+																	},
+																	"queryTimeout": "02:00:00",
+																	"partitionOption": "None"
+																},
+																"sink": {
+																	"type": "AzureSqlSink",
+																	"writeBehavior": "insert",
+																	"sqlWriterUseTableLock": false
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"typeConversion": true,
+																	"typeConversionSettings": {
+																		"allowDataTruncation": true,
+																		"treatBooleanAsNumber": false
+																	}
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_SQL_Control",
+																	"type": "DatasetReference"
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_Control_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"SchemaName": "dbo",
+																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
 														}
 													]
 												}

@@ -1007,7 +1007,7 @@
 															]
 														},
 														{
-															"name": "PipelineAuditDetailLog_2 DN",
+															"name": "PipelineAuditDetailLog_2 DiaryNote",
 															"type": "Copy",
 															"dependsOn": [
 																{
