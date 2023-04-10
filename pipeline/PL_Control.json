@@ -662,7 +662,7 @@
 			},
 			"SequenceList": {
 				"type": "string",
-				"defaultValue": "[L],[R],[C],[D]"
+				"defaultValue": "[L],[R],[C],[T],[D]"
 			}
 		},
 		"variables": {
