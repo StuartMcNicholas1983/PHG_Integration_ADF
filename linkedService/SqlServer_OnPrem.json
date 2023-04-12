@@ -15,7 +15,7 @@
 		"typeProperties": {
 			"connectionString": "integrated security=True;data source=@{linkedService().ServerName};initial catalog=@{linkedService().DatabaseName}",
 			"userName": "GROUPICT\\stuart.mcnicholas",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4N2JjYjQ5ZC02ZjY3LTRmMjMtYTQ4ZS0yMzYzYjY4YjU1MGEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMWZhN2Y2Yy1kNjM1LTQ3MTAtYTU5Yy01MzBjODVkNmE5ZTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "BBP-Pro2SQL-01",
