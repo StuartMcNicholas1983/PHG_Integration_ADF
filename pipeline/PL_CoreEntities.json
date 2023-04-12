@@ -986,6 +986,17 @@
 																				"name": "phg_checksum",
 																				"type": "String"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_indefectperiod",
+																				"type": "Boolean",
+																				"physicalType": "Boolean"
+																			},
+																			"sink": {
+																				"name": "phg_indefectperiod",
+																				"type": "Boolean"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
