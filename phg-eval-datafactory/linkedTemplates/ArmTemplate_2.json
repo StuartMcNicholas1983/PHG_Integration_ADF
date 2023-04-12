@@ -6752,6 +6752,17 @@
 																						"name": "phg_checksum",
 																						"type": "String"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_personreferencenumber",
+																						"type": "string",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_personreferencenumber",
+																						"type": "String"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
