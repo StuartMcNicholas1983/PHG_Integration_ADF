@@ -1859,7 +1859,7 @@
 																		{
 																			"source": {
 																				"name": "phg_personreferencenumber",
-																				"type": "string",
+																				"type": "String",
 																				"physicalType": "String"
 																			},
 																			"sink": {
