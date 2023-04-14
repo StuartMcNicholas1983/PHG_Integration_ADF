@@ -1000,6 +1000,61 @@
 																				"name": "phg_indefectperiod",
 																				"type": "Boolean"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_formerarrearsofficer",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_formerarrearsofficer",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_estatesofficer",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_estatesofficer",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_arrearsofficer",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_arrearsofficer",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_rentofficer",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_rentofficer",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_surveyor",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_surveyor",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
