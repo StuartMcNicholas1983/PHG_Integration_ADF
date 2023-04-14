@@ -3313,6 +3313,48 @@
 															]
 														}
 													]
+												},
+												{
+													"value": "Officer",
+													"activities": [
+														{
+															"name": "Wait1",
+															"type": "Wait",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"waitTimeInSeconds": 1
+															}
+														}
+													]
+												},
+												{
+													"value": "Account",
+													"activities": [
+														{
+															"name": "Wait2",
+															"type": "Wait",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"waitTimeInSeconds": 1
+															}
+														}
+													]
+												},
+												{
+													"value": "ServiceCharge",
+													"activities": [
+														{
+															"name": "Wait3",
+															"type": "Wait",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"waitTimeInSeconds": 1
+															}
+														}
+													]
 												}
 											]
 										}
