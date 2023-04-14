@@ -379,7 +379,10 @@
 													"type": "String"
 												},
 												"strLastPipelineRunStatus": {
-													"value": "Succeeded",
+													"value": {
+														"value": "Succeeded",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"strSourceSystem": {
