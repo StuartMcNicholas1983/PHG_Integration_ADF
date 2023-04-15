@@ -1011,7 +1011,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Core_Entities",
+						"name": "Core_A_Entities",
 						"type": "Lookup",
 						"dependsOn": [
 							{
@@ -1036,7 +1036,7 @@
 								"storedProcedureParameters": {
 									"entityType": {
 										"type": "String",
-										"value": "Core"
+										"value": "Core_A"
 									},
 									"pipeline": {
 										"type": "String",
@@ -1076,7 +1076,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Core_Entities",
+								"activity": "Core_A_Entities",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1085,7 +1085,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Core_Entities').output.value",
+								"value": "@activity('Core_A_Entities').output.value",
 								"type": "Expression"
 							},
 							"isSequential": false,
@@ -2106,7 +2106,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Core_Entities",
+						"name": "Core_B_Entities",
 						"type": "Lookup",
 						"dependsOn": [
 							{
@@ -2131,7 +2131,7 @@
 								"storedProcedureParameters": {
 									"entityType": {
 										"type": "String",
-										"value": "Core"
+										"value": "Core_B"
 									},
 									"pipeline": {
 										"type": "String",
@@ -2171,7 +2171,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Core_Entities",
+								"activity": "Core_B_Entities",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -2180,7 +2180,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Core_Entities').output.value",
+								"value": "@activity('Core_B_Entities').output.value",
 								"type": "Expression"
 							},
 							"isSequential": false,
@@ -4498,7 +4498,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Core_Entities",
+						"name": "Core_C_Entities",
 						"type": "Lookup",
 						"dependsOn": [
 							{
@@ -4523,7 +4523,7 @@
 								"storedProcedureParameters": {
 									"entityType": {
 										"type": "String",
-										"value": "Core"
+										"value": "Core_C"
 									},
 									"pipeline": {
 										"type": "String",
@@ -4563,7 +4563,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Core_Entities",
+								"activity": "Core_C_Entities",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -4572,7 +4572,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Core_Entities').output.value",
+								"value": "@activity('Core_C_Entities').output.value",
 								"type": "Expression"
 							},
 							"isSequential": false,
