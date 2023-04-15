@@ -76,7 +76,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Core_Entities').output.value",
+						"value": "@activity('Core_C_Entities').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
