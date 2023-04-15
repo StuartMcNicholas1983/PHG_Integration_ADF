@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SequenceGroups - Reference",
+				"name": "SG - Reference",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -60,7 +60,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroups - Reference",
+						"activity": "SG - Reference",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -69,7 +69,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SequenceGroups - Reference').output.value",
+						"value": "@activity('SG - Reference').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -105,7 +105,7 @@
 				}
 			},
 			{
-				"name": "SequenceGroups - Core",
+				"name": "SG - Core_A",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -130,7 +130,7 @@
 						"storedProcedureParameters": {
 							"entityType": {
 								"type": "String",
-								"value": "Core"
+								"value": "Core_A"
 							},
 							"pipeline": {
 								"type": "String",
@@ -158,11 +158,11 @@
 				}
 			},
 			{
-				"name": "SequenceGroup - Core",
+				"name": "SequenceGroup - Core_A",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroups - Core",
+						"activity": "SG - Core_A",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -171,19 +171,19 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SequenceGroups - Core').output.value",
+						"value": "@activity('SG - Core_A').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Core Entities",
+							"name": "Core Entities_A",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "PL_CoreEntities",
+									"referenceName": "PL_CoreEntities_A",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -207,7 +207,7 @@
 				}
 			},
 			{
-				"name": "SequenceGroups - Lookup",
+				"name": "SG - Lookup",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -264,7 +264,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroups - Lookup",
+						"activity": "SG - Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -273,7 +273,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SequenceGroups - Lookup').output.value",
+						"value": "@activity('SG - Lookup').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -309,7 +309,7 @@
 				}
 			},
 			{
-				"name": "SequenceGroups - Delete",
+				"name": "SG - Delete",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -366,7 +366,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroups - Delete",
+						"activity": "SG - Delete",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -375,7 +375,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SequenceGroups - Delete').output.value",
+						"value": "@activity('SG - Delete').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -438,11 +438,11 @@
 				}
 			},
 			{
-				"name": "SequenceGroups - Transactional",
+				"name": "SG - Transactional",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroup - Core",
+						"activity": "SequenceGroup - Core_C",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -495,7 +495,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SequenceGroups - Transactional",
+						"activity": "SG - Transactional",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -504,7 +504,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SequenceGroups - Transactional').output.value",
+						"value": "@activity('SG - Transactional').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -652,6 +652,210 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "SG - Core_B",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Core_A",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SequenceGroups]",
+						"storedProcedureParameters": {
+							"entityType": {
+								"type": "String",
+								"value": "Core_B"
+							},
+							"pipeline": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[C]'),0)\n",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SequenceGroup - Core_B",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SG - Core_B",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SG - Core_B').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Core_B Entities",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_CoreEntities_B",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"PipelineName": {
+										"value": "@item().Pipeline",
+										"type": "Expression"
+									},
+									"SourceSystemName": {
+										"value": "@item().SrcSystem",
+										"type": "Expression"
+									},
+									"SequenceGroup": {
+										"value": "@item().SequenceGroup",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "SG - Core_C",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Core_B",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SequenceGroups]",
+						"storedProcedureParameters": {
+							"entityType": {
+								"type": "String",
+								"value": "Core_C"
+							},
+							"pipeline": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[C]'),0)\n",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SequenceGroup - Core_C",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SG - Core_C",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SG - Core_C').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Core_C Entities",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_CoreEntities_C",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"PipelineName": {
+										"value": "@item().Pipeline",
+										"type": "Expression"
+									},
+									"SourceSystemName": {
+										"value": "@item().SrcSystem",
+										"type": "Expression"
+									},
+									"SequenceGroup": {
+										"value": "@item().SequenceGroup",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"concurrency": 1,
