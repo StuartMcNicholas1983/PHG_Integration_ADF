@@ -698,7 +698,7 @@
 																			"type": "Expression"
 																		},
 																		"Directory": {
-																			"value": "@item().DatalakeDirectory",
+																			"value": "@item().DatalakeDirectory_Transformed",
 																			"type": "Expression"
 																		},
 																		"Filename": {
