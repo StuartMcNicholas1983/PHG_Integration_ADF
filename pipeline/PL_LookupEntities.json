@@ -719,7 +719,7 @@
 														"upsertSettings": {
 															"useTempDB": false,
 															"keys": [
-																"transactioncurrencyid"
+																"businessunitid"
 															]
 														},
 														"sqlWriterUseTableLock": false,
