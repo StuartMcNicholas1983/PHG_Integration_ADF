@@ -7503,6 +7503,961 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_Entities",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
+								"storedProcedureParameters": {
+									"entityType": {
+										"type": "String",
+										"value": "Lookup"
+									},
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									},
+									"sequenceGroup": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.SequenceGroup",
+											"type": "Expression"
+										}
+									},
+									"srcSystem": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.SourceSystemName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Entity",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_Entities",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_Entities').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Switch Entity",
+									"type": "Switch",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Transaction Currency",
+												"activities": [
+													{
+														"name": "D365_TransactionCurrency to SQL",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@item().FetchXML",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"writeBehavior": "upsert",
+																"upsertSettings": {
+																	"useTempDB": false,
+																	"keys": [
+																		"transactioncurrencyid"
+																	]
+																},
+																"sqlWriterUseTableLock": false,
+																"tableOption": "autoCreate"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
+																		},
+																		"sink": {
+																			"name": "transactioncurrencyid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "isocurrencycode",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "isocurrencycode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "currencyname",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "currencyname",
+																			"type": "String"
+																		}
+																	}
+																]
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Dataverse",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": "transactioncurrency"
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().DestServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().DestDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - TransactionCurrency",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "D365_TransactionCurrency to SQL",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('D365_TransactionCurrency to SQL').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											},
+											{
+												"value": "String Map",
+												"activities": [
+													{
+														"name": "D365_Stringmap to SQL",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@item().FetchXML",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"writeBehavior": "upsert",
+																"upsertSettings": {
+																	"useTempDB": false,
+																	"keys": [
+																		"stringmapid"
+																	]
+																},
+																"sqlWriterUseTableLock": false,
+																"tableOption": "autoCreate"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "attributename",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "attributename",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "attributevalue",
+																			"type": "Int32"
+																		},
+																		"sink": {
+																			"name": "attributevalue",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "objecttypecode",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "objecttypecode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "value",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "value",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "stringmapid",
+																			"type": "Guid"
+																		},
+																		"sink": {
+																			"name": "stringmapid",
+																			"type": "Guid"
+																		}
+																	}
+																]
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Dataverse",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": "stringmap"
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().DestServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().DestDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - Stringmap",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "D365_Stringmap to SQL",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('D365_Stringmap to SQL').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											},
+											{
+												"value": "Ref Entity Code Map",
+												"activities": [
+													{
+														"name": "Reference Entity Code Map to SQL",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "ExcelSource",
+																"storeSettings": {
+																	"type": "AzureBlobFSReadSettings",
+																	"recursive": true,
+																	"enablePartitionDiscovery": false
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"preCopyScript": "truncate table adf.ReferenceEntityCodeMap",
+																"writeBehavior": "insert",
+																"sqlWriterUseTableLock": false
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "SourceSystem",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "SourceSystem",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "SourceSchema",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "SourceSchema",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "SourceTable",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "SourceTable",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "SourceCode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "SourceCode",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "Entity",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "Entity",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "EntityQualifiedName",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "EntityQualifiedName",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "EntityCode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "EntityCode",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "EntityValue",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "EntityValue",
+																			"type": "String",
+																			"physicalType": "nvarchar"
+																		}
+																	}
+																],
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Excel_ReferenceEntityCodeMap",
+																"type": "DatasetReference",
+																"parameters": {}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().DestServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().DestDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - RefEntityCodeMap",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Reference Entity Code Map to SQL",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('Reference Entity Code Map to SQL').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											},
+											{
+												"value": "Business Unit",
+												"activities": [
+													{
+														"name": "D365_BusinessUnit to SQL",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@item().FetchXML",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "SqlServerSink",
+																"writeBehavior": "upsert",
+																"upsertSettings": {
+																	"useTempDB": false,
+																	"keys": [
+																		"businessunitid"
+																	]
+																},
+																"sqlWriterUseTableLock": false,
+																"tableOption": "autoCreate"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "businessunitid",
+																			"type": "Guid"
+																		},
+																		"sink": {
+																			"name": "businessunitid",
+																			"type": "Guid"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "name",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "name",
+																			"type": "String"
+																		}
+																	}
+																]
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "DS_Dataverse",
+																"type": "DatasetReference",
+																"parameters": {
+																	"EntityName": "businessunit"
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "DS_SQL_OnPrem_Tbl",
+																"type": "DatasetReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().DestServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().DestDatabase",
+																		"type": "Expression"
+																	},
+																	"SchemaName": {
+																		"value": "@item().DestSchema",
+																		"type": "Expression"
+																	},
+																	"TableName": {
+																		"value": "@item().DestEntity",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "PipelineParameters LogEnd - BusinessUnit",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "D365_BusinessUnit to SQL",
+																"dependencyConditions": [
+																	"Completed"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+															"storedProcedureParameters": {
+																"dtLastPipelineRunEnd": {
+																	"value": {
+																		"value": "@{utcnow()}",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"strEntity": {
+																	"value": {
+																		"value": "@item().Entity",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strLastPipelineRunStatus": {
+																	"value": {
+																		"value": "@{activity('D365_BusinessUnit to SQL').output.executionDetails[0].status}",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strSourceSystem": {
+																	"value": {
+																		"value": "@item().SrcSystem",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"strEntityType": {
+																	"value": {
+																		"value": "@item().EntityType",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "Control",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "PipelineParameters LogStart",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogStart]",
+										"storedProcedureParameters": {
+											"dtLastPipelineRunStart": {
+												"value": {
+													"value": "@{utcnow()}",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"guidLastPipelineRun": {
+												"value": {
+													"value": "@pipeline().RunId",
+													"type": "Expression"
+												},
+												"type": "Guid"
+											},
+											"strEntity": {
+												"value": {
+													"value": "@item().Entity",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strSourceSystem": {
+												"value": {
+													"value": "@item().SrcSystem",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"strEntityType": {
+												"value": {
+													"value": "@item().EntityType",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string"
+					},
+					"SourceSystemName": {
+						"type": "string"
+					},
+					"SequenceGroup": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync/Child Packages"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_ReferenceEntities')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -9902,961 +10857,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-17T13:03:59Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_LookupEntities')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup_Entities",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_Entities]",
-								"storedProcedureParameters": {
-									"entityType": {
-										"type": "String",
-										"value": "Lookup"
-									},
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									},
-									"sequenceGroup": {
-										"type": "Int32",
-										"value": {
-											"value": "@pipeline().parameters.SequenceGroup",
-											"type": "Expression"
-										}
-									},
-									"srcSystem": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.SourceSystemName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Entity",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup_Entities",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup_Entities').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Switch Entity",
-									"type": "Switch",
-									"dependsOn": [
-										{
-											"activity": "PipelineParameters LogStart",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"on": {
-											"value": "@item().Entity",
-											"type": "Expression"
-										},
-										"cases": [
-											{
-												"value": "Transaction Currency",
-												"activities": [
-													{
-														"name": "D365_TransactionCurrency to SQL",
-														"type": "Copy",
-														"dependsOn": [],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"source": {
-																"type": "CommonDataServiceForAppsSource",
-																"query": {
-																	"value": "@item().FetchXML",
-																	"type": "Expression"
-																}
-															},
-															"sink": {
-																"type": "SqlServerSink",
-																"writeBehavior": "upsert",
-																"upsertSettings": {
-																	"useTempDB": false,
-																	"keys": [
-																		"transactioncurrencyid"
-																	]
-																},
-																"sqlWriterUseTableLock": false,
-																"tableOption": "autoCreate"
-															},
-															"enableStaging": false,
-															"translator": {
-																"type": "TabularTranslator",
-																"mappings": [
-																	{
-																		"source": {
-																			"name": "transactioncurrencyid",
-																			"type": "Guid"
-																		},
-																		"sink": {
-																			"name": "transactioncurrencyid",
-																			"type": "Guid"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "isocurrencycode",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "isocurrencycode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "currencyname",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "currencyname",
-																			"type": "String"
-																		}
-																	}
-																]
-															}
-														},
-														"inputs": [
-															{
-																"referenceName": "DS_Dataverse",
-																"type": "DatasetReference",
-																"parameters": {
-																	"EntityName": "transactioncurrency"
-																}
-															}
-														],
-														"outputs": [
-															{
-																"referenceName": "DS_SQL_OnPrem_Tbl",
-																"type": "DatasetReference",
-																"parameters": {
-																	"ServerName": {
-																		"value": "@item().DestServer",
-																		"type": "Expression"
-																	},
-																	"DatabaseName": {
-																		"value": "@item().DestDatabase",
-																		"type": "Expression"
-																	},
-																	"SchemaName": {
-																		"value": "@item().DestSchema",
-																		"type": "Expression"
-																	},
-																	"TableName": {
-																		"value": "@item().DestEntity",
-																		"type": "Expression"
-																	}
-																}
-															}
-														]
-													},
-													{
-														"name": "PipelineParameters LogEnd - TransactionCurrency",
-														"type": "SqlServerStoredProcedure",
-														"dependsOn": [
-															{
-																"activity": "D365_TransactionCurrency to SQL",
-																"dependencyConditions": [
-																	"Completed"
-																]
-															}
-														],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
-															"storedProcedureParameters": {
-																"dtLastPipelineRunEnd": {
-																	"value": {
-																		"value": "@{utcnow()}",
-																		"type": "Expression"
-																	},
-																	"type": "DateTime"
-																},
-																"strEntity": {
-																	"value": {
-																		"value": "@item().Entity",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strLastPipelineRunStatus": {
-																	"value": {
-																		"value": "@{activity('D365_TransactionCurrency to SQL').output.executionDetails[0].status}",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strSourceSystem": {
-																	"value": {
-																		"value": "@item().SrcSystem",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strEntityType": {
-																	"value": {
-																		"value": "@item().EntityType",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																}
-															}
-														},
-														"linkedServiceName": {
-															"referenceName": "Control",
-															"type": "LinkedServiceReference"
-														}
-													}
-												]
-											},
-											{
-												"value": "String Map",
-												"activities": [
-													{
-														"name": "D365_Stringmap to SQL",
-														"type": "Copy",
-														"dependsOn": [],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"source": {
-																"type": "CommonDataServiceForAppsSource",
-																"query": {
-																	"value": "@item().FetchXML",
-																	"type": "Expression"
-																}
-															},
-															"sink": {
-																"type": "SqlServerSink",
-																"writeBehavior": "upsert",
-																"upsertSettings": {
-																	"useTempDB": false,
-																	"keys": [
-																		"stringmapid"
-																	]
-																},
-																"sqlWriterUseTableLock": false,
-																"tableOption": "autoCreate"
-															},
-															"enableStaging": false,
-															"translator": {
-																"type": "TabularTranslator",
-																"mappings": [
-																	{
-																		"source": {
-																			"name": "attributename",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "attributename",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "attributevalue",
-																			"type": "Int32"
-																		},
-																		"sink": {
-																			"name": "attributevalue",
-																			"type": "Int32"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "objecttypecode",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "objecttypecode",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "value",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "value",
-																			"type": "String"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "stringmapid",
-																			"type": "Guid"
-																		},
-																		"sink": {
-																			"name": "stringmapid",
-																			"type": "Guid"
-																		}
-																	}
-																]
-															}
-														},
-														"inputs": [
-															{
-																"referenceName": "DS_Dataverse",
-																"type": "DatasetReference",
-																"parameters": {
-																	"EntityName": "stringmap"
-																}
-															}
-														],
-														"outputs": [
-															{
-																"referenceName": "DS_SQL_OnPrem_Tbl",
-																"type": "DatasetReference",
-																"parameters": {
-																	"ServerName": {
-																		"value": "@item().DestServer",
-																		"type": "Expression"
-																	},
-																	"DatabaseName": {
-																		"value": "@item().DestDatabase",
-																		"type": "Expression"
-																	},
-																	"SchemaName": {
-																		"value": "@item().DestSchema",
-																		"type": "Expression"
-																	},
-																	"TableName": {
-																		"value": "@item().DestEntity",
-																		"type": "Expression"
-																	}
-																}
-															}
-														]
-													},
-													{
-														"name": "PipelineParameters LogEnd - Stringmap",
-														"type": "SqlServerStoredProcedure",
-														"dependsOn": [
-															{
-																"activity": "D365_Stringmap to SQL",
-																"dependencyConditions": [
-																	"Completed"
-																]
-															}
-														],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
-															"storedProcedureParameters": {
-																"dtLastPipelineRunEnd": {
-																	"value": {
-																		"value": "@{utcnow()}",
-																		"type": "Expression"
-																	},
-																	"type": "DateTime"
-																},
-																"strEntity": {
-																	"value": {
-																		"value": "@item().Entity",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strLastPipelineRunStatus": {
-																	"value": {
-																		"value": "@{activity('D365_Stringmap to SQL').output.executionDetails[0].status}",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strSourceSystem": {
-																	"value": {
-																		"value": "@item().SrcSystem",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strEntityType": {
-																	"value": {
-																		"value": "@item().EntityType",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																}
-															}
-														},
-														"linkedServiceName": {
-															"referenceName": "Control",
-															"type": "LinkedServiceReference"
-														}
-													}
-												]
-											},
-											{
-												"value": "Ref Entity Code Map",
-												"activities": [
-													{
-														"name": "Reference Entity Code Map to SQL",
-														"type": "Copy",
-														"dependsOn": [],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"source": {
-																"type": "ExcelSource",
-																"storeSettings": {
-																	"type": "AzureBlobFSReadSettings",
-																	"recursive": true,
-																	"enablePartitionDiscovery": false
-																}
-															},
-															"sink": {
-																"type": "SqlServerSink",
-																"preCopyScript": "truncate table adf.ReferenceEntityCodeMap",
-																"writeBehavior": "insert",
-																"sqlWriterUseTableLock": false
-															},
-															"enableStaging": false,
-															"translator": {
-																"type": "TabularTranslator",
-																"mappings": [
-																	{
-																		"source": {
-																			"name": "SourceSystem",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "SourceSystem",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "SourceSchema",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "SourceSchema",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "SourceTable",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "SourceTable",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "SourceCode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "SourceCode",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "Entity",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "Entity",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "EntityQualifiedName",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "EntityQualifiedName",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "EntityCode",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "EntityCode",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "EntityValue",
-																			"type": "String",
-																			"physicalType": "String"
-																		},
-																		"sink": {
-																			"name": "EntityValue",
-																			"type": "String",
-																			"physicalType": "nvarchar"
-																		}
-																	}
-																],
-																"typeConversion": true,
-																"typeConversionSettings": {
-																	"allowDataTruncation": true,
-																	"treatBooleanAsNumber": false
-																}
-															}
-														},
-														"inputs": [
-															{
-																"referenceName": "DS_Excel_ReferenceEntityCodeMap",
-																"type": "DatasetReference",
-																"parameters": {}
-															}
-														],
-														"outputs": [
-															{
-																"referenceName": "DS_SQL_OnPrem_Tbl",
-																"type": "DatasetReference",
-																"parameters": {
-																	"ServerName": {
-																		"value": "@item().DestServer",
-																		"type": "Expression"
-																	},
-																	"DatabaseName": {
-																		"value": "@item().DestDatabase",
-																		"type": "Expression"
-																	},
-																	"SchemaName": {
-																		"value": "@item().DestSchema",
-																		"type": "Expression"
-																	},
-																	"TableName": {
-																		"value": "@item().DestEntity",
-																		"type": "Expression"
-																	}
-																}
-															}
-														]
-													},
-													{
-														"name": "PipelineParameters LogEnd - RefEntityCodeMap",
-														"type": "SqlServerStoredProcedure",
-														"dependsOn": [
-															{
-																"activity": "Reference Entity Code Map to SQL",
-																"dependencyConditions": [
-																	"Completed"
-																]
-															}
-														],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
-															"storedProcedureParameters": {
-																"dtLastPipelineRunEnd": {
-																	"value": {
-																		"value": "@{utcnow()}",
-																		"type": "Expression"
-																	},
-																	"type": "DateTime"
-																},
-																"strEntity": {
-																	"value": {
-																		"value": "@item().Entity",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strLastPipelineRunStatus": {
-																	"value": {
-																		"value": "@{activity('Reference Entity Code Map to SQL').output.executionDetails[0].status}",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strSourceSystem": {
-																	"value": {
-																		"value": "@item().SrcSystem",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strEntityType": {
-																	"value": {
-																		"value": "@item().EntityType",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																}
-															}
-														},
-														"linkedServiceName": {
-															"referenceName": "Control",
-															"type": "LinkedServiceReference"
-														}
-													}
-												]
-											},
-											{
-												"value": "Business Unit",
-												"activities": [
-													{
-														"name": "D365_BusinessUnit to SQL",
-														"type": "Copy",
-														"dependsOn": [],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"source": {
-																"type": "CommonDataServiceForAppsSource",
-																"query": {
-																	"value": "@item().FetchXML",
-																	"type": "Expression"
-																}
-															},
-															"sink": {
-																"type": "SqlServerSink",
-																"writeBehavior": "upsert",
-																"upsertSettings": {
-																	"useTempDB": false,
-																	"keys": [
-																		"transactioncurrencyid"
-																	]
-																},
-																"sqlWriterUseTableLock": false,
-																"tableOption": "autoCreate"
-															},
-															"enableStaging": false,
-															"translator": {
-																"type": "TabularTranslator",
-																"mappings": [
-																	{
-																		"source": {
-																			"name": "businessunitid",
-																			"type": "Guid"
-																		},
-																		"sink": {
-																			"name": "businessunitid",
-																			"type": "Guid"
-																		}
-																	},
-																	{
-																		"source": {
-																			"name": "name",
-																			"type": "String"
-																		},
-																		"sink": {
-																			"name": "name",
-																			"type": "String"
-																		}
-																	}
-																]
-															}
-														},
-														"inputs": [
-															{
-																"referenceName": "DS_Dataverse",
-																"type": "DatasetReference",
-																"parameters": {
-																	"EntityName": "businessunit"
-																}
-															}
-														],
-														"outputs": [
-															{
-																"referenceName": "DS_SQL_OnPrem_Tbl",
-																"type": "DatasetReference",
-																"parameters": {
-																	"ServerName": {
-																		"value": "@item().DestServer",
-																		"type": "Expression"
-																	},
-																	"DatabaseName": {
-																		"value": "@item().DestDatabase",
-																		"type": "Expression"
-																	},
-																	"SchemaName": {
-																		"value": "@item().DestSchema",
-																		"type": "Expression"
-																	},
-																	"TableName": {
-																		"value": "@item().DestEntity",
-																		"type": "Expression"
-																	}
-																}
-															}
-														]
-													},
-													{
-														"name": "PipelineParameters LogEnd - BusinessUnit",
-														"type": "SqlServerStoredProcedure",
-														"dependsOn": [
-															{
-																"activity": "D365_BusinessUnit to SQL",
-																"dependencyConditions": [
-																	"Completed"
-																]
-															}
-														],
-														"policy": {
-															"timeout": "0.12:00:00",
-															"retry": 0,
-															"retryIntervalInSeconds": 30,
-															"secureOutput": false,
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
-															"storedProcedureParameters": {
-																"dtLastPipelineRunEnd": {
-																	"value": {
-																		"value": "@{utcnow()}",
-																		"type": "Expression"
-																	},
-																	"type": "DateTime"
-																},
-																"strEntity": {
-																	"value": {
-																		"value": "@item().Entity",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strLastPipelineRunStatus": {
-																	"value": {
-																		"value": "@{activity('D365_BusinessUnit to SQL').output.executionDetails[0].status}",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strSourceSystem": {
-																	"value": {
-																		"value": "@item().SrcSystem",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																},
-																"strEntityType": {
-																	"value": {
-																		"value": "@item().EntityType",
-																		"type": "Expression"
-																	},
-																	"type": "String"
-																}
-															}
-														},
-														"linkedServiceName": {
-															"referenceName": "Control",
-															"type": "LinkedServiceReference"
-														}
-													}
-												]
-											}
-										],
-										"defaultActivities": [
-											{
-												"name": "Wait1",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 1
-												}
-											}
-										]
-									}
-								},
-								{
-									"name": "PipelineParameters LogStart",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogStart]",
-										"storedProcedureParameters": {
-											"dtLastPipelineRunStart": {
-												"value": {
-													"value": "@{utcnow()}",
-													"type": "Expression"
-												},
-												"type": "DateTime"
-											},
-											"guidLastPipelineRun": {
-												"value": {
-													"value": "@pipeline().RunId",
-													"type": "Expression"
-												},
-												"type": "Guid"
-											},
-											"strEntity": {
-												"value": {
-													"value": "@item().Entity",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"strSourceSystem": {
-												"value": {
-													"value": "@item().SrcSystem",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"strEntityType": {
-												"value": {
-													"value": "@item().EntityType",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "Control",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"PipelineName": {
-						"type": "string"
-					},
-					"SourceSystemName": {
-						"type": "string"
-					},
-					"SequenceGroup": {
-						"type": "int"
-					}
-				},
-				"folder": {
-					"name": "OH_D365_DataSync/Child Packages"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
