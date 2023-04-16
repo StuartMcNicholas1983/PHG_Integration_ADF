@@ -625,7 +625,7 @@
 												]
 											},
 											{
-												"name": "PipelineParameters LogEnd - TransactionCurrency_copy1",
+												"name": "PipelineParameters LogEnd - RefEntityCodeMap",
 												"type": "SqlServerStoredProcedure",
 												"dependsOn": [
 													{
@@ -663,6 +663,168 @@
 														"strLastPipelineRunStatus": {
 															"value": {
 																"value": "@{activity('Reference Entity Code Map to SQL').output.executionDetails[0].status}",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strSourceSystem": {
+															"value": {
+																"value": "@item().SrcSystem",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strEntityType": {
+															"value": {
+																"value": "@item().EntityType",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "Control",
+													"type": "LinkedServiceReference"
+												}
+											}
+										]
+									},
+									{
+										"value": "Business Unit",
+										"activities": [
+											{
+												"name": "D365_BusinessUnit to SQL",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "CommonDataServiceForAppsSource",
+														"query": {
+															"value": "@item().FetchXML",
+															"type": "Expression"
+														}
+													},
+													"sink": {
+														"type": "SqlServerSink",
+														"writeBehavior": "upsert",
+														"upsertSettings": {
+															"useTempDB": false,
+															"keys": [
+																"transactioncurrencyid"
+															]
+														},
+														"sqlWriterUseTableLock": false,
+														"tableOption": "autoCreate"
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"mappings": [
+															{
+																"source": {
+																	"name": "businessunitid",
+																	"type": "Guid"
+																},
+																"sink": {
+																	"name": "businessunitid",
+																	"type": "Guid"
+																}
+															},
+															{
+																"source": {
+																	"name": "name",
+																	"type": "String"
+																},
+																"sink": {
+																	"name": "name",
+																	"type": "String"
+																}
+															}
+														]
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "DS_Dataverse",
+														"type": "DatasetReference",
+														"parameters": {
+															"EntityName": "businessunit"
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DS_SQL_OnPrem_Tbl",
+														"type": "DatasetReference",
+														"parameters": {
+															"ServerName": {
+																"value": "@item().DestServer",
+																"type": "Expression"
+															},
+															"DatabaseName": {
+																"value": "@item().DestDatabase",
+																"type": "Expression"
+															},
+															"SchemaName": {
+																"value": "@item().DestSchema",
+																"type": "Expression"
+															},
+															"TableName": {
+																"value": "@item().DestEntity",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											},
+											{
+												"name": "PipelineParameters LogEnd - BusinessUnit",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "D365_BusinessUnit to SQL",
+														"dependencyConditions": [
+															"Completed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_LogEnd]",
+													"storedProcedureParameters": {
+														"dtLastPipelineRunEnd": {
+															"value": {
+																"value": "@{utcnow()}",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"strEntity": {
+															"value": {
+																"value": "@item().Entity",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"strLastPipelineRunStatus": {
+															"value": {
+																"value": "@{activity('D365_BusinessUnit to SQL').output.executionDetails[0].status}",
 																"type": "Expression"
 															},
 															"type": "String"
