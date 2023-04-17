@@ -10863,11 +10863,11 @@
 																				},
 																				{
 																					"source": {
-																						"name": "businessunit",
+																						"name": "businessunitid",
 																						"type": "Guid"
 																					},
 																					"sink": {
-																						"name": "businessunit",
+																						"name": "businessunitid",
 																						"type": "Guid"
 																					}
 																				}
