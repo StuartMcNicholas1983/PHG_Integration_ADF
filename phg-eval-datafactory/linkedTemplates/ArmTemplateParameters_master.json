@@ -26,6 +26,9 @@
 		"phg_eval_dataverse_servicePrincipalCredential": {
 			"value": ""
 		},
+		"phg_test_dataverse_servicePrincipalCredential": {
+			"value": ""
+		},
 		"DataLake_properties_typeProperties_url": {
 			"value": "https://phgevalstoragedatalake.dfs.core.windows.net/"
 		},
@@ -61,6 +64,9 @@
 		},
 		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[D]"
+		},
+		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
+			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"containerUri": {
 			"value": ""
