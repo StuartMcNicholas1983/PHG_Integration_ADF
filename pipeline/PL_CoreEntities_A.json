@@ -679,6 +679,38 @@
 																				"name": "mobilephone",
 																				"type": "String"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "internalemailaddress",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "internalemailaddress",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "domainname",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "domainname",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "businessunit",
+																				"type": "Guid"
+																			},
+																			"sink": {
+																				"name": "businessunit",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
