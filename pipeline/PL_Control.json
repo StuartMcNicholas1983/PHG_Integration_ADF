@@ -211,7 +211,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Reset PipelineRunsToday",
+						"activity": "LoadType",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -408,33 +408,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Reset PipelineRunsToday",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "RunStart",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
-				},
-				"linkedServiceName": {
-					"referenceName": "Control",
-					"type": "LinkedServiceReference"
 				}
 			},
 			{
@@ -856,6 +829,115 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "LoadType",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "RunStart",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@pipeline().parameters.LoadType",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "Full",
+							"activities": [
+								{
+									"name": "spPopulate_Sourcesystems",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[spPopulate_Sourcesystems]"
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "spPopulate_PipelineParameters",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "spPopulate_Sourcesystems",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[spPopulate_PipelineParameters]"
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						},
+						{
+							"value": "Incremental",
+							"activities": [
+								{
+									"name": "Reset PipelineRunsToday",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
 			}
 		],
 		"concurrency": 1,
@@ -867,6 +949,9 @@
 			"SequenceList": {
 				"type": "string",
 				"defaultValue": "[L],[R],[C],[T],[D]"
+			},
+			"LoadType": {
+				"type": "string"
 			}
 		},
 		"variables": {
