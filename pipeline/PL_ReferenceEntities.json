@@ -946,6 +946,9 @@
 			},
 			"SequenceGroup": {
 				"type": "int"
+			},
+			"LoadType": {
+				"type": "string"
 			}
 		},
 		"variables": {
