@@ -1047,6 +1047,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_repairsofficer",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_repairsofficer",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_surveyor",
 																				"type": "Guid",
 																				"physicalType": "Guid"
