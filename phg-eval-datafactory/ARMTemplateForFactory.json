@@ -14370,6 +14370,17 @@
 																						"name": "phg_surveyor",
 																						"type": "Guid"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_operatingdivision",
+																						"type": "Int32",
+																						"physicalType": "Int32"
+																					},
+																					"sink": {
+																						"name": "phg_operatingdivision",
+																						"type": "Int32"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
