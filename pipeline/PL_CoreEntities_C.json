@@ -1806,6 +1806,28 @@
 																	"mappings": [
 																		{
 																			"source": {
+																				"name": "phg_accountcode",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_accountcode",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_chargedused",
+																				"type": "Boolean",
+																				"physicalType": "Boolean"
+																			},
+																			"sink": {
+																				"name": "phg_chargeused",
+																				"type": "Boolean"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_checksum",
 																				"type": "String",
 																				"physicalType": "String"
@@ -1813,6 +1835,17 @@
 																			"sink": {
 																				"name": "phg_checksum",
 																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_enddate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_enddate",
+																				"type": "DateTime"
 																			}
 																		},
 																		{
@@ -1835,6 +1868,116 @@
 																			"sink": {
 																				"name": "phg_name",
 																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_netamount",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_netamount",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_netdaily",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_netdaily",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_propertyid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_propertyid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_startdate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_startdate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_tenancyid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_tenancyid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_uprn",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_uprn",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_vatamount",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_vatamount",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_vatcode",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_vatcode",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_vatdaily",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_vatdaily",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "transactioncurrencyid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "transactioncurrencyid",
+																				"type": "Guid"
 																			}
 																		}
 																	],
