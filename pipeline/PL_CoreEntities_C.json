@@ -1817,7 +1817,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_chargedused",
+																				"name": "phg_chargeused",
 																				"type": "Boolean",
 																				"physicalType": "Boolean"
 																			},
