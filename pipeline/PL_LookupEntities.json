@@ -1223,7 +1223,7 @@
 												{
 													"type": "Query",
 													"text": {
-														"value": "@concat('truncate table d365.', item().DestEntity)",
+														"value": "@concat(concat(concat('truncate table ', item().DestSchema), '.'),item().DestEntity)\n\n\n",
 														"type": "Expression"
 													}
 												}
