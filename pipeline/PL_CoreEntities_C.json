@@ -1979,6 +1979,17 @@
 																				"name": "transactioncurrencyid",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_contactid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_contactid",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
