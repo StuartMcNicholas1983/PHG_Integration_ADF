@@ -859,7 +859,9 @@
 																	"mappings": [
 																		{
 																			"source": {
-																				"name": "accountnumber"
+																				"name": "accountnumber",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "accountnumber",
@@ -868,7 +870,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_city"
+																				"name": "address1_city",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_city",
@@ -877,7 +881,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_county"
+																				"name": "address1_county",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_county",
@@ -886,7 +892,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_fax"
+																				"name": "address1_fax",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_fax",
@@ -895,7 +903,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_line1"
+																				"name": "address1_line1",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_line1",
@@ -904,7 +914,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_line2"
+																				"name": "address1_line2",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_line2",
@@ -913,7 +925,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_line3"
+																				"name": "address1_line3",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_line3",
@@ -922,7 +936,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_postalcode"
+																				"name": "address1_postalcode",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_postalcode",
@@ -931,7 +947,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_primarycontactname"
+																				"name": "address1_primarycontactname",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_primarycontactname",
@@ -940,7 +958,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "address1_telephone1"
+																				"name": "address1_telephone1",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "address1_telephone1",
@@ -949,7 +969,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "creditlimit"
+																				"name": "creditlimit",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
 																			},
 																			"sink": {
 																				"name": "creditlimit",
@@ -958,7 +980,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "description"
+																				"name": "description",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "description",
@@ -967,7 +991,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "emailaddress1"
+																				"name": "emailaddress1",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "emailaddress1",
@@ -976,7 +1002,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "fax"
+																				"name": "fax",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "fax",
@@ -985,7 +1013,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "name"
+																				"name": "name",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "name",
@@ -994,7 +1024,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "numberofemployees"
+																				"name": "numberofemployees",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
 																				"name": "numberofemployees",
@@ -1025,7 +1057,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "telephone1"
+																				"name": "telephone1",
+																				"type": "String",
+																				"physicalType": "String"
 																			},
 																			"sink": {
 																				"name": "telephone1",
@@ -1034,7 +1068,9 @@
 																		},
 																		{
 																			"source": {
-																				"name": "transactioncurrencyid"
+																				"name": "transactioncurrencyid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
 																				"name": "transactioncurrencyid",
