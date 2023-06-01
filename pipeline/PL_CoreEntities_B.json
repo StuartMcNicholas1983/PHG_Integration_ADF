@@ -1080,13 +1080,10 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_localauthority",
-																				"type": "String",
-																				"physicalType": "String"
+																				"name": " phg_localauthority"
 																			},
 																			"sink": {
-																				"name": "phg_localauthority",
-																				"type": "String"
+																				"name": " phg_localauthority"
 																			}
 																		}
 																	],
