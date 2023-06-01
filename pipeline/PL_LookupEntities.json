@@ -1120,14 +1120,11 @@
 												"userProperties": [],
 												"typeProperties": {
 													"source": {
-														"type": "DelimitedTextSource",
+														"type": "ExcelSource",
 														"storeSettings": {
 															"type": "AzureBlobFSReadSettings",
 															"recursive": true,
 															"enablePartitionDiscovery": false
-														},
-														"formatSettings": {
-															"type": "DelimitedTextReadSettings"
 														}
 													},
 													"sink": {
@@ -1186,7 +1183,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Datalake_PipeDelimited",
+														"referenceName": "DS_Excel_LocalAuthorities",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {
