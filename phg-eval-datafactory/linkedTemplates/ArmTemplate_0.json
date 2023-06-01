@@ -423,6 +423,20 @@
 					"referenceName": "DataLake",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"Container": {
+						"type": "string",
+						"defaultValue": "data-sync"
+					},
+					"Directory": {
+						"type": "string",
+						"defaultValue": "OH_D365_DataSync/Config"
+					},
+					"Filename": {
+						"type": "string",
+						"defaultValue": "ReferenceEntityCodeMap.xlsx"
+					}
+				},
 				"folder": {
 					"name": "DataLake/Config"
 				},
@@ -432,9 +446,18 @@
 					"sheetName": "ReferenceEntityCodeMap",
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "ReferenceEntityCodeMap.xlsx",
-						"folderPath": "OH_D365_DataSync/Config",
-						"fileSystem": "data-sync"
+						"fileName": {
+							"value": "@dataset().Filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
 					},
 					"firstRowAsHeader": true
 				},
