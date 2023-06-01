@@ -725,7 +725,21 @@
 												"inputs": [
 													{
 														"referenceName": "DS_Excel_ReferenceEntityCodeMap",
-														"type": "DatasetReference"
+														"type": "DatasetReference",
+														"parameters": {
+															"Container": {
+																"value": "@item().DatalakeContainer",
+																"type": "Expression"
+															},
+															"Directory": {
+																"value": "@item().DatalakeDirectory_Transformed",
+																"type": "Expression"
+															},
+															"Filename": {
+																"value": "@item().DatalakeFilename",
+																"type": "Expression"
+															}
+														}
 													}
 												],
 												"outputs": [

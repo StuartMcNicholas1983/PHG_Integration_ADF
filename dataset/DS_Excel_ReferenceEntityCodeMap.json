@@ -7,13 +7,16 @@
 		},
 		"parameters": {
 			"Container": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "data-sync"
 			},
 			"Directory": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "OH_D365_DataSync/Config"
 			},
 			"Filename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "ReferenceEntityCodeMap.xlsx"
 			}
 		},
 		"folder": {
@@ -22,6 +25,7 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "ReferenceEntityCodeMap",
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
