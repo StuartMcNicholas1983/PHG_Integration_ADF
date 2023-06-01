@@ -1077,6 +1077,17 @@
 																				"name": "phg_operatingdivision",
 																				"type": "Int32"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": " phg_localauthority",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": " phg_localauthority",
+																				"type": "String"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
