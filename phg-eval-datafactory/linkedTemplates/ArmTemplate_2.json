@@ -3012,7 +3012,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -3193,6 +3193,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -5594,7 +5648,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -5775,6 +5829,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -8211,7 +8319,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -8392,6 +8500,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -9177,7 +9339,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -9358,6 +9520,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -10940,7 +11156,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -11121,6 +11337,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -12084,7 +12354,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -12265,6 +12535,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
@@ -13672,7 +13996,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -13853,6 +14177,60 @@
 								},
 								"strStatus": {
 									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Entity",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
 									"type": "String"
 								},
 								"uniqRunID": {
