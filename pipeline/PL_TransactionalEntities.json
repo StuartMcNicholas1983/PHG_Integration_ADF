@@ -1571,10 +1571,7 @@
 							"type": "DateTime"
 						},
 						"intDuration_SS": {
-							"value": {
-								"value": "@variables('Duration_SS')",
-								"type": "Expression"
-							},
+							"value": "0",
 							"type": "Int32"
 						},
 						"strStatus": {
