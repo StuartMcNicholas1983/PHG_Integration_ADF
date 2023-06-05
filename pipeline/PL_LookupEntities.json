@@ -1521,7 +1521,7 @@
 					{
 						"activity": "Entity",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
