@@ -2370,7 +2370,7 @@
 					{
 						"activity": "Entity",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
