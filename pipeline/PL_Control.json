@@ -1078,11 +1078,8 @@
 				"defaultValue": "[L],[R],[C],[T],[D]"
 			},
 			"LoadType": {
-				"type": "array",
-				"defaultValue": [
-					"Full",
-					"Incremental"
-				]
+				"type": "string",
+				"defaultValue": "Full,Incremental"
 			}
 		},
 		"variables": {
