@@ -2514,7 +2514,7 @@
 				}
 			},
 			{
-				"name": "PipelineAuditLog - End",
+				"name": "PipelineAuditLog - End - Success",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
