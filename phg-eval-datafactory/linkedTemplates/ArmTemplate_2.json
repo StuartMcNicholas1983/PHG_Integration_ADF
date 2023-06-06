@@ -3012,7 +3012,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -3156,7 +3156,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -5645,7 +5645,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -5789,7 +5789,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -8313,7 +8313,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -8457,7 +8457,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -9330,7 +9330,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -9474,7 +9474,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -11144,7 +11144,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -11288,7 +11288,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -12339,7 +12339,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -12483,7 +12483,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -13978,7 +13978,7 @@
 							{
 								"activity": "Entity",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -14122,7 +14122,7 @@
 						}
 					},
 					{
-						"name": "PipelineAuditLog - End",
+						"name": "PipelineAuditLog - End - Success",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
