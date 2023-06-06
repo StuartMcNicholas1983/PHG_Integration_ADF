@@ -122,7 +122,7 @@
 							{
 								"activity": "SequenceGroup - Lookup",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -229,7 +229,7 @@
 							{
 								"activity": "SequenceGroup - Reference",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -443,7 +443,7 @@
 							{
 								"activity": "SequenceGroup - Transactional",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -546,7 +546,7 @@
 							{
 								"activity": "SequenceGroup - Core_C",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -706,7 +706,7 @@
 							{
 								"activity": "SequenceGroup - Core_A",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -813,7 +813,7 @@
 							{
 								"activity": "SequenceGroup - Core_B",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
