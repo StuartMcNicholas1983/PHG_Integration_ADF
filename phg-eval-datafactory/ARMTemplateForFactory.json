@@ -1719,7 +1719,14 @@
 											{
 												"name": "Switch Entity",
 												"type": "Switch",
-												"dependsOn": [],
+												"dependsOn": [
+													{
+														"activity": "Switch Entity_Officer_SourceSystem",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
 												"userProperties": [],
 												"typeProperties": {
 													"on": {
@@ -1727,336 +1734,6 @@
 														"type": "Expression"
 													},
 													"cases": [
-														{
-															"value": "Officer",
-															"activities": [
-																{
-																	"name": "PipelineParameters LogEnd - Officer",
-																	"type": "SqlServerStoredProcedure",
-																	"dependsOn": [
-																		{
-																			"activity": "Trfd_to_Dest - Officer",
-																			"dependencyConditions": [
-																				"Completed"
-																			]
-																		}
-																	],
-																	"policy": {
-																		"timeout": "0.12:00:00",
-																		"retry": 0,
-																		"retryIntervalInSeconds": 30,
-																		"secureOutput": false,
-																		"secureInput": false
-																	},
-																	"userProperties": [],
-																	"typeProperties": {
-																		"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
-																		"storedProcedureParameters": {
-																			"dtLastPipelineRunEnd": {
-																				"value": {
-																					"value": "@{utcnow()}",
-																					"type": "Expression"
-																				},
-																				"type": "DateTime"
-																			},
-																			"strEntity": {
-																				"value": {
-																					"value": "@item().Entity",
-																					"type": "Expression"
-																				},
-																				"type": "String"
-																			},
-																			"strLastPipelineRunStatus": {
-																				"value": {
-																					"value": "@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].status}",
-																					"type": "Expression"
-																				},
-																				"type": "String"
-																			},
-																			"strSourceSystem": {
-																				"value": {
-																					"value": "@item().SrcSystem",
-																					"type": "Expression"
-																				},
-																				"type": "String"
-																			},
-																			"strEntityType": {
-																				"value": {
-																					"value": "@item().EntityType",
-																					"type": "Expression"
-																				},
-																				"type": "String"
-																			}
-																		}
-																	},
-																	"linkedServiceName": {
-																		"referenceName": "Control",
-																		"type": "LinkedServiceReference"
-																	}
-																},
-																{
-																	"name": "Trfd_to_Dest - Officer",
-																	"type": "Copy",
-																	"dependsOn": [],
-																	"policy": {
-																		"timeout": "0.12:00:00",
-																		"retry": 0,
-																		"retryIntervalInSeconds": 30,
-																		"secureOutput": false,
-																		"secureInput": false
-																	},
-																	"userProperties": [],
-																	"typeProperties": {
-																		"source": {
-																			"type": "DelimitedTextSource",
-																			"storeSettings": {
-																				"type": "AzureBlobFSReadSettings",
-																				"recursive": true,
-																				"enablePartitionDiscovery": false
-																			},
-																			"formatSettings": {
-																				"type": "DelimitedTextReadSettings"
-																			}
-																		},
-																		"sink": {
-																			"type": "CommonDataServiceForAppsSink",
-																			"writeBatchSize": 10,
-																			"writeBehavior": "upsert",
-																			"ignoreNullValues": false,
-																			"alternateKeyName": {
-																				"value": "@item().UpsertKeyColumn",
-																				"type": "Expression"
-																			}
-																		},
-																		"enableStaging": false,
-																		"translator": {
-																			"type": "TabularTranslator",
-																			"mappings": [
-																				{
-																					"source": {
-																						"name": "phg_integrationkey",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "phg_integrationkey",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "fullname",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "fullname",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "firstname",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "firstname",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "lastname",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "lastname",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "title",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "title",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "jobtitle",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "jobtitle",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "address1_telephone1",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "address1_telephone1",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "mobilephone",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "mobilephone",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "internalemailaddress",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "internalemailaddress",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "domainname",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "domainname",
-																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "businessunitid",
-																						"type": "Guid"
-																					},
-																					"sink": {
-																						"name": "businessunitid",
-																						"type": "Guid"
-																					}
-																				}
-																			],
-																			"typeConversion": true,
-																			"typeConversionSettings": {
-																				"allowDataTruncation": true,
-																				"treatBooleanAsNumber": false
-																			}
-																		}
-																	},
-																	"inputs": [
-																		{
-																			"referenceName": "DS_Datalake_PipeDelimited",
-																			"type": "DatasetReference",
-																			"parameters": {
-																				"Container": {
-																					"value": "@item().DatalakeContainer",
-																					"type": "Expression"
-																				},
-																				"Directory": {
-																					"value": "@item().DatalakeDirectory_Transformed",
-																					"type": "Expression"
-																				},
-																				"Filename": {
-																					"value": "@item().DatalakeFilename",
-																					"type": "Expression"
-																				}
-																			}
-																		}
-																	],
-																	"outputs": [
-																		{
-																			"referenceName": "DS_Dataverse",
-																			"type": "DatasetReference",
-																			"parameters": {
-																				"EntityName": {
-																					"value": "@item().DestEntity",
-																					"type": "Expression"
-																				}
-																			}
-																		}
-																	]
-																},
-																{
-																	"name": "PipelineAuditDetailLog_2 Officer",
-																	"type": "Copy",
-																	"dependsOn": [
-																		{
-																			"activity": "Trfd_to_Dest - Officer",
-																			"dependencyConditions": [
-																				"Completed"
-																			]
-																		}
-																	],
-																	"policy": {
-																		"timeout": "0.12:00:00",
-																		"retry": 0,
-																		"retryIntervalInSeconds": 30,
-																		"secureOutput": false,
-																		"secureInput": false
-																	},
-																	"userProperties": [],
-																	"typeProperties": {
-																		"source": {
-																			"type": "AzureSqlSource",
-																			"sqlReaderQuery": {
-																				"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - Officer' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Officer').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Officer').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Officer').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Officer').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Officer').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Officer').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
-																				"type": "Expression"
-																			},
-																			"queryTimeout": "02:00:00",
-																			"partitionOption": "None"
-																		},
-																		"sink": {
-																			"type": "AzureSqlSink",
-																			"writeBehavior": "insert",
-																			"sqlWriterUseTableLock": false
-																		},
-																		"enableStaging": false,
-																		"translator": {
-																			"type": "TabularTranslator",
-																			"typeConversion": true,
-																			"typeConversionSettings": {
-																				"allowDataTruncation": true,
-																				"treatBooleanAsNumber": false
-																			}
-																		}
-																	},
-																	"inputs": [
-																		{
-																			"referenceName": "DS_SQL_Control",
-																			"type": "DatasetReference",
-																			"parameters": {}
-																		}
-																	],
-																	"outputs": [
-																		{
-																			"referenceName": "DS_SQL_Control_Tbl",
-																			"type": "DatasetReference",
-																			"parameters": {
-																				"SchemaName": "dbo",
-																				"TableName": "PipelineAuditDetailLog"
-																			}
-																		}
-																	]
-																}
-															]
-														},
 														{
 															"value": "Account",
 															"activities": [
@@ -2551,6 +2228,678 @@
 														}
 													}
 												]
+											},
+											{
+												"name": "Switch Entity_Officer_SourceSystem",
+												"type": "Switch",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"on": {
+														"value": "@concat(item().Entity, item().SrcSystem) ",
+														"type": "Expression"
+													},
+													"cases": [
+														{
+															"value": "OfficerFortis",
+															"activities": [
+																{
+																	"name": "PipelineParameters LogEnd - Officer_F",
+																	"type": "SqlServerStoredProcedure",
+																	"dependsOn": [
+																		{
+																			"activity": "Trfd_to_Dest - Officer_F",
+																			"dependencyConditions": [
+																				"Completed"
+																			]
+																		}
+																	],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+																		"storedProcedureParameters": {
+																			"dtLastPipelineRunEnd": {
+																				"value": {
+																					"value": "@{utcnow()}",
+																					"type": "Expression"
+																				},
+																				"type": "DateTime"
+																			},
+																			"strEntity": {
+																				"value": {
+																					"value": "@item().Entity",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strLastPipelineRunStatus": {
+																				"value": {
+																					"value": "@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].status}",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strSourceSystem": {
+																				"value": {
+																					"value": "@item().SrcSystem",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strEntityType": {
+																				"value": {
+																					"value": "@item().EntityType",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			}
+																		}
+																	},
+																	"linkedServiceName": {
+																		"referenceName": "Control",
+																		"type": "LinkedServiceReference"
+																	}
+																},
+																{
+																	"name": "Trfd_to_Dest - Officer_F",
+																	"type": "Copy",
+																	"dependsOn": [],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"source": {
+																			"type": "DelimitedTextSource",
+																			"storeSettings": {
+																				"type": "AzureBlobFSReadSettings",
+																				"recursive": true,
+																				"enablePartitionDiscovery": false
+																			},
+																			"formatSettings": {
+																				"type": "DelimitedTextReadSettings"
+																			}
+																		},
+																		"sink": {
+																			"type": "CommonDataServiceForAppsSink",
+																			"writeBatchSize": 10,
+																			"writeBehavior": "upsert",
+																			"ignoreNullValues": false,
+																			"alternateKeyName": {
+																				"value": "@item().UpsertKeyColumn",
+																				"type": "Expression"
+																			}
+																		},
+																		"enableStaging": false,
+																		"translator": {
+																			"type": "TabularTranslator",
+																			"mappings": [
+																				{
+																					"source": {
+																						"name": "phg_integrationkey",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_integrationkeyf"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "fullname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "fullname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "firstname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "firstname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "lastname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "lastname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "title",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "title",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "jobtitle",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "jobtitle",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "address1_telephone1",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "address1_telephone1",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "mobilephone",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "mobilephone",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "internalemailaddress",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "internalemailaddress",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "domainname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "domainname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "businessunitid",
+																						"type": "Guid"
+																					},
+																					"sink": {
+																						"name": "businessunitid",
+																						"type": "Guid"
+																					}
+																				}
+																			],
+																			"typeConversion": true,
+																			"typeConversionSettings": {
+																				"allowDataTruncation": true,
+																				"treatBooleanAsNumber": false
+																			}
+																		}
+																	},
+																	"inputs": [
+																		{
+																			"referenceName": "DS_Datalake_PipeDelimited",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"Container": {
+																					"value": "@item().DatalakeContainer",
+																					"type": "Expression"
+																				},
+																				"Directory": {
+																					"value": "@item().DatalakeDirectory_Transformed",
+																					"type": "Expression"
+																				},
+																				"Filename": {
+																					"value": "@item().DatalakeFilename",
+																					"type": "Expression"
+																				}
+																			}
+																		}
+																	],
+																	"outputs": [
+																		{
+																			"referenceName": "DS_Dataverse",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"EntityName": {
+																					"value": "@item().DestEntity",
+																					"type": "Expression"
+																				}
+																			}
+																		}
+																	]
+																},
+																{
+																	"name": "PipelineAuditDetailLog_2 Officer_F",
+																	"type": "Copy",
+																	"dependsOn": [
+																		{
+																			"activity": "Trfd_to_Dest - Officer_F",
+																			"dependencyConditions": [
+																				"Completed"
+																			]
+																		}
+																	],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"source": {
+																			"type": "AzureSqlSource",
+																			"sqlReaderQuery": {
+																				"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - Officer' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Officer_F').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Officer_F').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Officer_F').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Officer_F').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Officer_F').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Officer_F').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																				"type": "Expression"
+																			},
+																			"queryTimeout": "02:00:00",
+																			"partitionOption": "None"
+																		},
+																		"sink": {
+																			"type": "AzureSqlSink",
+																			"writeBehavior": "insert",
+																			"sqlWriterUseTableLock": false
+																		},
+																		"enableStaging": false,
+																		"translator": {
+																			"type": "TabularTranslator",
+																			"typeConversion": true,
+																			"typeConversionSettings": {
+																				"allowDataTruncation": true,
+																				"treatBooleanAsNumber": false
+																			}
+																		}
+																	},
+																	"inputs": [
+																		{
+																			"referenceName": "DS_SQL_Control",
+																			"type": "DatasetReference",
+																			"parameters": {}
+																		}
+																	],
+																	"outputs": [
+																		{
+																			"referenceName": "DS_SQL_Control_Tbl",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"SchemaName": "dbo",
+																				"TableName": "PipelineAuditDetailLog"
+																			}
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"value": "OfficerWaterloo",
+															"activities": [
+																{
+																	"name": "PipelineParameters LogEnd - Officer_W",
+																	"type": "SqlServerStoredProcedure",
+																	"dependsOn": [
+																		{
+																			"activity": "Trfd_to_Dest - Officer_W",
+																			"dependencyConditions": [
+																				"Completed"
+																			]
+																		}
+																	],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"storedProcedureName": "[[dbo].[spUpdate_PipelineParameters_LogEnd]",
+																		"storedProcedureParameters": {
+																			"dtLastPipelineRunEnd": {
+																				"value": {
+																					"value": "@{utcnow()}",
+																					"type": "Expression"
+																				},
+																				"type": "DateTime"
+																			},
+																			"strEntity": {
+																				"value": {
+																					"value": "@item().Entity",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strLastPipelineRunStatus": {
+																				"value": {
+																					"value": "@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].status}",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strSourceSystem": {
+																				"value": {
+																					"value": "@item().SrcSystem",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			},
+																			"strEntityType": {
+																				"value": {
+																					"value": "@item().EntityType",
+																					"type": "Expression"
+																				},
+																				"type": "String"
+																			}
+																		}
+																	},
+																	"linkedServiceName": {
+																		"referenceName": "Control",
+																		"type": "LinkedServiceReference"
+																	}
+																},
+																{
+																	"name": "Trfd_to_Dest - Officer_W",
+																	"type": "Copy",
+																	"dependsOn": [],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"source": {
+																			"type": "DelimitedTextSource",
+																			"storeSettings": {
+																				"type": "AzureBlobFSReadSettings",
+																				"recursive": true,
+																				"enablePartitionDiscovery": false
+																			},
+																			"formatSettings": {
+																				"type": "DelimitedTextReadSettings"
+																			}
+																		},
+																		"sink": {
+																			"type": "CommonDataServiceForAppsSink",
+																			"writeBatchSize": 10,
+																			"writeBehavior": "upsert",
+																			"ignoreNullValues": false,
+																			"alternateKeyName": {
+																				"value": "@item().UpsertKeyColumn",
+																				"type": "Expression"
+																			}
+																		},
+																		"enableStaging": false,
+																		"translator": {
+																			"type": "TabularTranslator",
+																			"mappings": [
+																				{
+																					"source": {
+																						"name": "phg_integrationkey",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_integrationkeyw"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "fullname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "fullname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "firstname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "firstname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "lastname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "lastname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "title",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "title",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "jobtitle",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "jobtitle",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "address1_telephone1",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "address1_telephone1",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "mobilephone",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "mobilephone",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "internalemailaddress",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "internalemailaddress",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "domainname",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "domainname",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "businessunitid",
+																						"type": "Guid"
+																					},
+																					"sink": {
+																						"name": "businessunitid",
+																						"type": "Guid"
+																					}
+																				}
+																			],
+																			"typeConversion": true,
+																			"typeConversionSettings": {
+																				"allowDataTruncation": true,
+																				"treatBooleanAsNumber": false
+																			}
+																		}
+																	},
+																	"inputs": [
+																		{
+																			"referenceName": "DS_Datalake_PipeDelimited",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"Container": {
+																					"value": "@item().DatalakeContainer",
+																					"type": "Expression"
+																				},
+																				"Directory": {
+																					"value": "@item().DatalakeDirectory_Transformed",
+																					"type": "Expression"
+																				},
+																				"Filename": {
+																					"value": "@item().DatalakeFilename",
+																					"type": "Expression"
+																				}
+																			}
+																		}
+																	],
+																	"outputs": [
+																		{
+																			"referenceName": "DS_Dataverse",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"EntityName": {
+																					"value": "@item().DestEntity",
+																					"type": "Expression"
+																				}
+																			}
+																		}
+																	]
+																},
+																{
+																	"name": "PipelineAuditDetailLog_2 Officer_W",
+																	"type": "Copy",
+																	"dependsOn": [
+																		{
+																			"activity": "Trfd_to_Dest - Officer_W",
+																			"dependencyConditions": [
+																				"Completed"
+																			]
+																		}
+																	],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"source": {
+																			"type": "AzureSqlSource",
+																			"sqlReaderQuery": {
+																				"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Trfd_to_Dest - Officer' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Trfd_to_Dest - Officer_W').output.rowsCopied}' as RowsCopied,\n'@{activity('Trfd_to_Dest - Officer_W').output.rowsRead}' as RowsRead,\n'@{activity('Trfd_to_Dest - Officer_W').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Trfd_to_Dest - Officer_W').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Trfd_to_Dest - Officer_W').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Trfd_to_Dest - Officer_W').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS\n",
+																				"type": "Expression"
+																			},
+																			"queryTimeout": "02:00:00",
+																			"partitionOption": "None"
+																		},
+																		"sink": {
+																			"type": "AzureSqlSink",
+																			"writeBehavior": "insert",
+																			"sqlWriterUseTableLock": false
+																		},
+																		"enableStaging": false,
+																		"translator": {
+																			"type": "TabularTranslator",
+																			"typeConversion": true,
+																			"typeConversionSettings": {
+																				"allowDataTruncation": true,
+																				"treatBooleanAsNumber": false
+																			}
+																		}
+																	},
+																	"inputs": [
+																		{
+																			"referenceName": "DS_SQL_Control",
+																			"type": "DatasetReference",
+																			"parameters": {}
+																		}
+																	],
+																	"outputs": [
+																		{
+																			"referenceName": "DS_SQL_Control_Tbl",
+																			"type": "DatasetReference",
+																			"parameters": {
+																				"SchemaName": "dbo",
+																				"TableName": "PipelineAuditDetailLog"
+																			}
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
 											}
 										]
 									}
