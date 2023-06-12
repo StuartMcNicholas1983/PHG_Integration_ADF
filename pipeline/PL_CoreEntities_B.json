@@ -1957,6 +1957,39 @@
 																				"name": "phg_personreferencenumber",
 																				"type": "String"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_emailaddresspriority",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_emailaddresspriority",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_homephonepriority",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_homephonepriority",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_mobilephonepriority",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_mobilephonepriority",
+																				"type": "Int32"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
