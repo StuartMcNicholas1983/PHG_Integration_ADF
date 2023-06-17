@@ -86,7 +86,7 @@
 							"type": "Delete",
 							"dependsOn": [
 								{
-									"activity": "Source to Staging",
+									"activity": "If Transaction Entity",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1322,10 +1322,56 @@
 							}
 						},
 						{
-							"name": "If Condition1",
+							"name": "If Transaction Entity",
 							"type": "IfCondition",
-							"dependsOn": [],
-							"userProperties": []
+							"dependsOn": [
+								{
+									"activity": "Source to Staging",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(item().Entity, 'Transaction')",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Update - stg_phg_transaction",
+										"description": "updates the [phg_balance] field in the [stg_phg_transaction] table",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[adf].[spUpdate_stg_phg_transaction]"
+										},
+										"linkedServiceName": {
+											"referenceName": "SqlServer_OnPrem",
+											"type": "LinkedServiceReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().srcDatabase",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								]
+							}
 						}
 					]
 				}
