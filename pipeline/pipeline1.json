@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "CommonDataServiceForAppsSource",
-						"query": "<fetch>\r\n\t<entity name=\"stringmap\">\r\n\r\n\t<attribute name=\"attributename\"/>\r\n\t<attribute name=\"attributevalue\"/>\r\n\t<attribute name=\"objecttypecode\"/>\r\n\t<attribute name=\"value\"/>\r\n\r\n\r\n</entity>\r\n</fetch>"
+						"query": "<fetch>\r\n\t<entity name=\"stringmap\">\r\n\r\n\t<attribute name=\"attributename\"/>\r\n\t<attribute name=\"attributevalue\"/>\r\n\t<attribute name=\"objecttypecode\"/>\r\n\t<attribute name=\"value\"/>\r\n\r\n\t<filter type=\"and\">\r\n      <filter type=\"or\">\r\n        <condition attribute=\"attributename\" operator=\"like\" value=\"phg_%\"/>\r\n\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"accountcategorycode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"address1_addresstypecode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"customertypecode\" />\r\n\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"familystatuscode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"preferredcontactmethodcode\" />\r\n\r\n      </filter>\r\n    </filter>\r\n\r\n</entity>\r\n</fetch>"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
@@ -54,9 +54,6 @@
 				]
 			}
 		],
-		"folder": {
-			"name": "OH_D365_DataSync"
-		},
 		"annotations": []
 	}
 }
