@@ -754,6 +754,39 @@
 																				"name": "transactioncurrencyid",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "customertypecode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "customertypecode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "accountcategorycode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "accountcategorycode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "address1_addresstypecode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "address1_addresstypecode",
+																				"type": "Int32"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
@@ -1788,6 +1821,12 @@
 				"name": "RunStart",
 				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunStart",
@@ -1808,6 +1847,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunEnd",
@@ -1828,6 +1873,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Duration_SS",
