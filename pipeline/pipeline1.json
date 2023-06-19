@@ -1,0 +1,62 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CommonDataServiceForAppsSource",
+						"query": "<fetch>\r\n\t<entity name=\"stringmap\">\r\n\r\n\t<attribute name=\"attributename\"/>\r\n\t<attribute name=\"attributevalue\"/>\r\n\t<attribute name=\"objecttypecode\"/>\r\n\t<attribute name=\"value\"/>\r\n\r\n\r\n</entity>\r\n</fetch>"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"stringmapid"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Dataverse",
+						"type": "DatasetReference",
+						"parameters": {
+							"EntityName": "stringmap"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQL_Control_Tbl",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": "stringmap_All"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "OH_D365_DataSync"
+		},
+		"annotations": []
+	}
+}
