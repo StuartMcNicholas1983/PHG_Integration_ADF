@@ -40,6 +40,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_test_dataverse'"
 		},
+		"phg_uat_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_uat_dataverse'"
+		},
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
@@ -103,6 +107,10 @@
 		"trigger1_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Full"
+		},
+		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
 	},
 	"variables": {
@@ -12727,7 +12735,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_dev_dataverse",
+					"referenceName": "phg_uat_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -12749,7 +12757,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_uat_dataverse')]"
 			]
 		},
 		{
@@ -18710,6 +18718,27 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-test.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

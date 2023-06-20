@@ -26,6 +26,49 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_phg_housingaccounttype')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataLake/D365"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "phg_housingaccounttype.csv",
+						"folderPath": "OH_D365_DataSync/D365",
+						"fileSystem": "data-sync"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "phg_housingaccounttypeid",
+						"type": "String"
+					},
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_phg_managementarea')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1069,366 +1112,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Core"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "Staging"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_ethnicgroup",
-								"type": "DatasetReference"
-							},
-							"name": "ethnicgroup"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_religion",
-								"type": "DatasetReference"
-							},
-							"name": "religion"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_nationality",
-								"type": "DatasetReference"
-							},
-							"name": "nationality"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_phg_sexuality",
-								"type": "DatasetReference"
-							},
-							"name": "sexuality"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "Transformed"
-						}
-					],
-					"transformations": [
-						{
-							"name": "SelectStaging"
-						},
-						{
-							"name": "SelectEthnicGroup"
-						},
-						{
-							"name": "SelectReligion"
-						},
-						{
-							"name": "SelectNationality"
-						},
-						{
-							"name": "SelectSexuality"
-						},
-						{
-							"name": "JoinEthnicGroup"
-						},
-						{
-							"name": "SelectA"
-						},
-						{
-							"name": "JoinReligion"
-						},
-						{
-							"name": "SelectB"
-						},
-						{
-							"name": "JoinNationality"
-						},
-						{
-							"name": "SelectC"
-						},
-						{
-							"name": "JoinSexuality"
-						},
-						{
-							"name": "SelectColumnsForSink"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     DatalakeFilename as string",
-						"}",
-						"source(output(",
-						"          phg_integrationkey as string,",
-						"          fullname as string,",
-						"          firstname as string,",
-						"          middlename as string,",
-						"          lastname as string,",
-						"          phg_dateofbirth as date,",
-						"          phg_age as integer,",
-						"          phg_dateofdeath as date,",
-						"          phg_previousname as string,",
-						"          phg_ninumber as string,",
-						"          emailaddress1 as string,",
-						"          telephone2 as string,",
-						"          mobilephone as string,",
-						"          phg_registeredonportal as boolean,",
-						"          phg_lastloggedin as date,",
-						"          phg_ethnicgroup as string,",
-						"          phg_relgion as string,",
-						"          phg_nationaility as string,",
-						"          phg_sexuality as string,",
-						"          donotemail as boolean,",
-						"          donotbulkemail as boolean,",
-						"          donotphone as boolean,",
-						"          donotpostalmail as boolean,",
-						"          modified as timestamp,",
-						"          created as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Staging",
-						"source(output(",
-						"          phg_ethnicgroupid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ethnicgroup",
-						"source(output(",
-						"          phg_religionid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> religion",
-						"source(output(",
-						"          phg_nationalityid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> nationality",
-						"source(output(",
-						"          phg_sexualityid as string,",
-						"          phg_integrationkey as string,",
-						"          phg_name as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> sexuality",
-						"Staging select(mapColumn(",
-						"          phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectStaging",
-						"ethnicgroup select(mapColumn(",
-						"          phg_ethnicgroupid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectEthnicGroup",
-						"religion select(mapColumn(",
-						"          phg_religionid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectReligion",
-						"nationality select(mapColumn(",
-						"          phg_nationalityid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectNationality",
-						"sexuality select(mapColumn(",
-						"          phg_sexualityid,",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectSexuality",
-						"SelectStaging, SelectEthnicGroup join(phg_ethnicgroup == SelectEthnicGroup@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinEthnicGroup",
-						"JoinEthnicGroup select(mapColumn(",
-						"          phg_integrationkey = SelectStaging@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup = phg_ethnicgroupid,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectA",
-						"SelectA, SelectReligion join(phg_relgion == SelectReligion@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinReligion",
-						"JoinReligion select(mapColumn(",
-						"          phg_integrationkey = SelectA@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion = phg_religionid,",
-						"          phg_nationaility,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectB",
-						"SelectB, SelectNationality join(phg_nationaility == SelectNationality@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinNationality",
-						"JoinNationality select(mapColumn(",
-						"          phg_integrationkey = SelectB@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility = phg_nationalityid,",
-						"          phg_sexuality,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectC",
-						"SelectC, SelectSexuality join(phg_sexuality == SelectSexuality@phg_integrationkey,",
-						"     joinType:'left',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoinSexuality",
-						"JoinSexuality select(mapColumn(",
-						"          phg_integrationkey = SelectC@phg_integrationkey,",
-						"          fullname,",
-						"          firstname,",
-						"          middlename,",
-						"          lastname,",
-						"          phg_dateofbirth,",
-						"          phg_age,",
-						"          phg_dateofdeath,",
-						"          phg_previousname,",
-						"          phg_ninumber,",
-						"          emailaddress1,",
-						"          telephone2,",
-						"          mobilephone,",
-						"          phg_registeredonportal,",
-						"          phg_lastloggedin,",
-						"          phg_ethnicgroup,",
-						"          phg_relgion,",
-						"          phg_nationaility,",
-						"          phg_sexuality = phg_sexualityid,",
-						"          donotemail,",
-						"          donotbulkemail,",
-						"          donotphone,",
-						"          donotpostalmail",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectColumnsForSink",
-						"SelectColumnsForSink sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:[($DatalakeFilename)],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> Transformed"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_phg_religion')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_nationality')]",
-				"[concat(variables('factoryId'), '/datasets/DS_phg_sexuality')]"
-			]
 		}
 	]
 }
