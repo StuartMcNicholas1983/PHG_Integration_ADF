@@ -532,6 +532,12 @@
 				"name": "RunStart",
 				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunStart",
@@ -552,6 +558,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunEnd",
@@ -572,6 +584,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Duration_SS",
@@ -815,50 +833,22 @@
 							"value": "Full",
 							"activities": [
 								{
-									"name": "spPopulate_Sourcesystems",
-									"type": "SqlServerStoredProcedure",
+									"name": "Full Load Reset",
+									"type": "ExecutePipeline",
 									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
 									"userProperties": [],
 									"typeProperties": {
-										"storedProcedureName": "[dbo].[spPopulate_Sourcesystems]"
-									},
-									"linkedServiceName": {
-										"referenceName": "Control",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "spPopulate_PipelineParameters",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "spPopulate_Sourcesystems",
-											"dependencyConditions": [
-												"Succeeded"
-											]
+										"pipeline": {
+											"referenceName": "PL_FullLoadReset",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"PipelineName": {
+												"value": "@pipeline().parameters.PipelineName",
+												"type": "Expression"
+											}
 										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[dbo].[spPopulate_PipelineParameters]"
-									},
-									"linkedServiceName": {
-										"referenceName": "Control",
-										"type": "LinkedServiceReference"
 									}
 								}
 							]
