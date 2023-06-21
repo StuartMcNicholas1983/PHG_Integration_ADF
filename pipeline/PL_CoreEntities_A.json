@@ -402,81 +402,6 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Destination to Source",
-										"type": "Copy",
-										"dependsOn": [
-											{
-												"activity": "Switch Entity",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "CommonDataServiceForAppsSource",
-												"query": {
-													"value": "@item().FetchXML",
-													"type": "Expression"
-												}
-											},
-											"sink": {
-												"type": "SqlServerSink",
-												"writeBehavior": "upsert",
-												"upsertSettings": {
-													"useTempDB": true,
-													"keys": [
-														"phg_integrationkey"
-													]
-												},
-												"sqlWriterUseTableLock": false,
-												"tableOption": "autoCreate"
-											},
-											"enableStaging": false
-										},
-										"inputs": [
-											{
-												"referenceName": "DS_Dataverse",
-												"type": "DatasetReference",
-												"parameters": {
-													"EntityName": {
-														"value": "@item().DestEntity",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "DS_SQL_OnPrem_Tbl",
-												"type": "DatasetReference",
-												"parameters": {
-													"ServerName": {
-														"value": "@item().SrcServer",
-														"type": "Expression"
-													},
-													"DatabaseName": {
-														"value": "@item().SrcDatabase",
-														"type": "Expression"
-													},
-													"SchemaName": "d365",
-													"TableName": {
-														"value": "@item().DestEntity",
-														"type": "Expression"
-													}
-												}
-											}
-										]
-									},
-									{
 										"name": "Switch Entity",
 										"type": "Switch",
 										"dependsOn": [
@@ -953,6 +878,87 @@
 																	}
 																}
 															]
+														},
+														{
+															"name": "Destination to Source",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "PipelineParameters LogEnd - Account",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																},
+																{
+																	"activity": "PipelineAuditDetailLog_2 Account",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "CommonDataServiceForAppsSource",
+																	"query": {
+																		"value": "@item().FetchXML",
+																		"type": "Expression"
+																	}
+																},
+																"sink": {
+																	"type": "SqlServerSink",
+																	"writeBehavior": "upsert",
+																	"upsertSettings": {
+																		"useTempDB": true,
+																		"keys": [
+																			"phg_integrationkey"
+																		]
+																	},
+																	"sqlWriterUseTableLock": false,
+																	"tableOption": "autoCreate"
+																},
+																"enableStaging": false
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_Dataverse",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"EntityName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_OnPrem_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"ServerName": {
+																			"value": "@item().SrcServer",
+																			"type": "Expression"
+																		},
+																		"DatabaseName": {
+																			"value": "@item().SrcDatabase",
+																			"type": "Expression"
+																		},
+																		"SchemaName": "d365",
+																		"TableName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															]
 														}
 													]
 												}
@@ -964,9 +970,9 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "Destination to Source",
+												"activity": "Switch Entity",
 												"dependencyConditions": [
-													"Completed"
+													"Succeeded"
 												]
 											}
 										],
@@ -1143,7 +1149,8 @@
 																				"physicalType": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkeyf"
+																				"name": "phg_integrationkeyf",
+																				"type": "String"
 																			}
 																		},
 																		{
@@ -1356,6 +1363,131 @@
 																	}
 																}
 															]
+														},
+														{
+															"name": "Destination to Source - Fortis",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "PipelineParameters LogEnd - Officer_F",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																},
+																{
+																	"activity": "PipelineAuditDetailLog_2 Officer_F",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "CommonDataServiceForAppsSource",
+																	"query": {
+																		"value": "@item().FetchXML",
+																		"type": "Expression"
+																	}
+																},
+																"sink": {
+																	"type": "SqlServerSink",
+																	"writeBehavior": "upsert",
+																	"upsertSettings": {
+																		"useTempDB": true,
+																		"keys": [
+																			"phg_integrationkey"
+																		]
+																	},
+																	"sqlWriterUseTableLock": false,
+																	"tableOption": "autoCreate"
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"mappings": [
+																		{
+																			"source": {
+																				"name": "systemuserid",
+																				"type": "Guid"
+																			},
+																			"sink": {
+																				"name": "systemuserid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_integrationkeyf",
+																				"type": "String"
+																			},
+																			"sink": {
+																				"name": "phg_integrationkey"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "fullname",
+																				"type": "String"
+																			},
+																			"sink": {
+																				"name": "fullname",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "modifiedon",
+																				"type": "DateTime"
+																			},
+																			"sink": {
+																				"name": "modifiedon",
+																				"type": "DateTime"
+																			}
+																		}
+																	]
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_Dataverse",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"EntityName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_OnPrem_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"ServerName": {
+																			"value": "@item().SrcServer",
+																			"type": "Expression"
+																		},
+																		"DatabaseName": {
+																			"value": "@item().SrcDatabase",
+																			"type": "Expression"
+																		},
+																		"SchemaName": "d365",
+																		"TableName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															]
 														}
 													]
 												},
@@ -1471,7 +1603,8 @@
 																				"physicalType": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkeyw"
+																				"name": "phg_integrationkeyw",
+																				"type": "String"
 																			}
 																		},
 																		{
@@ -1681,6 +1814,130 @@
 																	"parameters": {
 																		"SchemaName": "dbo",
 																		"TableName": "PipelineAuditDetailLog"
+																	}
+																}
+															]
+														},
+														{
+															"name": "Destination to Source - Waterloo",
+															"type": "Copy",
+															"dependsOn": [
+																{
+																	"activity": "PipelineParameters LogEnd - Officer_W",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																},
+																{
+																	"activity": "PipelineAuditDetailLog_2 Officer_W",
+																	"dependencyConditions": [
+																		"Completed"
+																	]
+																}
+															],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"source": {
+																	"type": "CommonDataServiceForAppsSource",
+																	"query": {
+																		"value": "@item().FetchXML",
+																		"type": "Expression"
+																	}
+																},
+																"sink": {
+																	"type": "SqlServerSink",
+																	"writeBehavior": "upsert",
+																	"upsertSettings": {
+																		"useTempDB": true,
+																		"keys": [
+																			"phg_integrationkey"
+																		]
+																	},
+																	"sqlWriterUseTableLock": false,
+																	"tableOption": "autoCreate"
+																},
+																"enableStaging": false,
+																"translator": {
+																	"type": "TabularTranslator",
+																	"mappings": [
+																		{
+																			"source": {
+																				"name": "systemuserid",
+																				"type": "Guid"
+																			},
+																			"sink": {
+																				"name": "systemuserid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_integrationkeyw"
+																			},
+																			"sink": {
+																				"name": "phg_integrationkey"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "fullname",
+																				"type": "String"
+																			},
+																			"sink": {
+																				"name": "fullname",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "modifiedon",
+																				"type": "DateTime"
+																			},
+																			"sink": {
+																				"name": "modifiedon",
+																				"type": "DateTime"
+																			}
+																		}
+																	]
+																}
+															},
+															"inputs": [
+																{
+																	"referenceName": "DS_Dataverse",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"EntityName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
+																	}
+																}
+															],
+															"outputs": [
+																{
+																	"referenceName": "DS_SQL_OnPrem_Tbl",
+																	"type": "DatasetReference",
+																	"parameters": {
+																		"ServerName": {
+																			"value": "@item().SrcServer",
+																			"type": "Expression"
+																		},
+																		"DatabaseName": {
+																			"value": "@item().SrcDatabase",
+																			"type": "Expression"
+																		},
+																		"SchemaName": "d365",
+																		"TableName": {
+																			"value": "@item().DestEntity",
+																			"type": "Expression"
+																		}
 																	}
 																}
 															]
