@@ -1940,10 +1940,12 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_integrationkeyw"
+																				"name": "phg_integrationkeyw",
+																				"type": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkey"
+																				"name": "phg_integrationkey",
+																				"type": "string"
 																			}
 																		},
 																		{
