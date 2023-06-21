@@ -215,7 +215,7 @@
 				"type": "CommonDataServiceForApps",
 				"typeProperties": {
 					"deploymentType": "Online",
-					"serviceUri": "https://phg-test.crm11.dynamics.com/",
+					"serviceUri": "https://phg-uat.crm11.dynamics.com/",
 					"authenticationType": "AADServicePrincipal",
 					"servicePrincipalCredentialType": "ServicePrincipalKey",
 					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
