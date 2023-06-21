@@ -1429,7 +1429,8 @@
 																				"type": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkey"
+																				"name": "phg_integrationkey",
+																				"type": "string"
 																			}
 																		},
 																		{
