@@ -239,12 +239,6 @@
 					},
 					"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
 						"value": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList')]"
-					},
-					"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
 					}
 				}
 			},
@@ -265,6 +259,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]"
+					},
+					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
 					},
 					"trigger1_properties_PL_Control_parameters_PipelineName": {
 						"value": "[parameters('trigger1_properties_PL_Control_parameters_PipelineName')]"

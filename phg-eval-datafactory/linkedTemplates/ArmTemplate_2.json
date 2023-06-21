@@ -30,14 +30,6 @@
 		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[C]"
-		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[D]"
 		}
 	},
 	"variables": {
@@ -13587,6 +13579,76 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select   p.phg_integrationkey\r\n\t\t,p.phg_tenancyid\t\t\r\n\r\nfrom\tadf.vOH_D365_Property p\r\n\r\n\t\tinner join adf.stg_phg_property s_p\r\n\t\ton s_p.phg_integrationkey = p.phg_integrationkey\r\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "CommonDataServiceForAppsSink",
+								"writeBatchSize": 10,
+								"writeBehavior": "upsert"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+									"DatabaseName": "OH_D365_Config",
+									"SchemaName": "dbo"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference",
+								"parameters": {
+									"EntityName": "phg_property"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities_A')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -15023,7 +15085,8 @@
 																						"type": "String"
 																					},
 																					"sink": {
-																						"name": "phg_integrationkey"
+																						"name": "phg_integrationkey",
+																						"type": "string"
 																					}
 																				},
 																				{
@@ -15536,10 +15599,12 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_integrationkeyw"
+																						"name": "phg_integrationkeyw",
+																						"type": "String"
 																					},
 																					"sink": {
-																						"name": "phg_integrationkey"
+																						"name": "phg_integrationkey",
+																						"type": "string"
 																					}
 																				},
 																				{
@@ -17358,47 +17423,6 @@
 								15,
 								16,
 								17
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_8PM_Daily')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Control",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"PipelineName": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2023-03-29T10:41:00",
-						"timeZone": "GMT Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								20
 							]
 						}
 					}

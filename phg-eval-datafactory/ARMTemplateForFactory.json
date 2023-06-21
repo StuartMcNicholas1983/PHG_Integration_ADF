@@ -16595,6 +16595,441 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_FullLoadReset')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "RunStart",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunStart",
+							"value": {
+								"value": "@string(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "RunEnd",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "SourceSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunEnd",
+							"value": {
+								"value": "@string(utcNow())",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Duration_SS",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "RunEnd",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Duration_SS",
+							"value": {
+								"value": "@string(div(sub(ticks(formatDateTime(variables('RunEnd'))),ticks(formatDateTime(variables('RunStart')))),10000000))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Success",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Duration_SS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@variables('RunEnd')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": {
+										"value": "@variables('Duration_SS')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Succeeded",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PipelineAuditLog - End - Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "SourceSystem",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
+							"storedProcedureParameters": {
+								"dtRunEnd": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"intDuration_SS": {
+									"value": "0",
+									"type": "Int32"
+								},
+								"strStatus": {
+									"value": "Failed",
+									"type": "String"
+								},
+								"uniqRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "spPopulate_Sourcesystems",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RunStart",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spPopulate_Sourcesystems]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "spPopulate_PipelineParameters",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "spPopulate_Sourcesystems",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spPopulate_PipelineParameters]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SourceSystems",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "spPopulate_PipelineParameters",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SourceSystems]",
+								"storedProcedureParameters": {
+									"pipeline": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.PipelineName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_SQL_Control",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "SourceSystem",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SourceSystems",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SourceSystems').output",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Truncate D365 Tables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[d365].[spTruncate_d365_tables]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer_OnPrem",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": {
+												"value": "@item().SrcServer",
+												"type": "Expression"
+											},
+											"DatabaseName": {
+												"value": "@item().srcDatabase",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RunStart": {
+						"type": "String"
+					},
+					"RunEnd": {
+						"type": "String"
+					},
+					"Duration_SS": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "OH_D365_DataSync/Child Packages"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Control')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select   p.phg_integrationkey\r\n\t\t,p.phg_tenancyid\t\t\r\n\r\nfrom\tadf.vOH_D365_Property p\r\n\r\n\t\tinner join adf.stg_phg_property s_p\r\n\t\ton s_p.phg_integrationkey = p.phg_integrationkey\r\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "CommonDataServiceForAppsSink",
+								"writeBatchSize": 10,
+								"writeBehavior": "upsert"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+									"DatabaseName": "OH_D365_Config",
+									"SchemaName": "dbo"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference",
+								"parameters": {
+									"EntityName": "phg_property"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CoreEntities_A')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -18031,7 +18466,8 @@
 																						"type": "String"
 																					},
 																					"sink": {
-																						"name": "phg_integrationkey"
+																						"name": "phg_integrationkey",
+																						"type": "string"
 																					}
 																				},
 																				{
@@ -18544,10 +18980,12 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_integrationkeyw"
+																						"name": "phg_integrationkeyw",
+																						"type": "String"
 																					},
 																					"sink": {
-																						"name": "phg_integrationkey"
+																						"name": "phg_integrationkey",
+																						"type": "string"
 																					}
 																				},
 																				{
@@ -19132,368 +19570,6 @@
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_FullLoadReset')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "RunStart",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunStart",
-							"value": {
-								"value": "@string(utcNow())",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "RunEnd",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "SourceSystem",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunEnd",
-							"value": {
-								"value": "@string(utcNow())",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Duration_SS",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "RunEnd",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "Duration_SS",
-							"value": {
-								"value": "@string(div(sub(ticks(formatDateTime(variables('RunEnd'))),ticks(formatDateTime(variables('RunStart')))),10000000))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "PipelineAuditLog - End - Success",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Duration_SS",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
-							"storedProcedureParameters": {
-								"dtRunEnd": {
-									"value": {
-										"value": "@variables('RunEnd')",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"intDuration_SS": {
-									"value": {
-										"value": "@variables('Duration_SS')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"strStatus": {
-									"value": "Succeeded",
-									"type": "String"
-								},
-								"uniqRunID": {
-									"value": {
-										"value": "@pipeline().RunId",
-										"type": "Expression"
-									},
-									"type": "Guid"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "Control",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "PipelineAuditLog - End - Failed",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "SourceSystem",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spUpdate_PipelineAuditLog_End]",
-							"storedProcedureParameters": {
-								"dtRunEnd": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"intDuration_SS": {
-									"value": "0",
-									"type": "Int32"
-								},
-								"strStatus": {
-									"value": "Failed",
-									"type": "String"
-								},
-								"uniqRunID": {
-									"value": {
-										"value": "@pipeline().RunId",
-										"type": "Expression"
-									},
-									"type": "Guid"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "Control",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "spPopulate_Sourcesystems",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "RunStart",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spPopulate_Sourcesystems]"
-						},
-						"linkedServiceName": {
-							"referenceName": "Control",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "spPopulate_PipelineParameters",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "spPopulate_Sourcesystems",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spPopulate_PipelineParameters]"
-						},
-						"linkedServiceName": {
-							"referenceName": "Control",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "SourceSystems",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "spPopulate_PipelineParameters",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[spGet_PipelineParameters_SourceSystems]",
-								"storedProcedureParameters": {
-									"pipeline": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.PipelineName",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_SQL_Control",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "SourceSystem",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "SourceSystems",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('SourceSystems').output",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Truncate D365 Tables",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[d365].[spTruncate_d365_tables]"
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer_OnPrem",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().srcDatabase",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"PipelineName": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunStart": {
-						"type": "String"
-					},
-					"RunEnd": {
-						"type": "String"
-					},
-					"Duration_SS": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "OH_D365_DataSync/Child Packages"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Control')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control')]",
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
 			]
 		}
 	]
