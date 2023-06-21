@@ -17,19 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "CommonDataServiceForAppsSource",
-						"query": "<fetch>\r\n\t<entity name=\"stringmap\">\r\n\r\n\t<attribute name=\"attributename\"/>\r\n\t<attribute name=\"attributevalue\"/>\r\n\t<attribute name=\"objecttypecode\"/>\r\n\t<attribute name=\"value\"/>\r\n\r\n\t<filter type=\"and\">\r\n      <filter type=\"or\">\r\n        <condition attribute=\"attributename\" operator=\"like\" value=\"phg_%\"/>\r\n\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"accountcategorycode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"address1_addresstypecode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"customertypecode\" />\r\n\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"familystatuscode\" />\r\n        <condition attribute=\"attributename\" operator=\"eq\" value=\"preferredcontactmethodcode\" />\r\n\r\n      </filter>\r\n    </filter>\r\n\r\n</entity>\r\n</fetch>"
+						"query": "<fetch>\r\n  <entity name=\"systemuser\">\t\t\t\t\t\r\n  <attribute name=\"systemuserid\"/>\t\t\t\r\n  <attribute name=\"phg_integrationkey\"/>\r\n  <attribute name=\"fullname\"/>\t\r\n  <attribute name=\"phg_checksum\"/> \r\n  <attribute name=\"modifiedon\"/>\t\r\n  \r\n  <filter type=\"and\">\r\n  <condition attribute=\"modifiedon\" operator=\"today\"/>\r\n  <condition attribute=\"phg_integrationkeyf\" operator=\"like\" value=\"(F)%\"/>\r\n  </filter>\r\n  \r\n  </entity>\r\n  </fetch>"
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"stringmapid"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false
 				},
@@ -38,17 +31,19 @@
 						"referenceName": "DS_Dataverse",
 						"type": "DatasetReference",
 						"parameters": {
-							"EntityName": "stringmap"
+							"EntityName": "systemuser"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_SQL_Control_Tbl",
+						"referenceName": "DS_SQL_OnPrem_Tbl",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": "stringmap_All"
+							"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+							"DatabaseName": "OH_D365_Config",
+							"SchemaName": "d365",
+							"TableName": "systemuser"
 						}
 					}
 				]
