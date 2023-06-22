@@ -2158,6 +2158,12 @@
 															]
 														}
 													]
+												},
+												{
+													"value": "PropertyLinks"
+												},
+												{
+													"value": "TenancyLinks"
 												}
 											]
 										}
@@ -2354,6 +2360,12 @@
 				"name": "RunStart",
 				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunStart",
@@ -2374,6 +2386,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunEnd",
@@ -2394,6 +2412,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Duration_SS",
