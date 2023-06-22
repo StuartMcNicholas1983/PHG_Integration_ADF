@@ -2445,6 +2445,7 @@
 																		{
 																			"source": {
 																				"name": "phg_propertyid",
+																				"type": "Guid",
 																				"physicalType": "Guid"
 																			},
 																			"sink": {
