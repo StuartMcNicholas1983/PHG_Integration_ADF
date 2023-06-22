@@ -15952,7 +15952,7 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_property",
+																						"name": "phg_propertyid",
 																						"type": "Guid",
 																						"physicalType": "Guid"
 																					},
@@ -16003,7 +16003,7 @@
 																	]
 																},
 																{
-																	"name": "PipelineParameters LogEnd - TenancyLinks_copy1",
+																	"name": "PipelineParameters LogEnd - TenancyLinks",
 																	"type": "SqlServerStoredProcedure",
 																	"dependsOn": [
 																		{
