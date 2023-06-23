@@ -183,7 +183,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "RunStart",
+						"activity": "PipelineAuditLog - Start",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -323,6 +323,116 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "PipelineAuditLog - Start",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "RunStart",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spInsert_PipelineAuditLog_Start]",
+					"storedProcedureParameters": {
+						"dtRunStart": {
+							"value": {
+								"value": "@variables('RunStart')",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"dtTriggerTime": {
+							"value": {
+								"value": "@{pipeline().TriggerTime}",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"strDataFactory": {
+							"value": {
+								"value": "@{pipeline().DataFactory}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"strPipeline": {
+							"value": {
+								"value": "@{pipeline().Pipeline}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"strStatus": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"strTriggeredByPipelineName": {
+							"value": {
+								"value": "@{pipeline()?.TriggeredByPipelineName}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"uniqTriggeredByPipelineRunID": {
+							"value": {
+								"value": "@{pipeline()?.TriggeredByPipelineRunId}",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"strTriggerName": {
+							"value": {
+								"value": "@{pipeline().TriggerName}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"strTriggerType": {
+							"value": {
+								"value": "@{pipeline().TriggerType}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"uniqGroupID": {
+							"value": {
+								"value": "@{pipeline().GroupId}",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"uniqRunID": {
+							"value": {
+								"value": "@{pipeline().RunId}",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"uniqTriggerID": {
+							"value": {
+								"value": "@{pipeline().TriggerId}",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Control",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
