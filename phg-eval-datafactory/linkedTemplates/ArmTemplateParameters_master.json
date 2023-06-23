@@ -47,6 +47,9 @@
 		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
+			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
 		"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
@@ -79,9 +82,6 @@
 		},
 		"trigger1_properties_PL_Control_parameters_LoadType": {
 			"value": "Full"
-		},
-		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"containerUri": {
 			"value": ""
