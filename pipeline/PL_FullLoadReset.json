@@ -287,7 +287,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SourceSystems').output",
+						"value": "@activity('SourceSystems').output.value\n",
 						"type": "Expression"
 					},
 					"isSequential": true,
