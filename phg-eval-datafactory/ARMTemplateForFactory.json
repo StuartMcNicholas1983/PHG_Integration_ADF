@@ -11028,7 +11028,8 @@
 								"referenceName": "DS_SQL_Control",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					},
 					{
