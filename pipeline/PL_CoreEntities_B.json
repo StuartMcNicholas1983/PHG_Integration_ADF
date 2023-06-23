@@ -2944,12 +2944,12 @@
 							},
 							"type": "String"
 						},
-						"strTriggeredByPipelineRunID": {
+						"uniqTriggeredByPipelineRunID": {
 							"value": {
 								"value": "@{pipeline()?.TriggeredByPipelineRunId}",
 								"type": "Expression"
 							},
-							"type": "String"
+							"type": "Guid"
 						},
 						"strTriggerName": {
 							"value": {
