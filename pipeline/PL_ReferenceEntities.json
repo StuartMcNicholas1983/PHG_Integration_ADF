@@ -886,6 +886,12 @@
 				"name": "RunStart",
 				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunStart",
@@ -906,6 +912,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "RunEnd",
@@ -926,6 +938,12 @@
 						]
 					}
 				],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Duration_SS",
@@ -996,12 +1014,12 @@
 							},
 							"type": "String"
 						},
-						"strTriggeredByPipelineRunID": {
+						"uniqTriggeredByPipelineRunID": {
 							"value": {
 								"value": "@{pipeline()?.TriggeredByPipelineRunId}",
 								"type": "Expression"
 							},
-							"type": "String"
+							"type": "Guid"
 						},
 						"strTriggerName": {
 							"value": {
