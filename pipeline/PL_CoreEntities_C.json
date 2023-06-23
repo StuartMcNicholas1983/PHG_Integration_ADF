@@ -2493,12 +2493,12 @@
 							},
 							"type": "String"
 						},
-						"uniqTriggeredByPipelineRunID": {
+						"strTriggeredByPipelineRunID": {
 							"value": {
 								"value": "@{pipeline()?.TriggeredByPipelineRunId}",
 								"type": "Expression"
 							},
-							"type": "Guid"
+							"type": "String"
 						},
 						"strTriggerName": {
 							"value": {
