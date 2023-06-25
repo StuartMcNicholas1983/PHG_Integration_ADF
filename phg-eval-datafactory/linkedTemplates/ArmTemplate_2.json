@@ -17044,7 +17044,7 @@
 							{
 								"activity": "SequenceGroup - Core_A",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
