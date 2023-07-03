@@ -4396,6 +4396,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -7544,6 +7548,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -10241,6 +10249,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -11348,6 +11360,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[D]",
+									"type": "String"
 								}
 							}
 						},
@@ -13180,6 +13196,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[L]",
+									"type": "String"
 								}
 							}
 						},
@@ -14393,6 +14413,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[R]",
+									"type": "String"
 								}
 							}
 						},
@@ -16102,6 +16126,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[T]",
+									"type": "String"
 								}
 							}
 						},
@@ -17434,6 +17462,13 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": {
+										"value": "@pipeline().parameters.SequenceList",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},

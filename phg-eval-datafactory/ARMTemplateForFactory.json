@@ -1122,6 +1122,13 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": {
+										"value": "@pipeline().parameters.SequenceList",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -3618,6 +3625,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -6774,6 +6785,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -9479,6 +9494,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[C]",
+									"type": "String"
 								}
 							}
 						},
@@ -10594,6 +10613,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[D]",
+									"type": "String"
 								}
 							}
 						},
@@ -11089,7 +11112,7 @@
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
-								"activity": "RunStart",
+								"activity": "PurgePipelineAuditLog",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -11186,8 +11209,40 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[-]",
+									"type": "String"
 								}
 							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Control",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "PurgePipelineAuditLog",
+						"description": "Deletes data older than 30Days old\n\n- PipelineAuditLog\n-PipelineAuditDetailLog",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RunStart",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spDelete_PurgePipelineAuditLog]"
 						},
 						"linkedServiceName": {
 							"referenceName": "Control",
@@ -12910,6 +12965,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[L]",
+									"type": "String"
 								}
 							}
 						},
@@ -14132,6 +14191,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[R]",
+									"type": "String"
 								}
 							}
 						},
@@ -15849,6 +15912,10 @@
 										"type": "Expression"
 									},
 									"type": "Guid"
+								},
+								"strSequenceList": {
+									"value": "[[T]",
+									"type": "String"
 								}
 							}
 						},
