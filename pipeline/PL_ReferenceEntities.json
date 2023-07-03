@@ -1055,6 +1055,10 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": "[R]",
+							"type": "String"
 						}
 					}
 				},

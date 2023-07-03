@@ -947,6 +947,10 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": "[D]",
+							"type": "String"
 						}
 					}
 				},

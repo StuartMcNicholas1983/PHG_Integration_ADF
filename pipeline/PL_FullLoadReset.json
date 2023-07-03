@@ -428,6 +428,10 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": "[-]",
+							"type": "String"
 						}
 					}
 				},

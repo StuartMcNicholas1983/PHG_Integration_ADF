@@ -2985,6 +2985,10 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": "[C]",
+							"type": "String"
 						}
 					}
 				},

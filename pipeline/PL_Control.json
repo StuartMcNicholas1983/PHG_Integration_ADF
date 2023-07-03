@@ -994,6 +994,13 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": {
+								"value": "@pipeline().parameters.SequenceList",
+								"type": "Expression"
+							},
+							"type": "String"
 						}
 					}
 				},

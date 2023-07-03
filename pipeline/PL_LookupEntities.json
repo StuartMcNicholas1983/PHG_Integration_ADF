@@ -1674,6 +1674,10 @@
 								"type": "Expression"
 							},
 							"type": "Guid"
+						},
+						"strSequenceList": {
+							"value": "[L]",
+							"type": "String"
 						}
 					}
 				},
