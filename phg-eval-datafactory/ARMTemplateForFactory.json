@@ -15004,6 +15004,17 @@
 																						"name": "phg_checksum",
 																						"type": "String"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_breakdownnumber",
+																						"type": "Int32",
+																						"physicalType": "Int32"
+																					},
+																					"sink": {
+																						"name": "phg_breakdownnumber",
+																						"type": "Int32"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -16448,7 +16459,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_test_dataverse",
+					"referenceName": "phg_dev_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -16470,7 +16481,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_test_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
 			]
 		},
 		{

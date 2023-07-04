@@ -15218,6 +15218,17 @@
 																						"name": "phg_checksum",
 																						"type": "String"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_breakdownnumber",
+																						"type": "Int32",
+																						"physicalType": "Int32"
+																					},
+																					"sink": {
+																						"name": "phg_breakdownnumber",
+																						"type": "Int32"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
