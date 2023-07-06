@@ -5601,17 +5601,6 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_lastloggedin",
-																						"type": "DateTime",
-																						"physicalType": "DateTime"
-																					},
-																					"sink": {
-																						"name": "phg_lastloggedin",
-																						"type": "DateTime"
-																					}
-																				},
-																				{
-																					"source": {
 																						"name": "phg_nationaility",
 																						"type": "Guid",
 																						"physicalType": "Guid"
@@ -5641,17 +5630,6 @@
 																					"sink": {
 																						"name": "phg_previousname",
 																						"type": "String"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_registeredonportal",
-																						"type": "Boolean",
-																						"physicalType": "Boolean"
-																					},
-																					"sink": {
-																						"name": "phg_registeredonportal",
-																						"type": "Boolean"
 																					}
 																				},
 																				{
