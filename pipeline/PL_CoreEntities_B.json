@@ -1088,6 +1088,28 @@
 																				"name": "phg_localauthority",
 																				"type": "String"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_areaid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_areaid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_subareaid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_subareaid",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
@@ -2795,8 +2817,6 @@
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -2821,8 +2841,6 @@
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -2847,8 +2865,6 @@
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
