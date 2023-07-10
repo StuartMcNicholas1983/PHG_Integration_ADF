@@ -552,6 +552,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_priority",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_priority",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_accountholder2",
 																				"type": "Guid",
 																				"physicalType": "Guid"
