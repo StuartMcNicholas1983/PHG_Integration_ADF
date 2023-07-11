@@ -497,7 +497,8 @@
 									"mappings": [
 										{
 											"source": {
-												"name": "phg_integrationkey"
+												"name": "phg_integrationkey",
+												"type": "String"
 											},
 											"sink": {
 												"name": "phg_integrationkey",
@@ -506,7 +507,8 @@
 										},
 										{
 											"source": {
-												"name": "phg_code"
+												"name": "phg_code",
+												"type": "String"
 											},
 											"sink": {
 												"name": "phg_code",
@@ -515,7 +517,8 @@
 										},
 										{
 											"source": {
-												"name": "phg_name"
+												"name": "phg_name",
+												"type": "String"
 											},
 											"sink": {
 												"name": "phg_name",
@@ -524,11 +527,32 @@
 										},
 										{
 											"source": {
-												"name": "phg_checksum"
+												"name": "statecode",
+												"type": "Int32"
+											},
+											"sink": {
+												"name": "statecode",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "statuscode",
+												"type": "Int32"
+											},
+											"sink": {
+												"name": "statuscode",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "phg_checksum",
+												"type": "Int32"
 											},
 											"sink": {
 												"name": "phg_checksum",
-												"type": "String"
+												"type": "Int32"
 											}
 										}
 									],
