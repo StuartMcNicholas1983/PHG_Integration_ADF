@@ -68,6 +68,14 @@
 				"type": "String"
 			},
 			{
+				"name": "statecode",
+				"type": "String"
+			},
+			{
+				"name": "statuscode",
+				"type": "String"
+			},
+			{
 				"name": "phg_checksum",
 				"type": "String"
 			}
