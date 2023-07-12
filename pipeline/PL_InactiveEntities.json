@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Transactional_Entities",
+				"name": "Inactive_Entities",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -28,7 +28,7 @@
 						"storedProcedureParameters": {
 							"entityType": {
 								"type": "String",
-								"value": "Transactional"
+								"value": "Inactive"
 							},
 							"pipeline": {
 								"type": "String",
@@ -67,7 +67,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Transactional_Entities",
+						"activity": "Inactive_Entities",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -76,7 +76,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Transactional_Entities').output.value",
+						"value": "@activity('Inactive_Entities').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
@@ -86,7 +86,7 @@
 							"type": "Delete",
 							"dependsOn": [
 								{
-									"activity": "If Transaction Entity",
+									"activity": "Source to Staging",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -527,134 +527,19 @@
 																	"mappings": [
 																		{
 																			"source": {
-																				"name": "phg_balance",
-																				"type": "Decimal",
+																				"name": "statecode",
 																				"physicalType": "Decimal"
 																			},
 																			"sink": {
-																				"name": "phg_balance",
-																				"type": "Decimal"
+																				"name": "statecode"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "phg_charges",
-																				"type": "Decimal",
-																				"physicalType": "Decimal"
+																				"name": "statuscode"
 																			},
 																			"sink": {
-																				"name": "phg_charges",
-																				"type": "Decimal"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_date",
-																				"type": "DateTime",
-																				"physicalType": "DateTime"
-																			},
-																			"sink": {
-																				"name": "phg_date",
-																				"type": "DateTime"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_debit",
-																				"type": "Decimal",
-																				"physicalType": "Decimal"
-																			},
-																			"sink": {
-																				"name": "phg_debit",
-																				"type": "Decimal"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_integrationkey",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_integrationkey",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_name",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_name",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_transactionnumber",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_transactionnumber",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_transactiontypeid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
-																			},
-																			"sink": {
-																				"name": "phg_transactiontypeid",
-																				"type": "Guid"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "transactioncurrencyid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
-																			},
-																			"sink": {
-																				"name": "transactioncurrencyid",
-																				"type": "Guid"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_accountid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
-																			},
-																			"sink": {
-																				"name": "phg_accountid",
-																				"type": "Guid"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_checksum",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_checksum",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_breakdownnumber",
-																				"type": "Int32",
-																				"physicalType": "Int32"
-																			},
-																			"sink": {
-																				"name": "phg_breakdownnumber",
-																				"type": "Int32"
+																				"name": "statuscode"
 																			}
 																		}
 																	],
@@ -868,112 +753,19 @@
 																	"mappings": [
 																		{
 																			"source": {
-																				"name": "phg_accountid",
-																				"type": "Guid",
+																				"name": "statecode",
 																				"physicalType": "Guid"
 																			},
 																			"sink": {
-																				"name": "phg_accountid",
-																				"type": "Guid"
+																				"name": "statecode"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "phg_contactid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "statuscode"
 																			},
 																			"sink": {
-																				"name": "phg_contactid",
-																				"type": "Guid"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_entrydate",
-																				"type": "DateTime",
-																				"physicalType": "DateTime"
-																			},
-																			"sink": {
-																				"name": "phg_entrydate",
-																				"type": "DateTime"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_entrystatus",
-																				"type": "Int32",
-																				"physicalType": "Int32"
-																			},
-																			"sink": {
-																				"name": "phg_entrystatus",
-																				"type": "Int32"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_entrytext",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_entrytext",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_entrytype",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_entrytype",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_integrationkey",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_integrationkey",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_name",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_name",
-																				"type": "String"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_sequence",
-																				"type": "Int32",
-																				"physicalType": "Int32"
-																			},
-																			"sink": {
-																				"name": "phg_sequence",
-																				"type": "Int32"
-																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_tenancyid",
-																				"type": "Guid",
-																				"physicalType": "Guid"
-																			},
-																			"sink": {
-																				"name": "phg_tenancyid",
-																				"type": "Guid"
+																				"name": "statuscode"
 																			}
 																		}
 																	],
@@ -1331,58 +1123,6 @@
 									}
 								]
 							}
-						},
-						{
-							"name": "If Transaction Entity",
-							"type": "IfCondition",
-							"dependsOn": [
-								{
-									"activity": "Source to Staging",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"expression": {
-									"value": "@equals(item().Entity, 'Transaction')",
-									"type": "Expression"
-								},
-								"ifTrueActivities": [
-									{
-										"name": "Update - stg_phg_transaction",
-										"description": "updates the [phg_balance] field in the [stg_phg_transaction] table",
-										"type": "SqlServerStoredProcedure",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"storedProcedureName": "[adf].[spUpdate_stg_phg_transaction]"
-										},
-										"linkedServiceName": {
-											"referenceName": "SqlServer_OnPrem",
-											"type": "LinkedServiceReference",
-											"parameters": {
-												"ServerName": {
-													"value": "@item().SrcServer",
-													"type": "Expression"
-												},
-												"DatabaseName": {
-													"value": "@item().srcDatabase",
-													"type": "Expression"
-												}
-											}
-										}
-									}
-								]
-							}
 						}
 					]
 				}
@@ -1556,7 +1296,7 @@
 							"type": "Guid"
 						},
 						"strSequenceList": {
-							"value": "[T]",
+							"value": "[I]",
 							"type": "String"
 						}
 					}
