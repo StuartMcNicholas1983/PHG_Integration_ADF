@@ -208,6 +208,26 @@
 										},
 										{
 											"source": {
+												"name": "statecode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "statecode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "statuscode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "statuscode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
 												"name": "phg_checksum",
 												"type": "String"
 											},
