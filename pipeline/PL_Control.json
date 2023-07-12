@@ -1214,7 +1214,7 @@
 			},
 			"SequenceList": {
 				"type": "string",
-				"defaultValue": "[L],[R],[C],[T],[D]"
+				"defaultValue": "[L],[R],[C],[T],[D],[I]"
 			},
 			"LoadType": {
 				"type": "string",
