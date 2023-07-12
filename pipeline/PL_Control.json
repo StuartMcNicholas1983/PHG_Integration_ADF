@@ -548,14 +548,7 @@
 			{
 				"name": "RunEnd",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "SequenceGroup - Delete",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -577,6 +570,12 @@
 						"activity": "RunEnd",
 						"dependencyConditions": [
 							"Succeeded"
+						]
+					},
+					{
+						"activity": "SequenceGroup - Inactive",
+						"dependencyConditions": [
+							"Completed"
 						]
 					}
 				],
@@ -1055,6 +1054,112 @@
 				"linkedServiceName": {
 					"referenceName": "Control",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SG - Inactive",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Delete",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SequenceGroups]",
+						"storedProcedureParameters": {
+							"entityType": {
+								"type": "String",
+								"value": "Inactive"
+							},
+							"pipeline": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.PipelineName",
+									"type": "Expression"
+								}
+							},
+							"isSequence": {
+								"type": "Boolean",
+								"value": {
+									"value": "@greaterOrEquals(indexOf(pipeline().parameters.SequenceList,'[I]'),0)\n",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SequenceGroup - Inactive",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SG - Inactive",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SG - Inactive').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Inactive Entities",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_InactiveEntities",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"PipelineName": {
+										"value": "@item().Pipeline",
+										"type": "Expression"
+									},
+									"SourceSystemName": {
+										"value": "@item().SrcSystem",
+										"type": "Expression"
+									},
+									"SequenceGroup": {
+										"value": "@item().SequenceGroup",
+										"type": "Expression"
+									},
+									"LoadType": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
