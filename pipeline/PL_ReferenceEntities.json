@@ -208,18 +208,22 @@
 										},
 										{
 											"source": {
-												"name": "statecode"
+												"name": "statecode",
+												"type": "String"
 											},
 											"sink": {
-												"name": "statecode"
+												"name": "statecode",
+												"type": "String"
 											}
 										},
 										{
 											"source": {
-												"name": "statuscode"
+												"name": "statuscode",
+												"type": "String"
 											},
 											"sink": {
-												"name": "statuscode"
+												"name": "statuscode",
+												"type": "String"
 											}
 										},
 										{

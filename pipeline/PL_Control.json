@@ -11,6 +11,12 @@
 						"dependencyConditions": [
 							"Completed"
 						]
+					},
+					{
+						"activity": "SG - Lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -116,6 +122,12 @@
 						"activity": "SequenceGroup - Reference",
 						"dependencyConditions": [
 							"Completed"
+						]
+					},
+					{
+						"activity": "SG - Reference",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
@@ -329,6 +341,12 @@
 						"dependencyConditions": [
 							"Completed"
 						]
+					},
+					{
+						"activity": "SG - Transactional",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -430,6 +448,12 @@
 						"activity": "SequenceGroup - Core_C",
 						"dependencyConditions": [
 							"Completed"
+						]
+					},
+					{
+						"activity": "SG - Core_C",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
@@ -548,7 +572,14 @@
 			{
 				"name": "RunEnd",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "SequenceGroup - Inactive",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -571,12 +602,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "SequenceGroup - Inactive",
-						"dependencyConditions": [
-							"Completed"
-						]
 					}
 				],
 				"policy": {
@@ -598,6 +623,12 @@
 				"dependsOn": [
 					{
 						"activity": "SequenceGroup - Core_A",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SG - Core_A",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -706,6 +737,12 @@
 						"activity": "SequenceGroup - Core_B",
 						"dependencyConditions": [
 							"Completed"
+						]
+					},
+					{
+						"activity": "SG - Core_B",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
@@ -1064,6 +1101,12 @@
 						"activity": "SequenceGroup - Delete",
 						"dependencyConditions": [
 							"Completed"
+						]
+					},
+					{
+						"activity": "SG - Delete",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
