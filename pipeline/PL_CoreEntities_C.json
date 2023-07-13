@@ -959,6 +959,28 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_startdate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_startdate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_enddate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_enddate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_checksum",
 																				"type": "String",
 																				"physicalType": "String"
