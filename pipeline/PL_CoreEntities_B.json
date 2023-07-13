@@ -1366,6 +1366,72 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_grossrent",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_grossrent",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_netcharge",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_netcharge",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_totalservicechargeamount",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_totalservicechargeamount",
+																				"type": "Decimal"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_paymentmethodid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_paymentmethodid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_housingbenefitreceived",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_housingbenefitreceived",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_allpayref",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_allpayref",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_tenancycategoryid",
 																				"type": "Guid",
 																				"physicalType": "Guid"
@@ -1394,6 +1460,17 @@
 																			},
 																			"sink": {
 																				"name": "phg_tenancystartdate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_expectedtenancyenddate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_expectedtenancyenddate",
 																				"type": "DateTime"
 																			}
 																		},
