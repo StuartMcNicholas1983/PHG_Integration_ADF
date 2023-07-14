@@ -1110,6 +1110,50 @@
 																				"name": "phg_subareaid",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_propertydeveloper",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_propertydeveloper",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_repaircontractor",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_repaircontractor",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_gasservicer",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_gasservicer",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_waterauthority",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_waterauthority",
+																				"type": "String"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
