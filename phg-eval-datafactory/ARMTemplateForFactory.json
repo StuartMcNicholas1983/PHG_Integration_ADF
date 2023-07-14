@@ -20091,12 +20091,12 @@
 																				{
 																					"source": {
 																						"name": "phg_housingbenefitreceived",
-																						"type": "Int32",
-																						"physicalType": "Int32"
+																						"type": "Boolean",
+																						"physicalType": "Boolean"
 																					},
 																					"sink": {
 																						"name": "phg_housingbenefitreceived",
-																						"type": "Int32"
+																						"type": "Boolean"
 																					}
 																				},
 																				{
