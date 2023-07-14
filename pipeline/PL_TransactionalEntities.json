@@ -934,6 +934,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_referencetype",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_referencetype",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_integrationkey",
 																				"type": "String",
 																				"physicalType": "String"
