@@ -16157,12 +16157,12 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_paymentmethodid",
+																						"name": "phg_paymentmethod",
 																						"type": "Guid",
 																						"physicalType": "Guid"
 																					},
 																					"sink": {
-																						"name": "phg_paymentmethodid",
+																						"name": "phg_paymentmethod",
 																						"type": "Guid"
 																					}
 																				},
