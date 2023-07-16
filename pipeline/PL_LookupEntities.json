@@ -85,7 +85,7 @@
 							"type": "Switch",
 							"dependsOn": [
 								{
-									"activity": "LoadType - Full",
+									"activity": "PipelineParameters LogStart",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1437,66 +1437,6 @@
 								"referenceName": "Control",
 								"type": "LinkedServiceReference"
 							}
-						},
-						{
-							"name": "LoadType - Full",
-							"type": "IfCondition",
-							"dependsOn": [
-								{
-									"activity": "PipelineParameters LogStart",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"expression": {
-									"value": "@equals(pipeline().parameters.LoadType,'Full')",
-									"type": "Expression"
-								},
-								"ifTrueActivities": [
-									{
-										"name": "Truncate Local Cache",
-										"type": "Script",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"linkedServiceName": {
-											"referenceName": "SqlServer_OnPrem",
-											"type": "LinkedServiceReference",
-											"parameters": {
-												"ServerName": {
-													"value": "@item().SrcServer",
-													"type": "Expression"
-												},
-												"DatabaseName": {
-													"value": "@item().SrcDatabase",
-													"type": "Expression"
-												}
-											}
-										},
-										"typeProperties": {
-											"scripts": [
-												{
-													"type": "Query",
-													"text": {
-														"value": "@concat(concat(concat('truncate table ', item().DestSchema), '.'),item().DestEntity)\n\n\n",
-														"type": "Expression"
-													}
-												}
-											],
-											"scriptBlockExecutionTimeout": "02:00:00"
-										}
-									}
-								]
-							}
 						}
 					]
 				}
@@ -1506,8 +1446,6 @@
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -1532,8 +1470,6 @@
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -1558,8 +1494,6 @@
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
