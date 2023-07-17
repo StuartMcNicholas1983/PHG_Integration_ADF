@@ -19024,6 +19024,17 @@
 																				},
 																				{
 																					"source": {
+																						"name": "phg_heatingtype",
+																						"type": "string",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_heatingtype",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
 																						"name": "phg_gasmeterserialnumber",
 																						"type": "String",
 																						"physicalType": "String"
