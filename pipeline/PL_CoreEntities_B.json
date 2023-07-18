@@ -1154,6 +1154,17 @@
 																				"name": "phg_waterauthority",
 																				"type": "String"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_systemorigin",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_systemorigin",
+																				"type": "Int32"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
