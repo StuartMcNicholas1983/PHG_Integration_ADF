@@ -673,13 +673,13 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_heatingtype",
-																				"type": "string",
-																				"physicalType": "String"
+																				"name": "phg_heatingtypeid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
 																			},
 																			"sink": {
-																				"name": "phg_heatingtype",
-																				"type": "String"
+																				"name": "phg_heatingtypeid",
+																				"type": "Guid"
 																			}
 																		},
 																		{
