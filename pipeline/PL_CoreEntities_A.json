@@ -1149,7 +1149,7 @@
 																				"physicalType": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkeyf",
+																				"name": "phg_integrationkey",
 																				"type": "String"
 																			}
 																		},
@@ -1425,7 +1425,7 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_integrationkeyf",
+																				"name": "phg_integrationkey",
 																				"type": "String"
 																			},
 																			"sink": {
@@ -1665,7 +1665,7 @@
 																				"physicalType": "String"
 																			},
 																			"sink": {
-																				"name": "phg_integrationkeyw",
+																				"name": "phg_integrationkey",
 																				"type": "String"
 																			}
 																		},
@@ -1941,8 +1941,8 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_integrationkeyw",
-																				"type": "String"
+																				"name": "phg_integrationkey",
+																				"type": "string"
 																			},
 																			"sink": {
 																				"name": "phg_integrationkey",
