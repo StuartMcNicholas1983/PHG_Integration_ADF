@@ -7,8 +7,6 @@
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -26,15 +24,13 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "SourceSystem",
+						"activity": "Entity",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -59,8 +55,6 @@
 					}
 				],
 				"policy": {
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -132,7 +126,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "SourceSystem",
+						"activity": "Entity",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -466,6 +460,126 @@
 				"linkedServiceName": {
 					"referenceName": "Control",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Entities",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SourceSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select\t pp.Pipeline\n\t\t,pp.Srcsystem\n\t\t,pp.EntityType\n\t\t,pp.SrcServer\n\t\t,pp.SrcDatabase\n\t\t,pp.DestSchema\n\t\t,pp.DestEntity\n\t\t,pp.UpsertKeyColumn\n\t\t,cast(replace(cast(pp.FetchXML as nvarchar(max)),'operator=\"today\"','operator=\"not-null\"') as xml) as FetchXML\n\t\t,pp.IsActive\nfrom\tdbo.PipelineParameters pp\nwhere\tisActive = 1\nand\t\tpp.EntityType in ('Reference', 'Core_A','Core_B','Core_C', 'Transactional')",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_Control",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Entity",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Entities",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Entities').output\n",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Destination to Config",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "CommonDataServiceForAppsSource",
+									"query": {
+										"value": "@item().FetchXML",
+										"type": "Expression"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"phg_integrationkey"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_Dataverse",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityName": {
+											"value": "@item().DestEntity",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQL_OnPrem_Tbl",
+									"type": "DatasetReference",
+									"parameters": {
+										"ServerName": {
+											"value": "@item().SrcServer",
+											"type": "Expression"
+										},
+										"DatabaseName": {
+											"value": "@item().SrcDatabase",
+											"type": "Expression"
+										},
+										"SchemaName": "d365",
+										"TableName": {
+											"value": "@item().DestEntity",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
 				}
 			}
 		],
