@@ -5493,7 +5493,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Entities').output\n",
+								"value": "@activity('Entities').output.value\n",
 								"type": "Expression"
 							},
 							"activities": [
