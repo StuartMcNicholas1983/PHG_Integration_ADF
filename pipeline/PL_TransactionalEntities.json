@@ -1376,6 +1376,17 @@
 									{
 										"value": "Case3"
 									}
+								],
+								"defaultActivities": [
+									{
+										"name": "Wait1",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 1
+										}
+									}
 								]
 							}
 						}
