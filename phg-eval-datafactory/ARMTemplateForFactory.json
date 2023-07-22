@@ -7602,7 +7602,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "If Transaction Entity",
+											"activity": "Entity - Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -8804,8 +8804,8 @@
 									]
 								},
 								{
-									"name": "If Transaction Entity",
-									"type": "IfCondition",
+									"name": "Entity - Staging",
+									"type": "Switch",
 									"dependsOn": [
 										{
 											"activity": "Source to Staging",
@@ -8816,40 +8816,92 @@
 									],
 									"userProperties": [],
 									"typeProperties": {
-										"expression": {
-											"value": "@equals(item().Entity, 'Transaction')",
+										"on": {
+											"value": "item().Entity",
 											"type": "Expression"
 										},
-										"ifTrueActivities": [
+										"cases": [
 											{
-												"name": "Update - stg_phg_transaction",
-												"description": "updates the [phg_balance] field in the [stg_phg_transaction] table",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[[adf].[spUpdate_stg_phg_transaction]"
-												},
-												"linkedServiceName": {
-													"referenceName": "SqlServer_OnPrem",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"ServerName": {
-															"value": "@item().SrcServer",
-															"type": "Expression"
+												"value": "Transaction",
+												"activities": [
+													{
+														"name": "Update - stg_phg_transaction",
+														"description": "updates the [phg_balance] field in the [stg_phg_transaction] table",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
 														},
-														"DatabaseName": {
-															"value": "@item().srcDatabase",
-															"type": "Expression"
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[adf].[spUpdate_stg_phg_transaction]"
+														},
+														"linkedServiceName": {
+															"referenceName": "SqlServer_OnPrem",
+															"type": "LinkedServiceReference",
+															"parameters": {
+																"ServerName": {
+																	"value": "@item().SrcServer",
+																	"type": "Expression"
+																},
+																"DatabaseName": {
+																	"value": "@item().srcDatabase",
+																	"type": "Expression"
+																}
+															}
 														}
 													}
+												]
+											},
+											{
+												"value": "DiaryNote",
+												"activities": [
+													{
+														"name": "Update - stg_phg_diarynote",
+														"description": "updates the [phg_entrytext] field in the [stg_phg_diarynote] table",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[adf].[spUpdate_stg_phg_diarynote]"
+														},
+														"linkedServiceName": {
+															"referenceName": "SqlServer_OnPrem",
+															"type": "LinkedServiceReference",
+															"parameters": {
+																"ServerName": {
+																	"value": "@item().SrcServer",
+																	"type": "Expression"
+																},
+																"DatabaseName": {
+																	"value": "@item().srcDatabase",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
 												}
 											}
 										]
