@@ -86,7 +86,7 @@
 							"type": "Delete",
 							"dependsOn": [
 								{
-									"activity": "Entity Staging",
+									"activity": "Entity - Staging",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1284,7 +1284,7 @@
 							]
 						},
 						{
-							"name": "Entity Staging",
+							"name": "Entity - Staging",
 							"type": "Switch",
 							"dependsOn": [
 								{
@@ -1372,6 +1372,9 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "Case3"
 									}
 								]
 							}
