@@ -1297,7 +1297,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "item().Entity",
+									"value": "@item().Entity",
 									"type": "Expression"
 								},
 								"cases": [
