@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copy data2",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,79 +16,51 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "CommonDataServiceForAppsSource",
-						"query": "<fetch>\r\n  <entity name=\"systemuser\">\t\t\t\t\t\r\n  <attribute name=\"systemuserid\"/>\t\t\t\r\n  <attribute name=\"phg_integrationkeyw\"/>\r\n  <attribute name=\"fullname\"/>\t\r\n  <attribute name=\"phg_checksum\"/> \r\n  <attribute name=\"modifiedon\"/>\t\r\n  \r\n  <filter type=\"and\">\r\n  <condition attribute=\"modifiedon\" operator=\"today\"/>\r\n  <condition attribute=\"phg_integrationkeyw\" operator=\"like\" value=\"(W)%\"/>\r\n  </filter>\r\n  \r\n  </entity>\r\n  </fetch>"
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
-						"type": "SqlServerSink",
+						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "systemuserid",
-									"type": "Guid"
-								},
-								"sink": {
-									"name": "systemuserid",
-									"type": "Guid"
-								}
-							},
-							{
-								"source": {
-									"name": "phg_integrationkeyw",
-									"type": "String"
-								},
-								"sink": {
-									"name": "phg_integrationkey",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "fullname",
-									"type": "String"
-								},
-								"sink": {
-									"name": "fullname",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "modifiedon",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "modifiedon",
-									"type": "DateTime"
-								}
-							}
-						]
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_Dataverse",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference",
 						"parameters": {
-							"EntityName": "systemuser"
+							"Container": "data-sync",
+							"Directory": "OH_D365_DataSync/Transformed/Waterloo",
+							"Filename": "waterloo_diarynote.csv"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_SQL_OnPrem_Tbl",
+						"referenceName": "DS_SQL_Control_Tbl",
 						"type": "DatasetReference",
 						"parameters": {
-							"ServerName": "BBP-OHSQLTST-01\\TEST",
-							"DatabaseName": "OH_D365_Config",
-							"SchemaName": "d365",
-							"TableName": "systemuser"
+							"SchemaName": "dbo",
+							"TableName": "diary"
 						}
 					}
 				]
