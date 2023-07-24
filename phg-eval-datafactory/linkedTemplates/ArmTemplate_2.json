@@ -37,6 +37,135 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData_old')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "OH_D365_DataSync/Delete"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Datalake_PipeDelimited",
+								"type": "DatasetReference"
+							},
+							"name": "DeletionData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteProperties"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteTenancies"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_Dataverse",
+								"type": "DatasetReference"
+							},
+							"name": "DeleteContacts"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "AlterRowProperty"
+						},
+						{
+							"name": "AlterRowTenancy"
+						},
+						{
+							"name": "SelectProperties"
+						},
+						{
+							"name": "SelectTenancies"
+						},
+						{
+							"name": "SelectContacts"
+						},
+						{
+							"name": "AlterRowContact"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Entity as string,",
+						"          phg_integrationkey as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DeletionData",
+						"DeletionData split(equals(Entity,\"phg_property\"),",
+						"     equals(Entity,\"phg_tenancy\"),",
+						"     equals(Entity,\"contact\"),",
+						"     disjoint: false) ~> split1@(Property, Tenancy, Contact, Other)",
+						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
+						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
+						"split1@Property select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
+						"split1@Tenancy select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
+						"split1@Contact select(mapColumn(",
+						"          phg_integrationkey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectContacts",
+						"SelectContacts alterRow(deleteIf(true())) ~> AlterRowContact",
+						"AlterRowProperty sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1) ~> DeleteProperties",
+						"AlterRowTenancy sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2) ~> DeleteTenancies",
+						"AlterRowContact sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:true,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     alternateKeyName: 'phg_integrationkey',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DeleteContacts"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -16832,6 +16961,7 @@
 																			}
 																		},
 																		"enableStaging": false,
+																		"enableSkipIncompatibleRow": true,
 																		"translator": {
 																			"type": "TabularTranslator",
 																			"mappings": [
@@ -18024,112 +18154,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-17T13:03:59Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "CommonDataServiceForAppsSource",
-								"query": "<fetch>\r\n  <entity name=\"systemuser\">\t\t\t\t\t\r\n  <attribute name=\"systemuserid\"/>\t\t\t\r\n  <attribute name=\"phg_integrationkeyw\"/>\r\n  <attribute name=\"fullname\"/>\t\r\n  <attribute name=\"phg_checksum\"/> \r\n  <attribute name=\"modifiedon\"/>\t\r\n  \r\n  <filter type=\"and\">\r\n  <condition attribute=\"modifiedon\" operator=\"today\"/>\r\n  <condition attribute=\"phg_integrationkeyw\" operator=\"like\" value=\"(W)%\"/>\r\n  </filter>\r\n  \r\n  </entity>\r\n  </fetch>"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "systemuserid",
-											"type": "Guid"
-										},
-										"sink": {
-											"name": "systemuserid",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"name": "phg_integrationkeyw",
-											"type": "String"
-										},
-										"sink": {
-											"name": "phg_integrationkey",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "fullname",
-											"type": "String"
-										},
-										"sink": {
-											"name": "fullname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "modifiedon",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "modifiedon",
-											"type": "DateTime"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference",
-								"parameters": {
-									"EntityName": "systemuser"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_SQL_OnPrem_Tbl",
-								"type": "DatasetReference",
-								"parameters": {
-									"ServerName": "BBP-OHSQLTST-01\\TEST",
-									"DatabaseName": "OH_D365_Config",
-									"SchemaName": "d365",
-									"TableName": "systemuser"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
