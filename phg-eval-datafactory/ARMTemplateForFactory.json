@@ -15081,7 +15081,8 @@
 											"sqlWriterUseTableLock": false,
 											"tableOption": "autoCreate"
 										},
-										"enableStaging": false
+										"enableStaging": false,
+										"enableSkipIncompatibleRow": true
 									},
 									"inputs": [
 										{
