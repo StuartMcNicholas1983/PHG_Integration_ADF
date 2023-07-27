@@ -1413,6 +1413,7 @@
 																	"tableOption": "autoCreate"
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
@@ -1858,6 +1859,7 @@
 																	"sqlWriterUseTableLock": false
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": false,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"typeConversion": true,
@@ -1930,6 +1932,7 @@
 																	"tableOption": "autoCreate"
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
