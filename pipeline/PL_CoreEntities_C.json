@@ -164,6 +164,7 @@
 									}
 								},
 								"enableStaging": false,
+								"enableSkipIncompatibleRow": true,
 								"translator": {
 									"type": "TabularTranslator",
 									"typeConversion": true,
@@ -440,7 +441,8 @@
 												"sqlWriterUseTableLock": false,
 												"tableOption": "autoCreate"
 											},
-											"enableStaging": false
+											"enableStaging": false,
+											"enableSkipIncompatibleRow": true
 										},
 										"inputs": [
 											{
@@ -525,6 +527,7 @@
 																	}
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
@@ -1164,6 +1167,7 @@
 																	}
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
@@ -1516,6 +1520,7 @@
 																	}
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
@@ -1813,6 +1818,7 @@
 																	}
 																},
 																"enableStaging": false,
+																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
