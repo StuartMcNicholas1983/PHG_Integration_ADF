@@ -1375,7 +1375,8 @@
 																	}
 																},
 																"enableStaging": false,
-																"enableSkipIncompatibleRow": false,
+																"enableSkipIncompatibleRow": true,
+																"validateDataConsistency": false,
 																"translator": {
 																	"type": "TabularTranslator",
 																	"mappings": [
