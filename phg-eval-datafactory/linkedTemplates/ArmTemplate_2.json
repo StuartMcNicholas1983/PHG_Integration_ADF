@@ -12711,10 +12711,6 @@
 										},
 										"storedProcedureParameters": {
 											"dtLastPipelineRun": {
-												"value": {
-													"value": "@item().LastSuccessfulPipelineRunStart",
-													"type": "Expression"
-												},
 												"type": "Datetime"
 											}
 										}
