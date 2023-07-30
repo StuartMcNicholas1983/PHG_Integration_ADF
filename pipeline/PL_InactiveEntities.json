@@ -299,11 +299,6 @@
 								"storedProcedureName": {
 									"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
 									"type": "Expression"
-								},
-								"storedProcedureParameters": {
-									"dtLastPipelineRun": {
-										"type": "Datetime"
-									}
 								}
 							},
 							"linkedServiceName": {
