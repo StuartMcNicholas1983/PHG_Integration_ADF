@@ -4027,7 +4027,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "Entity - Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -6909,6 +6909,74 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "Entity - Staging",
+									"type": "Switch",
+									"dependsOn": [
+										{
+											"activity": "Source to Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().Entity",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Tenancy",
+												"activities": [
+													{
+														"name": "Update - stg_phg_tenancy",
+														"description": "updates the [phg_totalservicechargeamount] field in the [stg_phg_tenancy] table",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[[adf].[spUpdate_stg_phg_tenancy]"
+														},
+														"linkedServiceName": {
+															"referenceName": "SqlServer_OnPrem",
+															"type": "LinkedServiceReference",
+															"parameters": {
+																"ServerName": {
+																	"value": "@item().SrcServer",
+																	"type": "Expression"
+																},
+																"DatabaseName": {
+																	"value": "@item().srcDatabase",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
+									}
 								}
 							]
 						}
