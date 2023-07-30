@@ -522,18 +522,34 @@
 																		{
 																			"source": {
 																				"name": "statecode",
-																				"physicalType": "Decimal"
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
-																				"name": "statecode"
+																				"name": "statecode",
+																				"type": "Int32"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "statuscode"
+																				"name": "statuscode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
-																				"name": "statuscode"
+																				"name": "statuscode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_integrationkey",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_integrationkey",
+																				"type": "String"
 																			}
 																		}
 																	],
@@ -749,18 +765,34 @@
 																		{
 																			"source": {
 																				"name": "statecode",
-																				"physicalType": "Guid"
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
-																				"name": "statecode"
+																				"name": "statecode",
+																				"type": "Int32"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "statuscode"
+																				"name": "statuscode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
 																			},
 																			"sink": {
-																				"name": "statuscode"
+																				"name": "statuscode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_integrationkey",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_integrationkey",
+																				"type": "String"
 																			}
 																		}
 																	],
