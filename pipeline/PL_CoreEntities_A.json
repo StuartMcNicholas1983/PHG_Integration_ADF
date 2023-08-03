@@ -1133,7 +1133,7 @@
 																},
 																"sink": {
 																	"type": "CommonDataServiceForAppsSink",
-																	"writeBatchSize": 100,
+																	"writeBatchSize": 10,
 																	"writeBehavior": "upsert",
 																	"ignoreNullValues": false,
 																	"alternateKeyName": {
@@ -1142,7 +1142,6 @@
 																	}
 																},
 																"enableStaging": false,
-																"parallelCopies": 16,
 																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
@@ -1652,7 +1651,7 @@
 																},
 																"sink": {
 																	"type": "CommonDataServiceForAppsSink",
-																	"writeBatchSize": 100,
+																	"writeBatchSize": 10,
 																	"writeBehavior": "upsert",
 																	"ignoreNullValues": false,
 																	"alternateKeyName": {
@@ -1661,7 +1660,6 @@
 																	}
 																},
 																"enableStaging": false,
-																"parallelCopies": 16,
 																"enableSkipIncompatibleRow": true,
 																"translator": {
 																	"type": "TabularTranslator",
