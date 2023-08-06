@@ -50,6 +50,15 @@
 		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"TRG_S_6am_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
+		},
+		"TRG_S_6am_Daily_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[R],[L]"
+		},
+		"TRG_S_6am_Daily_properties_PL_Control_parameters_LoadType": {
+			"value": "Incremental"
+		},
 		"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
@@ -57,6 +66,15 @@
 			"value": "[[C],[T]"
 		},
 		"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+			"value": "Incremental"
+		},
+		"TRG_S_8pm_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
+		},
+		"TRG_S_8pm_Daily_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[D],[I]"
+		},
+		"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
 			"value": "Incremental"
 		},
 		"containerUri": {
