@@ -1,0 +1,29 @@
+{
+	"name": "TRG_S_7am_to_5pm_60Mins",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_Control",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"PipelineName": "OH_D365_DataSync",
+					"SequenceList": "[C],[T]",
+					"LoadType": "Incremental"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 60,
+				"startTime": "2023-08-06T07:00:00",
+				"timeZone": "GMT Standard Time"
+			}
+		}
+	}
+}
