@@ -68,49 +68,17 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
-		"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
 		},
-		"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
-			"defaultValue": "[[L],[R]"
+			"defaultValue": "[[C],[T]"
 		},
-		"TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[T]"
-		},
-		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[C]"
-		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[D]"
-		},
-		"trigger1_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"trigger1_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[L],[R],[C],[T]"
-		},
-		"trigger1_properties_PL_Control_parameters_LoadType": {
-			"type": "string",
-			"defaultValue": "Full"
+			"defaultValue": "Incremental"
 		},
 		"containerUri": {
 			"type": "string",
@@ -222,63 +190,19 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_PipelineName')]"
+					"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName')]"
 					},
-					"TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_5AM_Daily_properties_PL_Control_parameters_SequenceList')]"
+					"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList')]"
 					},
-					"TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_6AM_Daily_properties_PL_Control_parameters_SequenceList')]"
-					},
-					"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_7AMto5PM_15M_properties_PL_Control_parameters_SequenceList')]"
+					"TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+						"value": "[parameters('TRG_S_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType')]"
 					}
 				}
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'phg-eval-datafactory_ArmTemplate_1')]"
-			]
-		},
-		{
-			"name": "phg-eval-datafactory_ArmTemplate_3",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					},
-					"TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_S_8PM_Daily_properties_PL_Control_parameters_SequenceList')]"
-					},
-					"trigger1_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('trigger1_properties_PL_Control_parameters_PipelineName')]"
-					},
-					"trigger1_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('trigger1_properties_PL_Control_parameters_SequenceList')]"
-					},
-					"trigger1_properties_PL_Control_parameters_LoadType": {
-						"value": "[parameters('trigger1_properties_PL_Control_parameters_LoadType')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'phg-eval-datafactory_ArmTemplate_2')]"
 			]
 		}
 	]
