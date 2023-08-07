@@ -2,7 +2,7 @@
 	"name": "TRG_S_5am_Daily",
 	"properties": {
 		"annotations": [
-			"Sequence List: [L],[R],[C]"
+			"Sequence List: [R],[L],[C]"
 		],
 		"runtimeState": "Started",
 		"pipelines": [
