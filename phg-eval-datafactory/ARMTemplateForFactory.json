@@ -68,15 +68,15 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
-			"defaultValue": "[[R],[L]"
+			"defaultValue": "[[R],[L],[C]"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_LoadType": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
@@ -101,18 +101,6 @@
 			"defaultValue": "[[D],[I]"
 		},
 		"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
-			"type": "string",
-			"defaultValue": "Incremental"
-		},
-		"TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[C],[T]"
-		},
-		"TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
@@ -18278,87 +18266,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "data-sync",
-									"Directory": "OH_D365_DataSync/Transformed/Waterloo",
-									"Filename": "waterloo_diarynote.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_SQL_Control_Tbl",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"TableName": "diary"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DS_Datalake_CommaDelimited')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -20006,12 +19913,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_6am_Daily')]",
+			"name": "[concat(parameters('factoryName'), '/TRG_S_5am_Daily')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20019,9 +19926,9 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"PipelineName": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_SequenceList')]",
-							"LoadType": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_LoadType')]"
+							"PipelineName": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_LoadType')]"
 						}
 					}
 				],
@@ -20037,7 +19944,7 @@
 								0
 							],
 							"hours": [
-								6
+								5
 							]
 						}
 					}
@@ -20053,7 +19960,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20087,7 +19994,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20124,47 +20031,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_15Mins')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "PL_Control",
-						"type": "PipelineReference"
-					},
-					"parameters": {
-						"PipelineName": "[parameters('TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_PipelineName')]",
-						"SequenceList": "[parameters('TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_SequenceList')]",
-						"LoadType": "[parameters('TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_LoadType')]"
-					}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 15,
-					"startTime": "2023-08-07T09:07:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_60Mins')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {

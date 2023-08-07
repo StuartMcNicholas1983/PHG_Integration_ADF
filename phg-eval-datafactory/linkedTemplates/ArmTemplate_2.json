@@ -7,15 +7,15 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "phg-eval-datafactory"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
-			"defaultValue": "[[R],[L]"
+			"defaultValue": "[[R],[L],[C]"
 		},
-		"TRG_S_6am_Daily_properties_PL_Control_parameters_LoadType": {
+		"TRG_S_5am_Daily_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
@@ -42,141 +42,24 @@
 		"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C],[T]"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+			"type": "string",
+			"defaultValue": "Incremental"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_DeleteEntityData_old')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "OH_D365_DataSync/Delete"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Datalake_PipeDelimited",
-								"type": "DatasetReference"
-							},
-							"name": "DeletionData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteProperties"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteTenancies"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Dataverse",
-								"type": "DatasetReference"
-							},
-							"name": "DeleteContacts"
-						}
-					],
-					"transformations": [
-						{
-							"name": "split1"
-						},
-						{
-							"name": "AlterRowProperty"
-						},
-						{
-							"name": "AlterRowTenancy"
-						},
-						{
-							"name": "SelectProperties"
-						},
-						{
-							"name": "SelectTenancies"
-						},
-						{
-							"name": "SelectContacts"
-						},
-						{
-							"name": "AlterRowContact"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Entity as string,",
-						"          phg_integrationkey as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DeletionData",
-						"DeletionData split(equals(Entity,\"phg_property\"),",
-						"     equals(Entity,\"phg_tenancy\"),",
-						"     equals(Entity,\"contact\"),",
-						"     disjoint: false) ~> split1@(Property, Tenancy, Contact, Other)",
-						"SelectProperties alterRow(deleteIf(true())) ~> AlterRowProperty",
-						"SelectTenancies alterRow(deleteIf(true())) ~> AlterRowTenancy",
-						"split1@Property select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectProperties",
-						"split1@Tenancy select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectTenancies",
-						"split1@Contact select(mapColumn(",
-						"          phg_integrationkey",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SelectContacts",
-						"SelectContacts alterRow(deleteIf(true())) ~> AlterRowContact",
-						"AlterRowProperty sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 1) ~> DeleteProperties",
-						"AlterRowTenancy sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2) ~> DeleteTenancies",
-						"AlterRowContact sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:true,",
-						"     insertable:false,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     alternateKeyName: 'phg_integrationkey',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> DeleteContacts"
-					]
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DF_StagingToTransformed_Contact')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
@@ -20093,12 +19976,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_6am_Daily')]",
+			"name": "[concat(parameters('factoryName'), '/TRG_S_5am_Daily')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20106,9 +19989,9 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"PipelineName": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_SequenceList')]",
-							"LoadType": "[parameters('TRG_S_6am_Daily_properties_PL_Control_parameters_LoadType')]"
+							"PipelineName": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_S_5am_Daily_properties_PL_Control_parameters_LoadType')]"
 						}
 					}
 				],
@@ -20124,7 +20007,7 @@
 								0
 							],
 							"hours": [
-								6
+								5
 							]
 						}
 					}
@@ -20140,7 +20023,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20174,7 +20057,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20203,6 +20086,40 @@
 								20
 							]
 						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_60Mins')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 60,
+						"startTime": "2023-08-07T12:00:00",
+						"timeZone": "GMT Standard Time"
 					}
 				}
 			},
