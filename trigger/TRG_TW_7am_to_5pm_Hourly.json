@@ -1,5 +1,5 @@
 {
-	"name": "TRG_TW_7am_to_5pm_60Mins",
+	"name": "TRG_TW_7am_to_5pm_Hourly",
 	"properties": {
 		"annotations": [
 			"Sequence List: [C],[T]"
@@ -21,10 +21,25 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Minute",
-				"interval": 60,
+				"frequency": "Day",
+				"interval": 1,
 				"startTime": "2023-08-07T12:00:00",
-				"timeZone": "GMT Standard Time"
+				"timeZone": "GMT Standard Time",
+				"schedule": {
+					"hours": [
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
 			}
 		}
 	}
