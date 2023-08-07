@@ -3773,7 +3773,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -7184,7 +7184,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -9896,7 +9896,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -11073,7 +11073,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -11663,7 +11663,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -13255,7 +13255,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -15037,7 +15037,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -16303,7 +16303,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -18098,7 +18098,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@substring(pipeline().TriggerId,1 , 32)",
+										"value": "@guid()",
 										"type": "Expression"
 									},
 									"type": "Guid"
