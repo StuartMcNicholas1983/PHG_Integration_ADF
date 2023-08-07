@@ -18,6 +18,18 @@
 		"TRG_TW_7am_to_5pm_15Mins_properties_pipeline_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[C],[T]"
+		},
+		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+			"type": "string",
+			"defaultValue": "Incremental"
 		}
 	},
 	"variables": {
@@ -30,7 +42,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipeline": {
 					"pipelineReference": {
 						"referenceName": "PL_Control",
@@ -53,6 +65,38 @@
 						"intervalInSeconds": 30
 					},
 					"dependsOn": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_60Mins')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 60,
+						"startTime": "2023-08-07T12:00:00",
+						"timeZone": "GMT Standard Time"
+					}
 				}
 			},
 			"dependsOn": []
