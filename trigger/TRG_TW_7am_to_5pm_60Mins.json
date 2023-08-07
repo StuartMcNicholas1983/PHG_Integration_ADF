@@ -2,7 +2,7 @@
 	"name": "TRG_TW_7am_to_5pm_60Mins",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
