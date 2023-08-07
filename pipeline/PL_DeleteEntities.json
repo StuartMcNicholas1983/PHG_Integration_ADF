@@ -1000,7 +1000,7 @@
 						},
 						"uniqTriggerID": {
 							"value": {
-								"value": "substring(@{pipeline().TriggerId},1,32)",
+								"value": "@substring(pipeline().TriggerId,1 , 32)",
 								"type": "Expression"
 							},
 							"type": "Guid"
