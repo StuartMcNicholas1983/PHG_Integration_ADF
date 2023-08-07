@@ -1,5 +1,5 @@
 {
-	"name": "TRG_S_6am_Daily",
+	"name": "TRG_S_5am_Daily",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
@@ -28,7 +28,7 @@
 						0
 					],
 					"hours": [
-						6
+						5
 					]
 				}
 			}
