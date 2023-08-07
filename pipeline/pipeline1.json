@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data2",
+				"name": "Copy data1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,22 +16,20 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -45,22 +43,24 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_Datalake_PipeDelimited",
+						"referenceName": "DS_SQL_OnPrem_Tbl",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": "data-sync",
-							"Directory": "OH_D365_DataSync/Transformed/Waterloo",
-							"Filename": "waterloo_diarynote.csv"
+							"ServerName": "BBP-PRO2SQL-01\\PRO2SQLTEST",
+							"DatabaseName": "Pro2_IH",
+							"SchemaName": "dbo",
+							"TableName": "co_parish"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_SQL_Control_Tbl",
+						"referenceName": "DS_Datalake_PipeDelimited",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": "diary"
+							"Container": "data-sync",
+							"Directory": "OH_D365_DataSync\\Test",
+							"Filename": "parish"
 						}
 					}
 				]
