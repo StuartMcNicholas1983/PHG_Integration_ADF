@@ -11,7 +11,7 @@
 				},
 				"parameters": {
 					"PipelineName": "OH_D365_DataSync",
-					"SequenceList": "[R],[L]",
+					"SequenceList": "[R],[L],[C]",
 					"LoadType": "Incremental"
 				}
 			}
