@@ -104,15 +104,15 @@
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[C],[T]"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
@@ -253,14 +253,14 @@
 					"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
 						"value": "[parameters('TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType')]"
 					},
-					"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
-						"value": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName')]"
+					"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName": {
+						"value": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName')]"
 					},
-					"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
-						"value": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList')]"
+					"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList": {
+						"value": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList')]"
 					},
-					"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
-						"value": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType')]"
+					"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType": {
+						"value": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType')]"
 					}
 				}
 			},

@@ -104,15 +104,15 @@
 			"type": "string",
 			"defaultValue": "Incremental"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList": {
 			"type": "string",
 			"defaultValue": "[[C],[T]"
 		},
-		"TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType": {
+		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
 		}
@@ -20035,14 +20035,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_60Mins')]",
+			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_Hourly')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [
 					"Sequence List: [C],[T]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20050,19 +20050,34 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"PipelineName": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_SequenceList')]",
-							"LoadType": "[parameters('TRG_TW_7am_to_5pm_60Mins_properties_PL_Control_parameters_LoadType')]"
+							"PipelineName": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType')]"
 						}
 					}
 				],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Minute",
-						"interval": 60,
+						"frequency": "Day",
+						"interval": 1,
 						"startTime": "2023-08-07T12:00:00",
-						"timeZone": "GMT Standard Time"
+						"timeZone": "GMT Standard Time",
+						"schedule": {
+							"hours": [
+								7,
+								8,
+								9,
+								10,
+								11,
+								12,
+								13,
+								14,
+								15,
+								16,
+								17
+							]
+						}
 					}
 				}
 			},
