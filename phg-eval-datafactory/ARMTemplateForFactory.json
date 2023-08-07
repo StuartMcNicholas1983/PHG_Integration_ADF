@@ -1140,7 +1140,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -3761,7 +3761,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -7172,7 +7172,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -9884,7 +9884,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -11061,7 +11061,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -11651,7 +11651,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -13243,7 +13243,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -15025,7 +15025,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -16291,7 +16291,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
@@ -18086,7 +18086,7 @@
 								},
 								"uniqTriggerID": {
 									"value": {
-										"value": "@{pipeline().TriggerId}",
+										"value": "substring(@{pipeline().TriggerId},1,32)",
 										"type": "Expression"
 									},
 									"type": "Guid"
