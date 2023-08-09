@@ -1474,6 +1474,16 @@
 																				"name": "modifiedon",
 																				"type": "DateTime"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_checksum",
+																				"type": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_checksum",
+																				"type": "Int32"
+																			}
 																		}
 																	]
 																}
@@ -2003,6 +2013,16 @@
 																			"sink": {
 																				"name": "modifiedon",
 																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_checksum",
+																				"type": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_checksum",
+																				"type": "Int32"
 																			}
 																		}
 																	]
