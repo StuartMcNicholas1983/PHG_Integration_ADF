@@ -1012,6 +1012,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_nsom",
+																				"type": "Boolean",
+																				"physicalType": "Boolean"
+																			},
+																			"sink": {
+																				"name": "phg_nsom",
+																				"type": "Boolean"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_formerarrearsofficer",
 																				"type": "Guid",
 																				"physicalType": "Guid"
@@ -3056,6 +3067,9 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "Case3"
 									}
 								],
 								"defaultActivities": [
