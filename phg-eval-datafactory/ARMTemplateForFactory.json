@@ -1092,7 +1092,7 @@
 						"type": "Switch",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1515,7 +1515,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1595,7 +1595,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -1642,6 +1642,12 @@
 									"dependsOn": [
 										{
 											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Source to Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -4066,7 +4072,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -4146,7 +4152,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Entity - Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -4193,6 +4199,12 @@
 									"dependsOn": [
 										{
 											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Entity - Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -5061,6 +5073,17 @@
 																					},
 																					"sink": {
 																						"name": "phg_indefectperiod",
+																						"type": "Boolean"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_nsom",
+																						"type": "Boolean",
+																						"physicalType": "Boolean"
+																					},
+																					"sink": {
+																						"name": "phg_nsom",
 																						"type": "Boolean"
 																					}
 																				},
@@ -7477,7 +7500,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -7557,7 +7580,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -7602,6 +7625,12 @@
 									"name": "Staging to Transformed",
 									"type": "Copy",
 									"dependsOn": [
+										{
+											"activity": "Source to Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
 										{
 											"activity": "Delete Transformed",
 											"dependencyConditions": [
@@ -8088,6 +8117,50 @@
 																					"sink": {
 																						"name": "phg_tenancyid",
 																						"type": "Guid"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_noticecourtactioninfo",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_noticecourtactioninfo",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_noticecourtactiondate",
+																						"type": "DateTime",
+																						"physicalType": "DateTime"
+																					},
+																					"sink": {
+																						"name": "phg_noticecourtactiondate",
+																						"type": "DateTime"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_lastarrearsstageinfo",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_lastarrearsstageinfo",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_lastarrearsstagedate",
+																						"type": "DateTime",
+																						"physicalType": "DateTime"
+																					},
+																					"sink": {
+																						"name": "phg_lastarrearsstagedate",
+																						"type": "DateTime"
 																					}
 																				},
 																				{
@@ -10189,7 +10262,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10268,7 +10341,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -10378,6 +10451,12 @@
 									"dependsOn": [
 										{
 											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Source to Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -12053,7 +12132,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -12133,7 +12212,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -12178,6 +12257,12 @@
 									"name": "Staging to Transformed",
 									"type": "Copy",
 									"dependsOn": [
+										{
+											"activity": "Source to Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
 										{
 											"activity": "Delete Transformed",
 											"dependencyConditions": [
@@ -13548,7 +13633,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -15329,7 +15414,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -15408,7 +15493,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -15455,6 +15540,12 @@
 									"dependsOn": [
 										{
 											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Source to Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -16596,7 +16687,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "PipelineAuditLog - Start",
+								"activity": "RunStart",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -16676,7 +16767,7 @@
 									"type": "Delete",
 									"dependsOn": [
 										{
-											"activity": "Entity - Staging",
+											"activity": "PipelineParameters LogStart",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -16723,6 +16814,12 @@
 									"dependsOn": [
 										{
 											"activity": "Delete Transformed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Entity - Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
