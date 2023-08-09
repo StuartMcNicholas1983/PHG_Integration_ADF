@@ -627,6 +627,50 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_noticecourtactioninfo",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_noticecourtactioninfo",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_noticecourtactiondate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_noticecourtactiondate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_lastarrearsstageinfo",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_lastarrearsstageinfo",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_lastarrearsstagedate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_lastarrearsstagedate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "transactioncurrencyid",
 																				"type": "Guid",
 																				"physicalType": "Guid"
