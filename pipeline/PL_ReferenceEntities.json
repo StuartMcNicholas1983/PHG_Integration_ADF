@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "PipelineAuditLog - Start",
+						"activity": "RunStart",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -85,7 +85,7 @@
 							"type": "Delete",
 							"dependsOn": [
 								{
-									"activity": "Source to Staging",
+									"activity": "PipelineParameters LogStart",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -132,6 +132,12 @@
 							"dependsOn": [
 								{
 									"activity": "Delete Transformed",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Source to Staging",
 									"dependencyConditions": [
 										"Succeeded"
 									]

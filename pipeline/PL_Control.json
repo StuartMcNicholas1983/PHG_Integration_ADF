@@ -960,7 +960,7 @@
 				"type": "Switch",
 				"dependsOn": [
 					{
-						"activity": "PipelineAuditLog - Start",
+						"activity": "RunStart",
 						"dependencyConditions": [
 							"Succeeded"
 						]

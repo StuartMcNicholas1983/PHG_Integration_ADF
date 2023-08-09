@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "PipelineAuditLog - Start",
+						"activity": "RunStart",
 						"dependencyConditions": [
 							"Succeeded"
 						]
