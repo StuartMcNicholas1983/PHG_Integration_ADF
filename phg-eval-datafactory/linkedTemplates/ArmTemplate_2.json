@@ -42,18 +42,6 @@
 		"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
-		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[C],[T]"
-		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType": {
-			"type": "string",
-			"defaultValue": "Incremental"
 		}
 	},
 	"variables": {
@@ -4786,55 +4774,6 @@
 									}
 								},
 								{
-									"name": "Source to Staging",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "PipelineParameters LogStart",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": {
-											"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
-											"type": "Expression"
-										},
-										"storedProcedureParameters": {
-											"dtLastPipelineRun": {
-												"value": {
-													"value": "@item().LastSuccessfulPipelineRunStart",
-													"type": "Expression"
-												},
-												"type": "Datetime"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer_OnPrem",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().SrcDatabase",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
 									"name": "If RowsCopied",
 									"type": "IfCondition",
 									"dependsOn": [
@@ -7592,6 +7531,108 @@
 											}
 										]
 									}
+								},
+								{
+									"name": "Source to Staging",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"dtLastPipelineRun": {
+													"type": "Datetime",
+													"value": {
+														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table ', item().SrcSchema, '.', item().SrcTable )}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().srcSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
+											}
+										}
+									]
 								}
 							]
 						}
@@ -18849,6 +18890,116 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderStoredProcedureName": {
+									"value": "adf.spGet_OH_D365_Property",
+									"type": "Expression"
+								},
+								"storedProcedureParameters": {
+									"dtLastPipelineRun": {
+										"type": "Datetime",
+										"value": {
+											"value": "01-Jan-1800",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "truncate table adf.stg_phg_property",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": {
+										"value": "BBP-OHSQLTST-01\\TEST",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "OH_D365_Config",
+										"type": "Expression"
+									},
+									"SchemaName": {
+										"value": "adf",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem_Tbl",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": {
+										"value": "BBP-OHSQLTST-01\\TEST",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "OH_D365_Config",
+										"type": "Expression"
+									},
+									"SchemaName": {
+										"value": "adf",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "stg_phg_property",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_Control')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -20341,57 +20492,6 @@
 							],
 							"hours": [
 								20
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_TW_7am_to_5pm_Hourly')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [
-					"Sequence List: [C],[T]"
-				],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Control",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"PipelineName": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList')]",
-							"LoadType": "[parameters('TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2023-08-07T12:00:00",
-						"timeZone": "GMT Standard Time",
-						"schedule": {
-							"hours": [
-								7,
-								8,
-								9,
-								10,
-								11,
-								12,
-								13,
-								14,
-								15,
-								16,
-								17
 							]
 						}
 					}

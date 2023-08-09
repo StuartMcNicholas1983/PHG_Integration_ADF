@@ -4391,55 +4391,6 @@
 									}
 								},
 								{
-									"name": "Source to Staging",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "PipelineParameters LogStart",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": {
-											"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
-											"type": "Expression"
-										},
-										"storedProcedureParameters": {
-											"dtLastPipelineRun": {
-												"value": {
-													"value": "@item().LastSuccessfulPipelineRunStart",
-													"type": "Expression"
-												},
-												"type": "Datetime"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer_OnPrem",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().SrcDatabase",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
 									"name": "If RowsCopied",
 									"type": "IfCondition",
 									"dependsOn": [
@@ -7197,6 +7148,108 @@
 											}
 										]
 									}
+								},
+								{
+									"name": "Source to Staging",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"dtLastPipelineRun": {
+													"type": "Datetime",
+													"value": {
+														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table ', item().SrcSchema, '.', item().SrcTable )}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().srcSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
+											}
+										}
+									]
 								}
 							]
 						}
@@ -7526,9 +7579,10 @@
 				"[concat(variables('factoryId'), '/linkedServices/Control')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
 			]
 		},
 		{
@@ -22448,6 +22502,119 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_phg_transactiontype')]",
 				"[concat(variables('factoryId'), '/datasets/DS_transactioncurrency')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderStoredProcedureName": {
+									"value": "adf.spGet_OH_D365_Property",
+									"type": "Expression"
+								},
+								"storedProcedureParameters": {
+									"dtLastPipelineRun": {
+										"type": "Datetime",
+										"value": {
+											"value": "01-Jan-1800",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "truncate table adf.stg_phg_property",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": {
+										"value": "BBP-OHSQLTST-01\\TEST",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "OH_D365_Config",
+										"type": "Expression"
+									},
+									"SchemaName": {
+										"value": "adf",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_SQL_OnPrem_Tbl",
+								"type": "DatasetReference",
+								"parameters": {
+									"ServerName": {
+										"value": "BBP-OHSQLTST-01\\TEST",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "OH_D365_Config",
+										"type": "Expression"
+									},
+									"SchemaName": {
+										"value": "adf",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "stg_phg_property",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]"
 			]
 		}
 	]
