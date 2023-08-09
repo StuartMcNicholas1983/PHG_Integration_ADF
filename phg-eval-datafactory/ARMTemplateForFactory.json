@@ -2156,12 +2156,12 @@
 																				{
 																					"source": {
 																						"name": "phg_checksum",
-																						"type": "String",
-																						"physicalType": "String"
+																						"type": "Int32",
+																						"physicalType": "Int32"
 																					},
 																					"sink": {
 																						"name": "phg_checksum",
-																						"type": "String"
+																						"type": "Int32"
 																					}
 																				},
 																				{
@@ -2782,6 +2782,17 @@
 																						"name": "businessunitid",
 																						"type": "Guid"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_checksum",
+																						"type": "Int32",
+																						"physicalType": "Int32"
+																					},
+																					"sink": {
+																						"name": "phg_checksum",
+																						"type": "Int32"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -3301,6 +3312,17 @@
 																					"sink": {
 																						"name": "businessunitid",
 																						"type": "Guid"
+																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_checksum",
+																						"type": "Int32",
+																						"physicalType": "Int32"
+																					},
+																					"sink": {
+																						"name": "phg_checksum",
+																						"type": "Int32"
 																					}
 																				}
 																			],
