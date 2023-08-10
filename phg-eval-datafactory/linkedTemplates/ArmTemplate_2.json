@@ -2036,12 +2036,6 @@
 											"dependencyConditions": [
 												"Succeeded"
 											]
-										},
-										{
-											"activity": "Source to Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
 										}
 									],
 									"policy": {
@@ -2180,55 +2174,6 @@
 									"linkedServiceName": {
 										"referenceName": "Control",
 										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "Source to Staging",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "PipelineParameters LogStart",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": {
-											"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
-											"type": "Expression"
-										},
-										"storedProcedureParameters": {
-											"dtLastPipelineRun": {
-												"value": {
-													"value": "@item().LastSuccessfulPipelineRunStart",
-													"type": "Expression"
-												},
-												"type": "Datetime"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer_OnPrem",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().SrcDatabase",
-												"type": "Expression"
-											}
-										}
 									}
 								},
 								{
@@ -4104,7 +4049,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "OH to Staging",
 											"dependencyConditions": [
 												"Completed"
 											]
@@ -4122,7 +4067,7 @@
 										"source": {
 											"type": "AzureSqlSource",
 											"sqlReaderQuery": {
-												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Source to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n0 as RowsCopied,\n0 as RowsRead,\n0 as RowsSkipped,\n0 as ParallelCopies,\n0 as CopyDuration_SS,\n'@{activity('Source to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'' as SourceType,\n'' as SinkType,\n'' as ExecutionStatus,\n'@{utcnow()}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'' as CopyActivity_QueuingDuration_SS,\n'' as CopyActivity_TimeToFirstByte_SS,\n'' as CopyActivity_TransferDuration_SS,\n0 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
+												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'OH to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('OH to Staging').output.rowsCopied}' as RowsCopied,\n'@{activity('OH to Staging').output.rowsRead}' as RowsRead,\n'@{activity('OH to Staging').output.rowsSkipped}' as RowsSkipped,\n'@{activity('OH to Staging').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('OH to Staging').output.copyDuration}' as CopyDuration_SS,\n'@{activity('OH to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('OH to Staging').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('OH to Staging').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('OH to Staging').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('OH to Staging').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n1 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n\n",
 												"type": "Expression"
 											},
 											"queryTimeout": "02:00:00",
@@ -4157,6 +4102,109 @@
 											"parameters": {
 												"SchemaName": "dbo",
 												"TableName": "PipelineAuditDetailLog"
+											}
+										}
+									]
+								},
+								{
+									"name": "OH to Staging",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"dtLastPipelineRun": {
+													"type": "Datetime",
+													"value": {
+														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table ', item().SrcSchema, '.', item().SrcTable )}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"enableSkipIncompatibleRow": true,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().srcSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -7371,7 +7419,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "OH to Staging",
 											"dependencyConditions": [
 												"Completed"
 											]
@@ -7389,7 +7437,7 @@
 										"source": {
 											"type": "AzureSqlSource",
 											"sqlReaderQuery": {
-												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Source to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n0 as RowsCopied,\n0 as RowsRead,\n0 as RowsSkipped,\n0 as ParallelCopies,\n0 as CopyDuration_SS,\n'@{activity('Source to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'' as SourceType,\n'' as SinkType,\n'' as ExecutionStatus,\n'@{utcnow()}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'' as CopyActivity_QueuingDuration_SS,\n'' as CopyActivity_TimeToFirstByte_SS,\n'' as CopyActivity_TransferDuration_SS,\n0 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
+												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'OH to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('OH to Staging').output.rowsCopied}' as RowsCopied,\n'@{activity('OH to Staging').output.rowsRead}' as RowsRead,\n'@{activity('OH to Staging').output.rowsSkipped}' as RowsSkipped,\n'@{activity('OH to Staging').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('OH to Staging').output.copyDuration}' as CopyDuration_SS,\n'@{activity('OH to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('OH to Staging').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('OH to Staging').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('OH to Staging').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('OH to Staging').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n1 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
 												"type": "Expression"
 											},
 											"queryTimeout": "02:00:00",
@@ -7433,7 +7481,7 @@
 									"type": "Switch",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "OH to Staging",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -7533,7 +7581,7 @@
 									}
 								},
 								{
-									"name": "Source to Staging",
+									"name": "OH to Staging",
 									"type": "Copy",
 									"dependsOn": [
 										{
@@ -7580,6 +7628,7 @@
 											"sqlWriterUseTableLock": false
 										},
 										"enableStaging": false,
+										"enableSkipIncompatibleRow": true,
 										"translator": {
 											"type": "TabularTranslator",
 											"typeConversion": true,
@@ -8096,12 +8145,6 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										},
-										{
 											"activity": "Delete Transformed",
 											"dependencyConditions": [
 												"Succeeded"
@@ -8244,55 +8287,6 @@
 									"linkedServiceName": {
 										"referenceName": "Control",
 										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "Source to Staging",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "PipelineParameters LogStart",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": {
-											"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
-											"type": "Expression"
-										},
-										"storedProcedureParameters": {
-											"dtLastPipelineRun": {
-												"value": {
-													"value": "@item().LastSuccessfulPipelineRunStart",
-													"type": "Expression"
-												},
-												"type": "Datetime"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer_OnPrem",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": {
-												"value": "@item().SrcServer",
-												"type": "Expression"
-											},
-											"DatabaseName": {
-												"value": "@item().SrcDatabase",
-												"type": "Expression"
-											}
-										}
 									}
 								},
 								{
@@ -10331,7 +10325,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "Source to Staging",
+											"activity": "OH to Staging",
 											"dependencyConditions": [
 												"Completed"
 											]
@@ -10349,7 +10343,7 @@
 										"source": {
 											"type": "AzureSqlSource",
 											"sqlReaderQuery": {
-												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Source to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n0 as RowsCopied,\n0 as RowsRead,\n0 as RowsSkipped,\n0 as ParallelCopies,\n0 as CopyDuration_SS,\n'@{activity('Source to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'' as SourceType,\n'' as SinkType,\n'' as ExecutionStatus,\n'@{utcnow()}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'' as CopyActivity_QueuingDuration_SS,\n'' as CopyActivity_TimeToFirstByte_SS,\n'' as CopyActivity_TransferDuration_SS,\n0 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
+												"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'OH to Staging' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('OH to Staging').output.rowsCopied}' as RowsCopied,\n'@{activity('OH to Staging').output.rowsRead}' as RowsRead,\n'@{activity('OH to Staging').output.rowsSkipped}' as RowsSkipped,\n'@{activity('OH to Staging').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('OH to Staging').output.copyDuration}' as CopyDuration_SS,\n'@{activity('OH to Staging').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('OH to Staging').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('OH to Staging').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('OH to Staging').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('OH to Staging').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('OH to Staging').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n1 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n\n",
 												"type": "Expression"
 											},
 											"queryTimeout": "02:00:00",
@@ -10384,6 +10378,109 @@
 											"parameters": {
 												"SchemaName": "dbo",
 												"TableName": "PipelineAuditDetailLog"
+											}
+										}
+									]
+								},
+								{
+									"name": "OH to Staging",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"dtLastPipelineRun": {
+													"type": "Datetime",
+													"value": {
+														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table ', item().SrcSchema, '.', item().SrcTable )}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"enableSkipIncompatibleRow": true,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SrcSchema",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().srcSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
 											}
 										}
 									]
