@@ -6880,7 +6880,7 @@
 												"type": "Copy",
 												"dependsOn": [
 													{
-														"activity": "Entity - Staging",
+														"activity": "Switch Entity - Staging",
 														"dependencyConditions": [
 															"Succeeded"
 														]
@@ -7030,7 +7030,7 @@
 												]
 											},
 											{
-												"name": "Entity - Staging",
+												"name": "Switch Entity - Staging",
 												"type": "Switch",
 												"dependsOn": [],
 												"userProperties": [],
@@ -9799,7 +9799,14 @@
 											{
 												"name": "Staging to Transformed",
 												"type": "Copy",
-												"dependsOn": [],
+												"dependsOn": [
+													{
+														"activity": "Switch Entity - Staging",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
 												"policy": {
 													"timeout": "0.12:00:00",
 													"retry": 0,
@@ -9942,6 +9949,56 @@
 														}
 													}
 												]
+											},
+											{
+												"name": "Switch Entity - Staging",
+												"type": "Switch",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"on": {
+														"value": "@item().Entity",
+														"type": "Expression"
+													},
+													"cases": [
+														{
+															"value": "HousingAccount",
+															"activities": [
+																{
+																	"name": "Update - stg_phg_housingaccount",
+																	"description": "updates the [phg_noticecourtactiondate], [phg_noticecourtactioninfo] fields in the [stg_phg_housingaccount] table",
+																	"type": "SqlServerStoredProcedure",
+																	"dependsOn": [],
+																	"policy": {
+																		"timeout": "0.12:00:00",
+																		"retry": 0,
+																		"retryIntervalInSeconds": 30,
+																		"secureOutput": false,
+																		"secureInput": false
+																	},
+																	"userProperties": [],
+																	"typeProperties": {
+																		"storedProcedureName": "[[adf].[spUpdate_stg_phg_housingaccount]"
+																	},
+																	"linkedServiceName": {
+																		"referenceName": "SqlServer_OnPrem",
+																		"type": "LinkedServiceReference",
+																		"parameters": {
+																			"ServerName": {
+																				"value": "@item().SrcServer",
+																				"type": "Expression"
+																			},
+																			"DatabaseName": {
+																				"value": "@item().srcDatabase",
+																				"type": "Expression"
+																			}
+																		}
+																	}
+																}
+															]
+														}
+													]
+												}
 											}
 										]
 									}
@@ -10441,7 +10498,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_OnPrem')]"
 			]
 		},
 		{
