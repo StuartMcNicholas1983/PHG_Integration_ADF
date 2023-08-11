@@ -2724,7 +2724,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "Entity - Staging",
+												"activity": "Switch Entity - Staging",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -2873,7 +2873,7 @@
 										]
 									},
 									{
-										"name": "Entity - Staging",
+										"name": "Switch Entity - Staging",
 										"type": "Switch",
 										"dependsOn": [],
 										"userProperties": [],
