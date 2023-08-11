@@ -189,7 +189,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "Entity - Staging",
+									"activity": "OH to Staging",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -2716,7 +2716,14 @@
 									{
 										"name": "Staging to Transformed",
 										"type": "Copy",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "Entity - Staging",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"policy": {
 											"timeout": "0.12:00:00",
 											"retry": 0,
@@ -2858,6 +2865,103 @@
 												}
 											}
 										]
+									},
+									{
+										"name": "Entity - Staging",
+										"type": "Switch",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"on": {
+												"value": "@item().Entity",
+												"type": "Expression"
+											},
+											"cases": [
+												{
+													"value": "Tenancy",
+													"activities": [
+														{
+															"name": "Update - stg_phg_tenancy",
+															"description": "updates the [phg_totalservicechargeamount] field in the [stg_phg_tenancy] table",
+															"type": "SqlServerStoredProcedure",
+															"dependsOn": [],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"storedProcedureName": "[adf].[spUpdate_stg_phg_tenancy]"
+															},
+															"linkedServiceName": {
+																"referenceName": "SqlServer_OnPrem",
+																"type": "LinkedServiceReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().SrcServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().srcDatabase",
+																		"type": "Expression"
+																	}
+																}
+															}
+														}
+													]
+												},
+												{
+													"value": "Property",
+													"activities": [
+														{
+															"name": "Update - stg_phg_property",
+															"description": "updates the following fields \n\n [phg_indefectperiod]\n,[phg_nsom]\n,[phg_cookersupply]\n,[phg_gascapped]\n,[phg_fuelservicedate]\n\nin the [stg_phg_property] table",
+															"type": "SqlServerStoredProcedure",
+															"dependsOn": [],
+															"policy": {
+																"timeout": "0.12:00:00",
+																"retry": 0,
+																"retryIntervalInSeconds": 30,
+																"secureOutput": false,
+																"secureInput": false
+															},
+															"userProperties": [],
+															"typeProperties": {
+																"storedProcedureName": "[adf].[spUpdate_stg_phg_property]"
+															},
+															"linkedServiceName": {
+																"referenceName": "SqlServer_OnPrem",
+																"type": "LinkedServiceReference",
+																"parameters": {
+																	"ServerName": {
+																		"value": "@item().SrcServer",
+																		"type": "Expression"
+																	},
+																	"DatabaseName": {
+																		"value": "@item().srcDatabase",
+																		"type": "Expression"
+																	}
+																}
+															}
+														}
+													]
+												}
+											],
+											"defaultActivities": [
+												{
+													"name": "Wait1",
+													"type": "Wait",
+													"dependsOn": [],
+													"userProperties": [],
+													"typeProperties": {
+														"waitTimeInSeconds": 1
+													}
+												}
+											]
+										}
 									}
 								]
 							}
@@ -2922,110 +3026,6 @@
 									}
 								}
 							]
-						},
-						{
-							"name": "Entity - Staging",
-							"type": "Switch",
-							"dependsOn": [
-								{
-									"activity": "OH to Staging",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"on": {
-									"value": "@item().Entity",
-									"type": "Expression"
-								},
-								"cases": [
-									{
-										"value": "Tenancy",
-										"activities": [
-											{
-												"name": "Update - stg_phg_tenancy",
-												"description": "updates the [phg_totalservicechargeamount] field in the [stg_phg_tenancy] table",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[adf].[spUpdate_stg_phg_tenancy]"
-												},
-												"linkedServiceName": {
-													"referenceName": "SqlServer_OnPrem",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"ServerName": {
-															"value": "@item().SrcServer",
-															"type": "Expression"
-														},
-														"DatabaseName": {
-															"value": "@item().srcDatabase",
-															"type": "Expression"
-														}
-													}
-												}
-											}
-										]
-									},
-									{
-										"value": "Property",
-										"activities": [
-											{
-												"name": "Update - stg_phg_property",
-												"description": "updates the following fields \n\n [phg_indefectperiod]\n,[phg_nsom]\n,[phg_cookersupply]\n,[phg_gascapped]\n,[phg_fuelservicedate]\n\nin the [stg_phg_property] table",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[adf].[spUpdate_stg_phg_property]"
-												},
-												"linkedServiceName": {
-													"referenceName": "SqlServer_OnPrem",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"ServerName": {
-															"value": "@item().SrcServer",
-															"type": "Expression"
-														},
-														"DatabaseName": {
-															"value": "@item().srcDatabase",
-															"type": "Expression"
-														}
-													}
-												}
-											}
-										]
-									}
-								],
-								"defaultActivities": [
-									{
-										"name": "Wait1",
-										"type": "Wait",
-										"dependsOn": [],
-										"userProperties": [],
-										"typeProperties": {
-											"waitTimeInSeconds": 1
-										}
-									}
-								]
-							}
 						},
 						{
 							"name": "OH to Staging",
