@@ -826,15 +826,6 @@
 										"value": "@concat(item().SrcSchema,'.',item().SrcStoredProcedure)",
 										"type": "Expression"
 									},
-									"storedProcedureParameters": {
-										"dtLastPipelineRun": {
-											"type": "Datetime",
-											"value": {
-												"value": "@item().LastSuccessfulPipelineRunStart",
-												"type": "Expression"
-											}
-										}
-									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
