@@ -11731,6 +11731,32 @@
 										"enableSkipIncompatibleRow": true,
 										"translator": {
 											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "entity",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Entity",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "phg_integrationkey",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "phg_integrationkey",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												}
+											],
 											"typeConversion": true,
 											"typeConversionSettings": {
 												"allowDataTruncation": true,
