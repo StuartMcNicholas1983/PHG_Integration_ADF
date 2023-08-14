@@ -1,8 +1,8 @@
 {
-	"name": "TRG_S_5am_Daily",
+	"name": "TRG_S_4am_Daily",
 	"properties": {
 		"annotations": [
-			"Sequence List: [R],[L],[C]"
+			"Sequence List: [R],[L],[C],[T]"
 		],
 		"runtimeState": "Started",
 		"pipelines": [
@@ -30,7 +30,7 @@
 						0
 					],
 					"hours": [
-						5
+						4
 					]
 				}
 			}
