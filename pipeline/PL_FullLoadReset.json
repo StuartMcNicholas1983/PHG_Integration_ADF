@@ -428,7 +428,10 @@
 							"type": "String"
 						},
 						"strLoadType": {
-							"value": "TBC",
+							"value": {
+								"value": "@pipeline().parameters.LoadType",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
