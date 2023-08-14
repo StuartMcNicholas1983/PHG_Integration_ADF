@@ -1,5 +1,5 @@
 {
-	"name": "TRG_TW_7am_to_5pm_Hourly",
+	"name": "TRG_TW_7am_to_5pm_Incremental",
 	"properties": {
 		"annotations": [
 			"Sequence List: [C],[T]"
