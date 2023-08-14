@@ -1009,7 +1009,7 @@
 							"value": "Incremental",
 							"activities": [
 								{
-									"name": "Reset PipelineRunsToday",
+									"name": "Control - Reset PipelineRunsToday - Incremental",
 									"type": "SqlServerStoredProcedure",
 									"dependsOn": [],
 									"policy": {
@@ -1029,17 +1029,124 @@
 									}
 								}
 							]
-						}
-					],
-					"defaultActivities": [
+						},
 						{
-							"name": "Wait1",
-							"type": "Wait",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"waitTimeInSeconds": 1
-							}
+							"value": "Daily",
+							"activities": [
+								{
+									"name": "Control - Reset PipelineRunsToday - Daily",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
+									},
+									"linkedServiceName": {
+										"referenceName": "Control",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "SourceSystems",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Control - Reset PipelineRunsToday - Daily",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[dbo].[spGet_PipelineParameters_SourceSystems]",
+											"storedProcedureParameters": {
+												"pipeline": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.PipelineName",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "DS_SQL_Control",
+											"type": "DatasetReference"
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "SourceSystem",
+									"type": "ForEach",
+									"dependsOn": [
+										{
+											"activity": "SourceSystems",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"items": {
+											"value": "@activity('SourceSystems').output.value",
+											"type": "Expression"
+										},
+										"activities": [
+											{
+												"name": "Config - DailyReset",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[adf].[spUpdate_DailyReset]"
+												},
+												"linkedServiceName": {
+													"referenceName": "SqlServer_OnPrem",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": {
+															"value": "@item().SrcServer",
+															"type": "Expression"
+														},
+														"DatabaseName": {
+															"value": "@item().SrcDatabase",
+															"type": "Expression"
+														}
+													}
+												}
+											}
+										]
+									}
+								}
+							]
 						}
 					]
 				}
