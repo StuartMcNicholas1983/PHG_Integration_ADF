@@ -50,32 +50,32 @@
 		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
-		"TRG_S_5am_Daily_properties_PL_Control_parameters_PipelineName": {
+		"TRG_S_8pm_Incremental_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
-		"TRG_S_5am_Daily_properties_PL_Control_parameters_SequenceList": {
-			"value": "[[R],[L],[C]"
-		},
-		"TRG_S_5am_Daily_properties_PL_Control_parameters_LoadType": {
-			"value": "Incremental"
-		},
-		"TRG_S_8pm_Daily_properties_PL_Control_parameters_PipelineName": {
-			"value": "OH_D365_DataSync"
-		},
-		"TRG_S_8pm_Daily_properties_PL_Control_parameters_SequenceList": {
+		"TRG_S_8pm_Incremental_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[D],[I]"
 		},
-		"TRG_S_8pm_Daily_properties_PL_Control_parameters_LoadType": {
+		"TRG_S_8pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"value": "Incremental"
 		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_PipelineName": {
+		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_SequenceList": {
+		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_SequenceList": {
 			"value": "[[C],[T]"
 		},
-		"TRG_TW_7am_to_5pm_Hourly_properties_PL_Control_parameters_LoadType": {
+		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"value": "Incremental"
+		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
+			"value": "OH_D365_DataSync"
+		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_SequenceList": {
+			"value": "[[R],[L],[C],[T]"
+		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_LoadType": {
+			"value": "Daily"
 		},
 		"containerUri": {
 			"value": ""
