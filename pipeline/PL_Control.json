@@ -471,6 +471,10 @@
 									"SequenceGroup": {
 										"value": "@item().SequenceGroup",
 										"type": "Expression"
+									},
+									"LoadType": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
 									}
 								}
 							}
