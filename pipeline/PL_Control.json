@@ -1454,7 +1454,7 @@
 			},
 			"LoadType": {
 				"type": "string",
-				"defaultValue": "Full,Incremental"
+				"defaultValue": "Full,Incremental,Daily"
 			}
 		},
 		"variables": {
