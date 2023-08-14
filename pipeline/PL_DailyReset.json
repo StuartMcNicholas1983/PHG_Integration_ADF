@@ -177,7 +177,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "PipelineAuditLog - Start",
+						"activity": "Control - Reset PipelineRunsToday - Daily",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -381,6 +381,33 @@
 							"type": "String"
 						}
 					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Control",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Control - Reset PipelineRunsToday - Daily",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "RunStart",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spUpdate_PipelineParameters_PipelineRunsToday]"
 				},
 				"linkedServiceName": {
 					"referenceName": "Control",
