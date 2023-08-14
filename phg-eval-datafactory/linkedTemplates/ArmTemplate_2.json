@@ -3371,6 +3371,13 @@
 								"strSequenceList": {
 									"value": "[[C]",
 									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -6236,6 +6243,13 @@
 								"strSequenceList": {
 									"value": "[[C]",
 									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -7491,6 +7505,10 @@
 								"strSequenceList": {
 									"value": "[[D]",
 									"type": "String"
+								},
+								"strLoadType": {
+									"value": "TBC",
+									"type": "String"
 								}
 							}
 						},
@@ -8069,6 +8087,10 @@
 								},
 								"strSequenceList": {
 									"value": "[[-]",
+									"type": "String"
+								},
+								"strLoadType": {
+									"value": "TBC",
 									"type": "String"
 								}
 							}
@@ -9764,6 +9786,13 @@
 								},
 								"strSequenceList": {
 									"value": "[[I]",
+									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
 									"type": "String"
 								}
 							}
@@ -11539,6 +11568,13 @@
 								"strSequenceList": {
 									"value": "[[L]",
 									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -12856,6 +12892,13 @@
 								},
 								"strSequenceList": {
 									"value": "[[R]",
+									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
 									"type": "String"
 								}
 							}
@@ -14704,6 +14747,13 @@
 								"strSequenceList": {
 									"value": "[[T]",
 									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -16008,6 +16058,13 @@
 								"strSequenceList": {
 									"value": {
 										"value": "@pipeline().parameters.SequenceList",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"strLoadType": {
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
 										"type": "Expression"
 									},
 									"type": "String"
