@@ -7,6 +7,18 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "phg-eval-datafactory"
 		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
+			"type": "string",
+			"defaultValue": "OH_D365_DataSync"
+		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_SequenceList": {
+			"type": "string",
+			"defaultValue": "[[R],[L],[C],[T]"
+		},
+		"TRG_S_4am_Daily_properties_PL_Control_parameters_LoadType": {
+			"type": "string",
+			"defaultValue": "Daily"
+		},
 		"TRG_S_8pm_Incremental_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
@@ -30,18 +42,6 @@
 		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
-		},
-		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
-			"type": "string",
-			"defaultValue": "OH_D365_DataSync"
-		},
-		"TRG_S_4am_Daily_properties_PL_Control_parameters_SequenceList": {
-			"type": "string",
-			"defaultValue": "[[R],[L],[C],[T]"
-		},
-		"TRG_S_4am_Daily_properties_PL_Control_parameters_LoadType": {
-			"type": "string",
-			"defaultValue": "Daily"
 		}
 	},
 	"variables": {
@@ -12081,7 +12081,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "PipelineParameters LogStart",
+											"activity": "Destination to Source - Prep",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -12214,6 +12214,78 @@
 												},
 												"TableName": {
 													"value": "@item().SrcTable",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Destination to Source - Prep",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "PipelineParameters LogStart",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CommonDataServiceForAppsSource",
+											"query": {
+												"value": "@item().FetchXML",
+												"type": "Expression"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table d365.',item().DestEntity)}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_Dataverse",
+											"type": "DatasetReference",
+											"parameters": {
+												"EntityName": {
+													"value": "@item().DestEntity",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_SQL_OnPrem_Tbl",
+											"type": "DatasetReference",
+											"parameters": {
+												"ServerName": {
+													"value": "@item().SrcServer",
+													"type": "Expression"
+												},
+												"DatabaseName": {
+													"value": "@item().SrcDatabase",
+													"type": "Expression"
+												},
+												"SchemaName": "d365",
+												"TableName": {
+													"value": "@item().DestEntity",
 													"type": "Expression"
 												}
 											}
@@ -18914,6 +18986,50 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TRG_S_4am_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [
+					"Sequence List: [R],[L],[C],[T]"
+				],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Control",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"PipelineName": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName')]",
+							"SequenceList": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_SequenceList')]",
+							"LoadType": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_LoadType')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2023-08-07T06:00:00",
+						"timeZone": "GMT Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								4
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TRG_S_8pm_Incremental')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -18999,50 +19115,6 @@
 								15,
 								16,
 								17
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Control')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_S_4am_Daily')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [
-					"Sequence List: [R],[L],[C],[T]"
-				],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Control",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"PipelineName": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName')]",
-							"SequenceList": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_SequenceList')]",
-							"LoadType": "[parameters('TRG_S_4am_Daily_properties_PL_Control_parameters_LoadType')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2023-08-07T06:00:00",
-						"timeZone": "GMT Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								4
 							]
 						}
 					}
