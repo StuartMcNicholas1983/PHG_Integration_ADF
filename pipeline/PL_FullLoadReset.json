@@ -653,6 +653,9 @@
 		"parameters": {
 			"PipelineName": {
 				"type": "string"
+			},
+			"LoadType": {
+				"type": "string"
 			}
 		},
 		"variables": {

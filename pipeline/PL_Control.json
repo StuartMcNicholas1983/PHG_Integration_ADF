@@ -995,6 +995,10 @@
 											"PipelineName": {
 												"value": "@pipeline().parameters.PipelineName",
 												"type": "Expression"
+											},
+											"LoadType": {
+												"value": "@pipeline().parameters.LoadType",
+												"type": "Expression"
 											}
 										}
 									}
