@@ -14,7 +14,7 @@
 				"parameters": {
 					"PipelineName": "OH_D365_DataSync",
 					"SequenceList": "[R],[L],[C],[T]",
-					"LoadType": "Incremental"
+					"LoadType": "Daily"
 				}
 			}
 		],
