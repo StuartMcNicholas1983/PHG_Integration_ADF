@@ -588,6 +588,10 @@
 											"SequenceGroup": {
 												"value": "@item().SequenceGroup",
 												"type": "Expression"
+											},
+											"LoadType": {
+												"value": "@pipeline().parameters.LoadType",
+												"type": "Expression"
 											}
 										}
 									}
@@ -1110,6 +1114,10 @@
 												"parameters": {
 													"PipelineName": {
 														"value": "@pipeline().parameters.PipelineName",
+														"type": "Expression"
+													},
+													"LoadType": {
+														"value": "@pipeline().parameters.LoadType",
 														"type": "Expression"
 													}
 												}
@@ -11636,7 +11644,10 @@
 									"type": "String"
 								},
 								"strLoadType": {
-									"value": "TBC",
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
 									"type": "String"
 								}
 							}
@@ -11765,6 +11776,9 @@
 					},
 					"SequenceGroup": {
 						"type": "int"
+					},
+					"LoadType": {
+						"type": "string"
 					}
 				},
 				"variables": {
@@ -12230,7 +12244,10 @@
 									"type": "String"
 								},
 								"strLoadType": {
-									"value": "TBC",
+									"value": {
+										"value": "@pipeline().parameters.LoadType",
+										"type": "Expression"
+									},
 									"type": "String"
 								}
 							}
@@ -12460,6 +12477,9 @@
 				},
 				"parameters": {
 					"PipelineName": {
+						"type": "string"
+					},
+					"LoadType": {
 						"type": "string"
 					}
 				},
