@@ -426,6 +426,10 @@
 						"strSequenceList": {
 							"value": "[-]",
 							"type": "String"
+						},
+						"strLoadType": {
+							"value": "TBC",
+							"type": "String"
 						}
 					}
 				},

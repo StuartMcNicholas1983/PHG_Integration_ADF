@@ -3310,6 +3310,13 @@
 						"strSequenceList": {
 							"value": "[C]",
 							"type": "String"
+						},
+						"strLoadType": {
+							"value": {
+								"value": "@pipeline().parameters.LoadType",
+								"type": "Expression"
+							},
+							"type": "String"
 						}
 					}
 				},
