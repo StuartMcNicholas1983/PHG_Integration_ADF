@@ -60,6 +60,14 @@
 				"type": "String"
 			},
 			{
+				"name": "phg_waterloocode",
+				"type": "String"
+			},
+			{
+				"name": "phg_fortiscode",
+				"type": "String"
+			},
+			{
 				"name": "modified",
 				"type": "String"
 			},

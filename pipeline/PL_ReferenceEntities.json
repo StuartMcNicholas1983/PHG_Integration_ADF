@@ -214,6 +214,26 @@
 										},
 										{
 											"source": {
+												"name": "phg_waterloocode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "phg_waterloocode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "phg_fortiscode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "phg_fortiscode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
 												"name": "statecode",
 												"type": "String"
 											},
@@ -500,6 +520,26 @@
 											},
 											"sink": {
 												"name": "phg_name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "phg_waterloocode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "phg_waterloocode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "phg_fortiscode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "phg_fortiscode",
 												"type": "String"
 											}
 										},
