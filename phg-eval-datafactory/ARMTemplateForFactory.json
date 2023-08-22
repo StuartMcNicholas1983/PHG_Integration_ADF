@@ -5237,6 +5237,17 @@
 																						"name": "phg_systemorigin",
 																						"type": "Int32"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_righttopurchase",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_righttopurchase",
+																						"type": "String"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -16634,6 +16645,26 @@
 												},
 												{
 													"source": {
+														"name": "phg_waterloocode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "phg_waterloocode",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "phg_fortiscode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "phg_fortiscode",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
 														"name": "statecode",
 														"type": "String"
 													},
@@ -16920,6 +16951,26 @@
 													},
 													"sink": {
 														"name": "phg_name",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "phg_waterloocode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "phg_waterloocode",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "phg_fortiscode",
+														"type": "String"
+													},
+													"sink": {
+														"name": "phg_fortiscode",
 														"type": "String"
 													}
 												},
@@ -19780,6 +19831,14 @@
 						"type": "String"
 					},
 					{
+						"name": "phg_waterloocode",
+						"type": "String"
+					},
+					{
+						"name": "phg_fortiscode",
+						"type": "String"
+					},
+					{
 						"name": "modified",
 						"type": "String"
 					},
@@ -19811,7 +19870,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_uat_dataverse",
+					"referenceName": "phg_dev_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -19833,7 +19892,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_uat_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
 			]
 		},
 		{
@@ -21103,12 +21162,12 @@
 					"connectionString": "[parameters('Control_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "AIR-TTL-MemoryOptimized",
+					"referenceName": "AIR-Medium",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
 			]
 		},
 		{
@@ -21124,9 +21183,15 @@
 						"type": "SecureString",
 						"value": "[parameters('DataLake_accountKey')]"
 					}
+				},
+				"connectVia": {
+					"referenceName": "AIR-Medium",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer_OnPrem')]",
@@ -21177,9 +21242,15 @@
 						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "AIR-Medium",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/phg_eval_dataverse')]",
