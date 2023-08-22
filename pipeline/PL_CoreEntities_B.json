@@ -1739,6 +1739,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "preferredcontactmethodcode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "preferredcontactmethodcode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "emailaddress1",
 																				"type": "String",
 																				"physicalType": "String"
