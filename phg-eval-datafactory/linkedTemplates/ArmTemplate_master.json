@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "phg-eval-datafactory"
 		},
-		"AzureSqlDatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
-		},
 		"Control_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Control'"
@@ -131,12 +127,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureSqlDatabase_connectionString": {
-						"value": "[parameters('AzureSqlDatabase_connectionString')]"
-					},
-					"Control_connectionString": {
-						"value": "[parameters('Control_connectionString')]"
-					},
 					"DataLake_accountKey": {
 						"value": "[parameters('DataLake_accountKey')]"
 					},
@@ -184,6 +174,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Control_connectionString": {
+						"value": "[parameters('Control_connectionString')]"
 					},
 					"SqlServer_OnPrem_connectionString": {
 						"value": "[parameters('SqlServer_OnPrem_connectionString')]"
