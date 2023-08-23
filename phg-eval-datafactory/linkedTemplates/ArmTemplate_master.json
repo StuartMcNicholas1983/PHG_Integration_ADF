@@ -130,9 +130,6 @@
 					"phg_eval_dataverse_servicePrincipalCredential": {
 						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
 					},
-					"phg_test_dataverse_servicePrincipalCredential": {
-						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
-					},
 					"phg_uat_dataverse_servicePrincipalCredential": {
 						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
 					},
@@ -151,11 +148,11 @@
 					"phg_dev_dataverse_servicePrincipalCredential": {
 						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
 					},
+					"phg_test_dataverse_servicePrincipalCredential": {
+						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
+					},
 					"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]"
-					},
-					"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('phg_test_dataverse_properties_typeProperties_servicePrincipalId')]"
 					},
 					"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]"
@@ -168,6 +165,9 @@
 					},
 					"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]"
+					},
+					"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('phg_test_dataverse_properties_typeProperties_servicePrincipalId')]"
 					}
 				}
 			},

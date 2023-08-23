@@ -5244,17 +5244,6 @@
 																						"name": "phg_systemorigin",
 																						"type": "Int32"
 																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_righttopurchase",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "phg_righttopurchase",
-																						"type": "String"
-																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -17002,26 +16991,6 @@
 												},
 												{
 													"source": {
-														"name": "phg_waterloocode",
-														"type": "String"
-													},
-													"sink": {
-														"name": "phg_waterloocode",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "phg_fortiscode",
-														"type": "String"
-													},
-													"sink": {
-														"name": "phg_fortiscode",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
 														"name": "statecode",
 														"type": "Int32"
 													},
@@ -19930,7 +19899,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_dev_dataverse",
+					"referenceName": "phg_test_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -19952,7 +19921,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_test_dataverse')]"
 			]
 		},
 		{
@@ -21234,12 +21203,12 @@
 					"connectionString": "[parameters('Control_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "AIR-Medium",
+					"referenceName": "AIR-TTL-MemoryOptimized",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
 			]
 		},
 		{
@@ -21257,12 +21226,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "AIR-Medium",
+					"referenceName": "AIR-TTL-MemoryOptimized",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
 			]
 		},
 		{
@@ -21362,9 +21331,15 @@
 						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "AIR-TTL-MemoryOptimized",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
@@ -21558,7 +21533,7 @@
 						"location": "AutoResolve",
 						"dataFlowProperties": {
 							"computeType": "MemoryOptimized",
-							"coreCount": 8,
+							"coreCount": 16,
 							"timeToLive": 10,
 							"cleanup": false,
 							"customProperties": []

@@ -11,10 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
 		},
-		"phg_test_dataverse_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_test_dataverse'"
-		},
 		"phg_uat_dataverse_servicePrincipalCredential": {
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_uat_dataverse'"
@@ -40,11 +36,11 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_dev_dataverse'"
 		},
-		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		"phg_test_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_test_dataverse'"
 		},
-		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
+		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
@@ -61,6 +57,10 @@
 			"defaultValue": "GROUPICT\\stuart.mcnicholas"
 		},
 		"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
+		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
@@ -84,27 +84,6 @@
 					"servicePrincipalCredential": {
 						"type": "SecureString",
 						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
-					},
-					"servicePrincipalCredentialType": "ServicePrincipalKey"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/phg_test_dataverse')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CommonDataServiceForApps",
-				"typeProperties": {
-					"deploymentType": "Online",
-					"serviceUri": "https://phg-test.crm11.dynamics.com/",
-					"authenticationType": "AADServicePrincipal",
-					"servicePrincipalId": "[parameters('phg_test_dataverse_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
 				}
@@ -164,7 +143,7 @@
 						"location": "AutoResolve",
 						"dataFlowProperties": {
 							"computeType": "MemoryOptimized",
-							"coreCount": 8,
+							"coreCount": 16,
 							"timeToLive": 10,
 							"cleanup": false,
 							"customProperties": []
@@ -217,12 +196,12 @@
 					"connectionString": "[parameters('Control_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "AIR-Medium",
+					"referenceName": "AIR-TTL-MemoryOptimized",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
 			]
 		},
 		{
@@ -240,12 +219,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "AIR-Medium",
+					"referenceName": "AIR-TTL-MemoryOptimized",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
 			]
 		},
 		{
@@ -305,6 +284,33 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-Medium')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/phg_test_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-test.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('phg_test_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "AIR-TTL-MemoryOptimized",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
 			]
 		},
 		{
@@ -514,7 +520,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_dev_dataverse",
+					"referenceName": "phg_test_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -536,7 +542,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_test_dataverse')]"
 			]
 		},
 		{

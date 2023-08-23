@@ -1104,17 +1104,6 @@
 																						"name": "phg_systemorigin",
 																						"type": "Int32"
 																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_righttopurchase",
-																						"type": "String",
-																						"physicalType": "String"
-																					},
-																					"sink": {
-																						"name": "phg_righttopurchase",
-																						"type": "String"
-																					}
 																				}
 																			],
 																			"typeConversion": true,
@@ -11540,26 +11529,6 @@
 													},
 													"sink": {
 														"name": "phg_name",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "phg_waterloocode",
-														"type": "String"
-													},
-													"sink": {
-														"name": "phg_waterloocode",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "phg_fortiscode",
-														"type": "String"
-													},
-													"sink": {
-														"name": "phg_fortiscode",
 														"type": "String"
 													}
 												},
