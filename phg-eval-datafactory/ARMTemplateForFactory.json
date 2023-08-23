@@ -15277,14 +15277,24 @@
 																"mappings": [
 																	{
 																		"source": {
+																			"name": "ID",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "ID",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
 																			"name": "SourceSystem",
 																			"type": "String",
 																			"physicalType": "String"
 																		},
 																		"sink": {
 																			"name": "SourceSystem",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15295,8 +15305,7 @@
 																		},
 																		"sink": {
 																			"name": "SourceSchema",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15307,8 +15316,7 @@
 																		},
 																		"sink": {
 																			"name": "SourceTable",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15319,8 +15327,7 @@
 																		},
 																		"sink": {
 																			"name": "SourceCode",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15331,8 +15338,7 @@
 																		},
 																		"sink": {
 																			"name": "Entity",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15343,8 +15349,7 @@
 																		},
 																		"sink": {
 																			"name": "EntityQualifiedName",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15355,8 +15360,7 @@
 																		},
 																		"sink": {
 																			"name": "EntityCode",
-																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"type": "String"
 																		}
 																	},
 																	{
@@ -15367,8 +15371,29 @@
 																		},
 																		"sink": {
 																			"name": "EntityValue",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "WaterlooCode",
 																			"type": "String",
-																			"physicalType": "nvarchar"
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "WaterlooCode",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "FortisCode",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "FortisCode",
+																			"type": "String"
 																		}
 																	}
 																],
@@ -20030,6 +20055,10 @@
 				},
 				"schema": [
 					{
+						"name": "ID",
+						"type": "String"
+					},
+					{
 						"name": "SourceSystem",
 						"type": "String"
 					},
@@ -20059,6 +20088,14 @@
 					},
 					{
 						"name": "EntityValue",
+						"type": "String"
+					},
+					{
+						"name": "WaterlooCode",
+						"type": "String"
+					},
+					{
+						"name": "FortisCode",
 						"type": "String"
 					}
 				]

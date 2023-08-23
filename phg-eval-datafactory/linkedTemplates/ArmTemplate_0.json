@@ -674,6 +674,10 @@
 				},
 				"schema": [
 					{
+						"name": "ID",
+						"type": "String"
+					},
+					{
 						"name": "SourceSystem",
 						"type": "String"
 					},
@@ -703,6 +707,14 @@
 					},
 					{
 						"name": "EntityValue",
+						"type": "String"
+					},
+					{
+						"name": "WaterlooCode",
+						"type": "String"
+					},
+					{
+						"name": "FortisCode",
 						"type": "String"
 					}
 				]
