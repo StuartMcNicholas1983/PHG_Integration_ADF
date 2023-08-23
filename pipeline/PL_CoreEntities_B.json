@@ -1051,17 +1051,6 @@
 																				"name": "phg_systemorigin",
 																				"type": "Int32"
 																			}
-																		},
-																		{
-																			"source": {
-																				"name": "phg_righttopurchase",
-																				"type": "String",
-																				"physicalType": "String"
-																			},
-																			"sink": {
-																				"name": "phg_righttopurchase",
-																				"type": "String"
-																			}
 																		}
 																	],
 																	"typeConversion": true,
