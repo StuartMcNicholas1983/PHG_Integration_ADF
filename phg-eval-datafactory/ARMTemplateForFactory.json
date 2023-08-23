@@ -3771,6 +3771,13 @@
 														"value": "@item().LastSuccessfulPipelineRunStart",
 														"type": "Expression"
 													}
+												},
+												"strLoadType": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.LoadType",
+														"type": "Expression"
+													}
 												}
 											},
 											"queryTimeout": "02:00:00",
@@ -7307,6 +7314,13 @@
 														"value": "@item().LastSuccessfulPipelineRunStart",
 														"type": "Expression"
 													}
+												},
+												"strLoadType": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.LoadType",
+														"type": "Expression"
+													}
 												}
 											},
 											"queryTimeout": "02:00:00",
@@ -10129,6 +10143,13 @@
 													"type": "Datetime",
 													"value": {
 														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												},
+												"strLoadType": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.LoadType",
 														"type": "Expression"
 													}
 												}
@@ -17415,6 +17436,13 @@
 														"value": "@item().LastSuccessfulPipelineRunStart",
 														"type": "Expression"
 													}
+												},
+												"strLoadType": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.LoadType",
+														"type": "Expression"
+													}
 												}
 											},
 											"queryTimeout": "02:00:00",
@@ -19275,6 +19303,13 @@
 													"type": "Datetime",
 													"value": {
 														"value": "@item().LastSuccessfulPipelineRunStart",
+														"type": "Expression"
+													}
+												},
+												"strLoadType": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.LoadType",
 														"type": "Expression"
 													}
 												}
