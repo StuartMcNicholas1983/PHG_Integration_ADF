@@ -2036,12 +2036,12 @@
 																		},
 																		{
 																			"source": {
-																				"name": "Salutation",
+																				"name": "salutation",
 																				"type": "String",
 																				"physicalType": "String"
 																			},
 																			"sink": {
-																				"name": "Salutation",
+																				"name": "salutation",
 																				"type": "String"
 																			}
 																		}
