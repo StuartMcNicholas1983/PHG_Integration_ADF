@@ -21201,15 +21201,9 @@
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
 					"connectionString": "[parameters('Control_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "AIR-TTL-MemoryOptimized",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLake')]",
@@ -21224,15 +21218,9 @@
 						"type": "SecureString",
 						"value": "[parameters('DataLake_accountKey')]"
 					}
-				},
-				"connectVia": {
-					"referenceName": "AIR-TTL-MemoryOptimized",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer_OnPrem')]",
@@ -21331,15 +21319,9 @@
 						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
-				},
-				"connectVia": {
-					"referenceName": "AIR-TTL-MemoryOptimized",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AIR-TTL-MemoryOptimized')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",

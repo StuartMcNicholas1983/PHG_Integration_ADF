@@ -127,47 +127,32 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"phg_eval_dataverse_servicePrincipalCredential": {
-						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
-					},
-					"phg_uat_dataverse_servicePrincipalCredential": {
-						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
-					},
 					"Control_connectionString": {
 						"value": "[parameters('Control_connectionString')]"
 					},
 					"DataLake_accountKey": {
 						"value": "[parameters('DataLake_accountKey')]"
 					},
-					"SqlServer_OnPrem_connectionString": {
-						"value": "[parameters('SqlServer_OnPrem_connectionString')]"
-					},
-					"SqlServer_OnPrem_password": {
-						"value": "[parameters('SqlServer_OnPrem_password')]"
-					},
-					"phg_dev_dataverse_servicePrincipalCredential": {
-						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
+					"phg_eval_dataverse_servicePrincipalCredential": {
+						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
 					},
 					"phg_test_dataverse_servicePrincipalCredential": {
 						"value": "[parameters('phg_test_dataverse_servicePrincipalCredential')]"
 					},
-					"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]"
-					},
-					"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]"
+					"phg_uat_dataverse_servicePrincipalCredential": {
+						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
 					},
 					"DataLake_properties_typeProperties_url": {
 						"value": "[parameters('DataLake_properties_typeProperties_url')]"
 					},
-					"SqlServer_OnPrem_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer_OnPrem_properties_typeProperties_userName')]"
-					},
-					"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]"
+					"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]"
 					},
 					"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('phg_test_dataverse_properties_typeProperties_servicePrincipalId')]"
+					},
+					"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]"
 					}
 				}
 			},
@@ -186,6 +171,21 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SqlServer_OnPrem_connectionString": {
+						"value": "[parameters('SqlServer_OnPrem_connectionString')]"
+					},
+					"SqlServer_OnPrem_password": {
+						"value": "[parameters('SqlServer_OnPrem_password')]"
+					},
+					"phg_dev_dataverse_servicePrincipalCredential": {
+						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
+					},
+					"SqlServer_OnPrem_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer_OnPrem_properties_typeProperties_userName')]"
+					},
+					"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]"
 					}
 				}
 			},
