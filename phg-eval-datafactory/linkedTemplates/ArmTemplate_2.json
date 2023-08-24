@@ -4812,6 +4812,17 @@
 																						"name": "phg_mobilephonepriority",
 																						"type": "Int32"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "Salutation",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "Salutation",
+																						"type": "String"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
