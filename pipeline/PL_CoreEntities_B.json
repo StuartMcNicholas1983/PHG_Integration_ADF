@@ -1485,6 +1485,39 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_correspondenceaddress",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_correspondenceaddress",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_addresstype",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_addresstype",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_startdate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_startdate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "transactioncurrencyid",
 																				"type": "Guid",
 																				"physicalType": "Guid"
