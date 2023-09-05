@@ -2353,6 +2353,39 @@
 																				"name": "phg_tenancyid",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_internalblockaccessid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_internalblockaccessid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_blockid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_blockid",
+																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_landenvironmentid",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_landenvironmentid",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
