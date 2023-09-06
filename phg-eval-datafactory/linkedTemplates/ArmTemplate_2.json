@@ -15474,10 +15474,10 @@
 										},
 										"cases": [
 											{
-												"value": "VulnerabilityContact",
+												"value": "Vulnerability",
 												"activities": [
 													{
-														"name": "Staging to Transformed - VulnerabilityContact",
+														"name": "Staging to Transformed - Vulnerability",
 														"type": "Copy",
 														"dependsOn": [],
 														"policy": {
@@ -15653,11 +15653,11 @@
 														]
 													},
 													{
-														"name": "PipelineAuditDetailLog_1 - VulnerabilityContact",
+														"name": "PipelineAuditDetailLog_1 - Vulnerability",
 														"type": "Copy",
 														"dependsOn": [
 															{
-																"activity": "Staging to Transformed - VulnerabilityContact",
+																"activity": "Staging to Transformed - Vulnerability",
 																"dependencyConditions": [
 																	"Completed"
 																]
@@ -15675,7 +15675,7 @@
 															"source": {
 																"type": "AzureSqlSource",
 																"sqlReaderQuery": {
-																	"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Staging to Transformed' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Staging to Transformed - VulnerabilityContact').output.rowsCopied}' as RowsCopied,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.rowsRead}' as RowsRead,\n0 as RowsSkipped,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Staging to Transformed - VulnerabilityContact').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n1 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
+																	"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Staging to Transformed' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Staging to Transformed - Vulnerability').output.rowsCopied}' as RowsCopied,\n'@{activity('Staging to Transformed - Vulnerability').output.rowsRead}' as RowsRead,\n0 as RowsSkipped,\n'@{activity('Staging to Transformed - Vulnerability').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Staging to Transformed - Vulnerability').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Staging to Transformed - Vulnerability').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Staging to Transformed - Vulnerability').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n1 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
 																	"type": "Expression"
 																},
 																"queryTimeout": "02:00:00",
@@ -15715,11 +15715,11 @@
 														]
 													},
 													{
-														"name": "Transformed to Destination - VulnerabilityContact",
+														"name": "Transformed to Destination - Vulnerability",
 														"type": "Copy",
 														"dependsOn": [
 															{
-																"activity": "Staging to Transformed - VulnerabilityContact",
+																"activity": "Staging to Transformed - Vulnerability",
 																"dependencyConditions": [
 																	"Succeeded"
 																]
@@ -15881,11 +15881,11 @@
 														]
 													},
 													{
-														"name": "PipelineAuditDetailLog_2 - VulnerabilityContact",
+														"name": "PipelineAuditDetailLog_2 - Vulnerability",
 														"type": "Copy",
 														"dependsOn": [
 															{
-																"activity": "Transformed to Destination - VulnerabilityContact",
+																"activity": "Transformed to Destination - Vulnerability",
 																"dependencyConditions": [
 																	"Completed"
 																]
@@ -15903,7 +15903,7 @@
 															"source": {
 																"type": "AzureSqlSource",
 																"sqlReaderQuery": {
-																	"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Transformed to Destination' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Transformed to Destination - VulnerabilityContact').output.rowsCopied}' as RowsCopied,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.rowsRead}' as RowsRead,\n0 as RowsSkipped,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n2 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
+																	"value": "SELECT \n\n'@{pipeline().DataFactory}' as DataFactoryName,\n'@{pipeline().Pipeline}' as PipelineName,\n'@{pipeline().RunId}' as RunID,\n\n'@{item().SrcSystem}' as SrcSystem,\n'@{item().SrcStoredProcedure}' as Source,\n'@{item().DestEntity}' as Destination,\n'Transformed to Destination' as CopyActivity,\n\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerID,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n\n'@{activity('Transformed to Destination - Vulnerability').output.rowsCopied}' as RowsCopied,\n'@{activity('Transformed to Destination - Vulnerability').output.rowsRead}' as RowsRead,\n0 as RowsSkipped,\n'@{activity('Transformed to Destination - Vulnerability').output.usedParallelCopies}' as ParallelCopies,\n'@{activity('Transformed to Destination - Vulnerability').output.copyDuration}' as CopyDuration_SS,\n'@{activity('Transformed to Destination - Vulnerability').output.effectiveIntegrationRuntime}' as EffectiveIntegrationRuntime,\n\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].source.type}' as SourceType,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].sink.type}' as SinkType,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].status}' as ExecutionStatus,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].start}' as CopyActivity_StartTime,\n'@{utcnow()}' as CopyActivity_EndTime,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_QueuingDuration_SS,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_TimeToFirstByte_SS,\n'@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_TransferDuration_SS,\n2 as CopyActivity_Stage,\n'@{pipeline().parameters.SequenceGroup}' as SequenceGroup\n",
 																	"type": "Expression"
 																},
 																"queryTimeout": "02:00:00",
@@ -15943,11 +15943,11 @@
 														]
 													},
 													{
-														"name": "PipelineParameters LogEnd - VulnerabilityContact",
+														"name": "PipelineParameters LogEnd - Vulnerability",
 														"type": "SqlServerStoredProcedure",
 														"dependsOn": [
 															{
-																"activity": "Transformed to Destination - VulnerabilityContact",
+																"activity": "Transformed to Destination - Vulnerability",
 																"dependencyConditions": [
 																	"Completed"
 																]
@@ -15987,7 +15987,7 @@
 																},
 																"strLastPipelineRunStatus": {
 																	"value": {
-																		"value": "@{activity('Transformed to Destination - VulnerabilityContact').output.executionDetails[0].status}",
+																		"value": "@{activity('Transformed to Destination - Vulnerability').output.executionDetails[0].status}",
 																		"type": "Expression"
 																	},
 																	"type": "String"
