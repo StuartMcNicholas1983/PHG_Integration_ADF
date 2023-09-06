@@ -613,6 +613,16 @@
 															},
 															{
 																"source": {
+																	"name": "phg_category",
+																	"type": "String"
+																},
+																"sink": {
+																	"name": "phg_category",
+																	"type": "String"
+																}
+															},
+															{
+																"source": {
 																	"name": "statecode",
 																	"type": "String"
 																},
@@ -675,7 +685,7 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "DS_Datalake_PipeDelimited_Reference",
+														"referenceName": "DS_Datalake_PipeDelimited_Reference_Vulnerability",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {
@@ -852,6 +862,16 @@
 															},
 															{
 																"source": {
+																	"name": "phg_category",
+																	"type": "Int32"
+																},
+																"sink": {
+																	"name": "phg_category",
+																	"type": "Int32"
+																}
+															},
+															{
+																"source": {
 																	"name": "statecode",
 																	"type": "Int32"
 																},
@@ -890,7 +910,7 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "DS_Datalake_PipeDelimited_Reference",
+														"referenceName": "DS_Datalake_PipeDelimited_Reference_Vulnerability",
 														"type": "DatasetReference",
 														"parameters": {
 															"Container": {
