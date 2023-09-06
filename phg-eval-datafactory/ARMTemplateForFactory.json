@@ -17490,6 +17490,16 @@
 																	},
 																	{
 																		"source": {
+																			"name": "phg_category",
+																			"type": "String"
+																		},
+																		"sink": {
+																			"name": "phg_category",
+																			"type": "String"
+																		}
+																	},
+																	{
+																		"source": {
 																			"name": "statecode",
 																			"type": "String"
 																		},
@@ -17552,7 +17562,7 @@
 														],
 														"outputs": [
 															{
-																"referenceName": "DS_Datalake_PipeDelimited_Reference",
+																"referenceName": "DS_Datalake_PipeDelimited_Reference_Vulnerability",
 																"type": "DatasetReference",
 																"parameters": {
 																	"Container": {
@@ -17730,6 +17740,16 @@
 																	},
 																	{
 																		"source": {
+																			"name": "phg_category",
+																			"type": "Int32"
+																		},
+																		"sink": {
+																			"name": "phg_category",
+																			"type": "Int32"
+																		}
+																	},
+																	{
+																		"source": {
 																			"name": "statecode",
 																			"type": "Int32"
 																		},
@@ -17768,7 +17788,7 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "DS_Datalake_PipeDelimited_Reference",
+																"referenceName": "DS_Datalake_PipeDelimited_Reference_Vulnerability",
 																"type": "DatasetReference",
 																"parameters": {
 																	"Container": {
@@ -18799,7 +18819,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem_Tbl')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Control_Tbl')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]"
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_OnPrem')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited_Reference_Vulnerability')]"
 			]
 		},
 		{
@@ -20845,6 +20866,107 @@
 					},
 					{
 						"name": "phg_fortiscode",
+						"type": "String"
+					},
+					{
+						"name": "modified",
+						"type": "String"
+					},
+					{
+						"name": "created",
+						"type": "String"
+					},
+					{
+						"name": "statecode",
+						"type": "String"
+					},
+					{
+						"name": "statuscode",
+						"type": "String"
+					},
+					{
+						"name": "phg_checksum",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Datalake_PipeDelimited_Reference_Vulnerability')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"Filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataLake"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().Filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": [
+					{
+						"name": "phg_integrationkey",
+						"type": "String"
+					},
+					{
+						"name": "phg_code",
+						"type": "String"
+					},
+					{
+						"name": "phg_name",
+						"type": "String"
+					},
+					{
+						"name": "destination",
+						"type": "String"
+					},
+					{
+						"name": "phg_waterloocode",
+						"type": "String"
+					},
+					{
+						"name": "phg_fortiscode",
+						"type": "String"
+					},
+					{
+						"name": "phg_category",
 						"type": "String"
 					},
 					{
