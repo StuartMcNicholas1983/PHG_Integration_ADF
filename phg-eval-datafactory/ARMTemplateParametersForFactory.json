@@ -17,16 +17,7 @@
 		"SqlServer_OnPrem_password": {
 			"value": ""
 		},
-		"phg_dev_dataverse_servicePrincipalCredential": {
-			"value": ""
-		},
 		"phg_eval_dataverse_servicePrincipalCredential": {
-			"value": ""
-		},
-		"phg_test_dataverse_servicePrincipalCredential": {
-			"value": ""
-		},
-		"phg_uat_dataverse_servicePrincipalCredential": {
 			"value": ""
 		},
 		"DataLake_properties_typeProperties_url": {
@@ -35,16 +26,7 @@
 		"SqlServer_OnPrem_properties_typeProperties_userName": {
 			"value": "GROUPICT\\stuart.mcnicholas"
 		},
-		"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
-		},
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
-		},
-		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
-		},
-		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
