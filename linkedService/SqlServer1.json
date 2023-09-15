@@ -5,8 +5,9 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=False;data source=BBP-PRO2SQL-01\\PRO2SQLTEST;initial catalog=OH_D365_Config;user id=sss",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0YTYyNWZkZS01YWU0LTQ2Y2QtOWRlNi00YTU0ZWZmMzE2YmIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": "integrated security=True;data source=BBP-PRO2SQL-01\\PRO2SQLTEST;initial catalog=OH_D365_Config",
+			"userName": "GROUPICT\\stuart.mcnicholas",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZGFhNTMxOS02ZGFmLTRmYWItOWUwNS1iNmE4NTkzNTM4YTciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "BBP-Pro2SQL-01",
