@@ -11392,6 +11392,17 @@
 																						"name": "phg_tenancyid",
 																						"type": "Guid"
 																					}
+																				},
+																				{
+																					"source": {
+																						"name": "phg_checksum",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_checksum",
+																						"type": "String"
+																					}
 																				}
 																			],
 																			"typeConversion": true,
