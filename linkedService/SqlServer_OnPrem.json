@@ -4,10 +4,12 @@
 	"properties": {
 		"parameters": {
 			"ServerName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "BBP-PRO2SQL-01\\PRO2SQLTEST"
 			},
 			"DatabaseName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Pro2_IH"
 			}
 		},
 		"annotations": [],
@@ -15,7 +17,7 @@
 		"typeProperties": {
 			"connectionString": "integrated security=True;data source=@{linkedService().ServerName};initial catalog=@{linkedService().DatabaseName}",
 			"userName": "GROUPICT\\stuart.mcnicholas",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMWZhN2Y2Yy1kNjM1LTQ3MTAtYTU5Yy01MzBjODVkNmE5ZTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIzOWY4YWJmOS0xNDM1LTQwYWItYTgwNy0xOTE3M2FiNzNjNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "BBP-Pro2SQL-01",
