@@ -15,9 +15,9 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=True;data source=BBP-PRO2SQL-01\\PRO2SQLTEST;initial catalog=Pro2_IH",
+			"connectionString": "integrated security=True;data source=@{linkedService().ServerName};initial catalog=@{linkedService().DatabaseName}",
 			"userName": "GROUPICT\\stuart.mcnicholas",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5ZTExZDk0MS1jM2ViLTQ0OGQtOGIzZi1iMDc2Y2MxZDM4YjMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1MzQzMTEwNS04NTU5LTQyZDktYmY0Ny0zNzJmZDdiMzc5ZjkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "BBP-Pro2SQL-01",
