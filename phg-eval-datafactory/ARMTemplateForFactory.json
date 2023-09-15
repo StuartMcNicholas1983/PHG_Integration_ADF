@@ -28,6 +28,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
 		},
+		"phg_dev_dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_dev_dataverse'"
+		},
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
@@ -75,6 +79,10 @@
 		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
+		},
+		"phg_dev_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
 	},
 	"variables": {
@@ -20905,7 +20913,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_eval_dataverse",
+					"referenceName": "phg_dev_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -20927,7 +20935,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_dev_dataverse')]"
 			]
 		},
 		{
@@ -22235,10 +22243,12 @@
 			"properties": {
 				"parameters": {
 					"ServerName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "BBP-PRO2SQL-01\\PRO2SQLTEST"
 					},
 					"DatabaseName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "Pro2_IH"
 					}
 				},
 				"annotations": [],
@@ -22519,6 +22529,27 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/phg_dev_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-development.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('phg_dev_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_dev_dataverse_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
