@@ -121,6 +121,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-uat.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AIR-TTL')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -149,27 +170,6 @@
 				"type": "SelfHosted",
 				"description": "Pro2 Integration run time",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CommonDataServiceForApps",
-				"typeProperties": {
-					"deploymentType": "Online",
-					"serviceUri": "https://phg-uat.crm11.dynamics.com/",
-					"authenticationType": "AADServicePrincipal",
-					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
-					},
-					"servicePrincipalCredentialType": "ServicePrincipalKey"
-				}
 			},
 			"dependsOn": []
 		},

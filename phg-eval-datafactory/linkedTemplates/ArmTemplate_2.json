@@ -8314,6 +8314,36 @@
 											}
 										}
 									}
+								},
+								{
+									"name": "Truncate adf Tables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[d365].[spTruncate_adf_tables]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer_OnPrem",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": {
+												"value": "@item().SrcServer",
+												"type": "Expression"
+											},
+											"DatabaseName": {
+												"value": "@item().srcDatabase",
+												"type": "Expression"
+											}
+										}
+									}
 								}
 							]
 						}
@@ -17388,7 +17418,7 @@
 				"annotations": [
 					"Sequence List: [R],[L],[C],[T]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -17432,7 +17462,7 @@
 				"annotations": [
 					"Sequence List: [D],[I]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -17476,7 +17506,7 @@
 				"annotations": [
 					"Sequence List: [C],[T]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {

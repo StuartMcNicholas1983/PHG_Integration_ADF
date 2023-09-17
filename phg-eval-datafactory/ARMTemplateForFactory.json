@@ -52,6 +52,10 @@
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
 		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
 			"defaultValue": "OH_D365_DataSync"
@@ -87,10 +91,6 @@
 		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"type": "string",
 			"defaultValue": "Incremental"
-		},
-		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
 	},
 	"variables": {
@@ -12928,6 +12928,36 @@
 											}
 										}
 									}
+								},
+								{
+									"name": "Truncate adf Tables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[d365].[spTruncate_adf_tables]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer_OnPrem",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": {
+												"value": "@item().SrcServer",
+												"type": "Expression"
+											},
+											"DatabaseName": {
+												"value": "@item().srcDatabase",
+												"type": "Expression"
+											}
+										}
+									}
 								}
 							]
 						}
@@ -22332,6 +22362,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-uat.crm11.dynamics.com/",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TRG_S_4am_Daily')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -22339,7 +22390,7 @@
 				"annotations": [
 					"Sequence List: [R],[L],[C],[T]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -22383,7 +22434,7 @@
 				"annotations": [
 					"Sequence List: [D],[I]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -22427,7 +22478,7 @@
 				"annotations": [
 					"Sequence List: [C],[T]"
 				],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -22569,27 +22620,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_Datalake_PipeDelimited')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Dataverse')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/phg_uat_dataverse')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CommonDataServiceForApps",
-				"typeProperties": {
-					"deploymentType": "Online",
-					"serviceUri": "https://phg-uat.crm11.dynamics.com/",
-					"authenticationType": "AADServicePrincipal",
-					"servicePrincipalId": "[parameters('phg_uat_dataverse_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('phg_uat_dataverse_servicePrincipalCredential')]"
-					},
-					"servicePrincipalCredentialType": "ServicePrincipalKey"
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

@@ -38,6 +38,9 @@
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
+		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
+			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
 		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"value": "OH_D365_DataSync"
 		},
@@ -64,9 +67,6 @@
 		},
 		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"value": "Incremental"
-		},
-		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
 	}
 }
