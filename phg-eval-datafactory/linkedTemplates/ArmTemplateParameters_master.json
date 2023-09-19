@@ -23,10 +23,10 @@
 		"phg_eval_dataverse_servicePrincipalCredential": {
 			"value": ""
 		},
-		"phg_uat_dataverse_servicePrincipalCredential": {
+		"phg_test_dataverse_servicePrincipalCredential": {
 			"value": ""
 		},
-		"phg_test_dataverse_servicePrincipalCredential": {
+		"phg_uat_dataverse_servicePrincipalCredential": {
 			"value": ""
 		},
 		"DataLake_properties_typeProperties_url": {
@@ -39,6 +39,9 @@
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
+			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
+		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
 			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"phg_uat_dataverse_properties_typeProperties_servicePrincipalId": {
@@ -70,9 +73,6 @@
 		},
 		"TRG_TW_7am_to_5pm_Incremental_properties_PL_Control_parameters_LoadType": {
 			"value": "Incremental"
-		},
-		"phg_test_dataverse_properties_typeProperties_servicePrincipalId": {
-			"value": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"containerUri": {
 			"value": ""
