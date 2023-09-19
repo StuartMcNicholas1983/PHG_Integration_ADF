@@ -1927,6 +1927,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_ishbeligible",
+																				"type": "Boolean",
+																				"physicalType": "Boolean"
+																			},
+																			"sink": {
+																				"name": "phg_ishbeligible",
+																				"type": "Boolean"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "transactioncurrencyid",
 																				"type": "Guid",
 																				"physicalType": "Guid"
