@@ -12961,7 +12961,7 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"storedProcedureName": "[[d365].[spTruncate_adf_tables]"
+										"storedProcedureName": "[[adf].[spTruncate_adf_tables]"
 									},
 									"linkedServiceName": {
 										"referenceName": "SqlServer_OnPrem",
