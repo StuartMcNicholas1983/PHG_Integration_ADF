@@ -20199,6 +20199,10 @@
 						"startTime": "2023-08-07T12:00:00",
 						"timeZone": "GMT Standard Time",
 						"schedule": {
+							"minutes": [
+								0,
+								30
+							],
 							"hours": [
 								7,
 								8,
@@ -20209,8 +20213,7 @@
 								13,
 								14,
 								15,
-								16,
-								17
+								16
 							]
 						}
 					}
