@@ -1541,6 +1541,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_installationdate",
+																				"type": "DateTime",
+																				"physicalType": "DateTime"
+																			},
+																			"sink": {
+																				"name": "phg_installationdate",
+																				"type": "DateTime"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_checksum",
 																				"type": "String",
 																				"physicalType": "String"
