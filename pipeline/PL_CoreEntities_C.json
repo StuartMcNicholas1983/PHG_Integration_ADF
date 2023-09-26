@@ -1541,13 +1541,10 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_installationdate",
-																				"type": "DateTime",
-																				"physicalType": "DateTime"
+																				"name": "phg_installationdate"
 																			},
 																			"sink": {
-																				"name": "phg_installationdate",
-																				"type": "DateTime"
+																				"name": "phg_installationdate"
 																			}
 																		},
 																		{
