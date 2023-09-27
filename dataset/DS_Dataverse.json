@@ -2,7 +2,7 @@
 	"name": "DS_Dataverse",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Portal Development",
+			"referenceName": "phg_dev_dataverse",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
