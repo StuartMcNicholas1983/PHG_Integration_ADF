@@ -955,35 +955,26 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_rentcollector",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_rentcollector"
 																			},
 																			"sink": {
-																				"name": "phg_rentcollector",
-																				"type": "Guid"
+																				"name": "phg_rentcollector"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "phg_allocationsofficer",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_allocationsofficer"
 																			},
 																			"sink": {
-																				"name": "phg_allocationsofficer",
-																				"type": "Guid"
+																				"name": "phg_allocationsofficer"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "phg_rtbcaseofficer",
-																				"type": "Guid",
-																				"physicalType": "Guid"
+																				"name": "phg_rtbcaseofficer"
 																			},
 																			"sink": {
-																				"name": "phg_rtbcaseofficer",
-																				"type": "Guid"
+																				"name": "phg_rtbcaseofficer"
 																			}
 																		},
 																		{
