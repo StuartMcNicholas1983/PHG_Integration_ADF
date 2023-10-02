@@ -20082,39 +20082,6 @@
 																				},
 																				{
 																					"source": {
-																						"name": "phg_rentcollector",
-																						"type": "Guid",
-																						"physicalType": "Guid"
-																					},
-																					"sink": {
-																						"name": "phg_rentcollector",
-																						"type": "Guid"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_allocationsofficer",
-																						"type": "Guid",
-																						"physicalType": "Guid"
-																					},
-																					"sink": {
-																						"name": "phg_allocationsofficer",
-																						"type": "Guid"
-																					}
-																				},
-																				{
-																					"source": {
-																						"name": "phg_rtbcaseofficer",
-																						"type": "Guid",
-																						"physicalType": "Guid"
-																					},
-																					"sink": {
-																						"name": "phg_rtbcaseofficer",
-																						"type": "Guid"
-																					}
-																				},
-																				{
-																					"source": {
 																						"name": "phg_operatingdivision",
 																						"type": "Int32",
 																						"physicalType": "Int32"
