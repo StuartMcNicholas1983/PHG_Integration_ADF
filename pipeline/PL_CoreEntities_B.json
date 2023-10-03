@@ -1095,6 +1095,17 @@
 																				"name": "phg_landenvironmentid",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_ttotalcharges",
+																				"type": "Decimal",
+																				"physicalType": "Decimal"
+																			},
+																			"sink": {
+																				"name": "phg_ttotalcharges",
+																				"type": "Decimal"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
