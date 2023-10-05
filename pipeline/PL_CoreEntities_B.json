@@ -1106,6 +1106,17 @@
 																				"name": "phg_ttotalcharges",
 																				"type": "Decimal"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_rentcollector",
+																				"type": "Guid",
+																				"physicalType": "Guid"
+																			},
+																			"sink": {
+																				"name": "phg_rentcollector",
+																				"type": "Guid"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
