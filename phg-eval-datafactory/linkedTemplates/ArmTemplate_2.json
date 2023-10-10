@@ -6909,6 +6909,17 @@
 																				},
 																				{
 																					"source": {
+																						"name": "phg_lastarrearsstagecode",
+																						"type": "String",
+																						"physicalType": "String"
+																					},
+																					"sink": {
+																						"name": "phg_lastarrearsstagecode",
+																						"type": "String"
+																					}
+																				},
+																				{
+																					"source": {
 																						"name": "transactioncurrencyid",
 																						"type": "Guid",
 																						"physicalType": "Guid"
@@ -20189,7 +20200,7 @@
 				"annotations": [
 					"Sequence List: [R],[L],[C],[T]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20233,7 +20244,7 @@
 				"annotations": [
 					"Sequence List: [D],[I]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -20277,7 +20288,7 @@
 				"annotations": [
 					"Sequence List: [C],[T]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
