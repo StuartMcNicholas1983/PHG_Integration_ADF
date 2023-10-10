@@ -537,6 +537,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_lastarrearsstagecode",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_lastarrearsstagecode",
+																				"type": "String"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "transactioncurrencyid",
 																				"type": "Guid",
 																				"physicalType": "Guid"
