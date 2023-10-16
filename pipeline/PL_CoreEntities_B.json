@@ -1120,24 +1120,18 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_joballowed",
-																				"type": "Int32",
-																				"physicalType": "Int32"
+																				"name": "phg_joballowed"
 																			},
 																			"sink": {
-																				"name": "phg_joballowed",
-																				"type": "Int32"
+																				"name": "phg_joballowed"
 																			}
 																		},
 																		{
 																			"source": {
-																				"name": "phg_placetype",
-																				"type": "String",
-																				"physicalType": "String"
+																				"name": "phg_placetype"
 																			},
 																			"sink": {
-																				"name": "phg_placetype",
-																				"type": "String"
+																				"name": "phg_placetype"
 																			}
 																		}
 																	],
