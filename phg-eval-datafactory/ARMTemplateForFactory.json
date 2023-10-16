@@ -1479,8 +1479,7 @@
 				],
 				"concurrency": 1,
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -4152,8 +4151,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -7755,8 +7753,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -10907,8 +10904,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -11372,8 +11368,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -12631,8 +12626,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -13369,8 +13363,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -15045,8 +15038,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -16848,8 +16840,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -18799,8 +18790,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -20680,8 +20670,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
 					"PipelineName": {
@@ -21033,7 +21022,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_uat_dataverse",
+					"referenceName": "phg_test_dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -21055,7 +21044,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_uat_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/phg_test_dataverse')]"
 			]
 		},
 		{
@@ -22503,7 +22492,7 @@
 				"annotations": [
 					"Sequence List: [R],[L],[C],[T]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -22547,7 +22536,7 @@
 				"annotations": [
 					"Sequence List: [D],[I]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -22591,7 +22580,7 @@
 				"annotations": [
 					"Sequence List: [C],[T]"
 				],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
