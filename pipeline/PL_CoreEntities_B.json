@@ -1117,6 +1117,28 @@
 																				"name": "phg_rentcollector",
 																				"type": "Guid"
 																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_joballowed",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_joballowed",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "phg_placetype",
+																				"type": "String",
+																				"physicalType": "String"
+																			},
+																			"sink": {
+																				"name": "phg_placetype",
+																				"type": "String"
+																			}
 																		}
 																	],
 																	"typeConversion": true,
