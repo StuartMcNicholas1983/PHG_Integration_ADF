@@ -1243,6 +1243,28 @@
 																		},
 																		{
 																			"source": {
+																				"name": "statecode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "statecode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "statuscode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "statuscode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "phg_checksum",
 																				"type": "String",
 																				"physicalType": "String"
@@ -1967,6 +1989,28 @@
 																			"sink": {
 																				"name": "transactioncurrencyid",
 																				"type": "Guid"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "statecode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "statecode",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
+																				"name": "statuscode",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "statuscode",
+																				"type": "Int32"
 																			}
 																		},
 																		{
