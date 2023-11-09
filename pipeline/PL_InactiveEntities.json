@@ -304,7 +304,7 @@
 												"tableOption": "autoCreate"
 											},
 											"enableStaging": false,
-											"enableSkipIncompatibleRow": true
+											"enableSkipIncompatibleRow": false
 										},
 										"inputs": [
 											{
