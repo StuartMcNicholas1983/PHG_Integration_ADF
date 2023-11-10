@@ -296,13 +296,7 @@
 											},
 											"sink": {
 												"type": "SqlServerSink",
-												"writeBehavior": "upsert",
-												"upsertSettings": {
-													"useTempDB": true,
-													"keys": [
-														"phg_integrationkey"
-													]
-												},
+												"writeBehavior": "insert",
 												"sqlWriterUseTableLock": false,
 												"tableOption": "autoCreate"
 											},
