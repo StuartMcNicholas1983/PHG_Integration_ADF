@@ -11414,13 +11414,11 @@
 										},
 										"sink": {
 											"type": "SqlServerSink",
-											"writeBehavior": "upsert",
-											"upsertSettings": {
-												"useTempDB": false,
-												"keys": [
-													"phg_integrationkey"
-												]
+											"preCopyScript": {
+												"value": "@{concat('truncate table ', 'd365', '.', item().DestEntity )}",
+												"type": "Expression"
 											},
+											"writeBehavior": "insert",
 											"sqlWriterUseTableLock": false
 										},
 										"enableStaging": false,
