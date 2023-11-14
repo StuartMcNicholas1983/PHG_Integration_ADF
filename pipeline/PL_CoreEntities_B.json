@@ -2047,6 +2047,17 @@
 																		},
 																		{
 																			"source": {
+																				"name": "phg_doyouconsideryourselftobedisabled",
+																				"type": "Int32",
+																				"physicalType": "Int32"
+																			},
+																			"sink": {
+																				"name": "phg_doyouconsideryourselftobedisabled",
+																				"type": "Int32"
+																			}
+																		},
+																		{
+																			"source": {
 																				"name": "telephone2",
 																				"type": "String",
 																				"physicalType": "String"
