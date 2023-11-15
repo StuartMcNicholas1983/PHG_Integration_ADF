@@ -2047,13 +2047,10 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_doyouconsideryourselftobedisabled",
-																				"type": "Int32",
-																				"physicalType": "Int32"
+																				"name": "phg_doyouconsideryourselftobedisabled"
 																			},
 																			"sink": {
-																				"name": "phg_doyouconsideryourselftobedisabled",
-																				"type": "Int32"
+																				"name": "phg_doyouconsideryourselftobedisabled"
 																			}
 																		},
 																		{
