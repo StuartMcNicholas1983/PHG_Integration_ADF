@@ -2047,14 +2047,6 @@
 																		},
 																		{
 																			"source": {
-																				"name": "phg_doyouconsideryourselftobedisabled"
-																			},
-																			"sink": {
-																				"name": "phg_doyouconsideryourselftobedisabled"
-																			}
-																		},
-																		{
-																			"source": {
 																				"name": "telephone2",
 																				"type": "String",
 																				"physicalType": "String"
