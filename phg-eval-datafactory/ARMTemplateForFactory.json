@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'DataLake'"
 		},
+		"Dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse'"
+		},
 		"SqlServer_OnPrem_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer_OnPrem'",
@@ -24,21 +28,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer_OnPrem'"
 		},
-		"phg_eval_dataverse_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
-		},
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
 		},
+		"Dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
 		"SqlServer_OnPrem_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "GROUPICT\\stuart.mcnicholas"
-		},
-		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
@@ -20566,7 +20566,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_eval_dataverse",
+					"referenceName": "Dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -20588,7 +20588,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/Dataverse')]"
 			]
 		},
 		{
@@ -21890,6 +21890,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Dataverse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://phg-eval-cs.crm11.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('Dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('Dataverse_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer_OnPrem')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -21922,27 +21943,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/BBP-Pro2SQL-01')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/phg_eval_dataverse')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CommonDataServiceForApps",
-				"typeProperties": {
-					"deploymentType": "Online",
-					"serviceUri": "https://phg-eval-cs.crm11.dynamics.com",
-					"authenticationType": "AADServicePrincipal",
-					"servicePrincipalId": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalCredential": {
-						"type": "SecureString",
-						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
-					},
-					"servicePrincipalCredentialType": "ServicePrincipalKey"
-				}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/TRG_S_4am_Daily')]",

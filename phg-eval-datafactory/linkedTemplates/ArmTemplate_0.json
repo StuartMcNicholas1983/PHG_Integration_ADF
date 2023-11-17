@@ -15,15 +15,15 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'DataLake'"
 		},
-		"phg_eval_dataverse_servicePrincipalCredential": {
+		"Dataverse_servicePrincipalCredential": {
 			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse'"
 		},
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
 		},
-		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
+		"Dataverse_properties_typeProperties_servicePrincipalId": {
 			"type": "string",
 			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		}
@@ -63,7 +63,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/phg_eval_dataverse')]",
+			"name": "[concat(parameters('factoryName'), '/Dataverse')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -73,10 +73,10 @@
 					"deploymentType": "Online",
 					"serviceUri": "https://phg-eval-cs.crm11.dynamics.com",
 					"authenticationType": "AADServicePrincipal",
-					"servicePrincipalId": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalId": "[parameters('Dataverse_properties_typeProperties_servicePrincipalId')]",
 					"servicePrincipalCredential": {
 						"type": "SecureString",
-						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
+						"value": "[parameters('Dataverse_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
 				}
@@ -423,7 +423,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "phg_eval_dataverse",
+					"referenceName": "Dataverse",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -445,7 +445,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/phg_eval_dataverse')]"
+				"[concat(variables('factoryId'), '/linkedServices/Dataverse')]"
 			]
 		},
 		{

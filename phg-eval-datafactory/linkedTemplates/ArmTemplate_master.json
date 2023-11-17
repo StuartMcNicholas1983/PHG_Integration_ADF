@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'DataLake'"
 		},
+		"Dataverse_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse'"
+		},
 		"SqlServer_OnPrem_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer_OnPrem'",
@@ -24,21 +28,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer_OnPrem'"
 		},
-		"phg_eval_dataverse_servicePrincipalCredential": {
-			"type": "secureString",
-			"metadata": "Secure string for 'servicePrincipalCredential' of 'phg_eval_dataverse'"
-		},
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://phgevalstoragedatalake.dfs.core.windows.net/"
 		},
+		"Dataverse_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
+		},
 		"SqlServer_OnPrem_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "GROUPICT\\stuart.mcnicholas"
-		},
-		"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-			"type": "string",
-			"defaultValue": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502"
 		},
 		"TRG_S_4am_Daily_properties_PL_Control_parameters_PipelineName": {
 			"type": "string",
@@ -109,14 +109,14 @@
 					"DataLake_accountKey": {
 						"value": "[parameters('DataLake_accountKey')]"
 					},
-					"phg_eval_dataverse_servicePrincipalCredential": {
-						"value": "[parameters('phg_eval_dataverse_servicePrincipalCredential')]"
+					"Dataverse_servicePrincipalCredential": {
+						"value": "[parameters('Dataverse_servicePrincipalCredential')]"
 					},
 					"DataLake_properties_typeProperties_url": {
 						"value": "[parameters('DataLake_properties_typeProperties_url')]"
 					},
-					"phg_eval_dataverse_properties_typeProperties_servicePrincipalId": {
-						"value": "[parameters('phg_eval_dataverse_properties_typeProperties_servicePrincipalId')]"
+					"Dataverse_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('Dataverse_properties_typeProperties_servicePrincipalId')]"
 					}
 				}
 			},
