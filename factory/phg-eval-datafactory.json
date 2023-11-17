@@ -1,6 +1,12 @@
 {
 	"name": "phg-eval-datafactory",
 	"properties": {
+		"globalParameters": {
+			"Environment": {
+				"type": "string",
+				"value": "eval"
+			}
+		},
 		"globalConfigurations": {
 			"PipelineBillingEnabled": "false"
 		}
