@@ -2,21 +2,15 @@
 	"name": "phg_eval_dataverse",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"parameters": {
-			"Environment": {
-				"type": "string",
-				"defaultValue": "eval"
-			}
-		},
 		"annotations": [],
 		"type": "CommonDataServiceForApps",
 		"typeProperties": {
 			"deploymentType": "Online",
-			"serviceUri": "@{concat('https://phg-', linkedService().Environment, '-cs.crm11.dynamics.com')}",
+			"serviceUri": "https://phg-eval-cs.crm11.dynamics.com",
 			"authenticationType": "AADServicePrincipal",
 			"servicePrincipalId": "1bafd450-9ac7-4646-b5d1-7dd54a8a6502",
 			"servicePrincipalCredentialType": "ServicePrincipalKey",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEYwNjU3MDE5LTIyNTQtNEE2OC05ODQwLUFCNzA2RjQ0MzJDQ18wOTE2OTZkZS02YTgxLTRlMzctOTM1MS0wOWQyODE2OTZmOWMiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEYwNjU3MDE5LTIyNTQtNEE2OC05ODQwLUFCNzA2RjQ0MzJDQ180Y2Y1NDQ0NC1mY2E3LTQ1Y2YtODM3OC1lYzExZjhkMTJiYWQiDQp9"
 		}
 	}
 }
